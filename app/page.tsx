@@ -40,7 +40,7 @@ export default function Home() {
           <div className="w-full py-20">
             <hr className="bg-(--red) w-full h-1 border-0 shadow-[0_0_10px_rgba(255,0,0,0.5),0_0_20px_rgba(255,0,0,0.3)]" />
           </div>
-          <div>
+          <div className="w-full flex items-start ml-16">
             <LinkHero />
           </div>
           <div className="absolute bottom-1/6 scale-200 right-0 -rotate-45 h-36 w-96 bg-(--secondary) mask-cover mask-[url('/BlackPaint.png')] flex items-center justify-center text-3xl font-bold text-background mt-8 font-(family-name:--font-fruktur) text-shadow-lg text-shadow-foreground/50">

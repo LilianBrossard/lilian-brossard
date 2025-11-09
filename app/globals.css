@@ -30,3 +30,27 @@ body {
   font-family: var(--font-lato), Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.clipPath-Button {
+  cursor: pointer;
+  clip-path: polygon(
+    7% 50%,
+    7% 60%,
+    0 60%,
+    0 75%,
+    15% 100%,
+    100% 100%,
+    100% 60%,
+    93% 60%,
+    93% 50%,
+    100% 50%,
+    100% 0,
+    0 0,
+    0 50%
+  );
+}
+
+.clipPath-Button-Simple {
+  cursor: pointer;
+  clip-path: polygon(15% 100%, 100% 100%, 100% 0, 0 0, 0 75%);
+}
