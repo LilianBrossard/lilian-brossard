@@ -1,65 +1,110 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import LinkHero from "@/components/LinkHero";
+import Link from "next/link";
 import Image from "next/image";
+import { getAllProjects } from "@/utils/MarkdownReader";
 
 export default function Home() {
+  const projects = getAllProjects();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="w-screen min-h-screen">
+      <h1 className="sr-only">Lilian Brossard Portfolio</h1>
+      <main className="flex flex-col w-full h-full">
+        <section className="w-full h-screen z-50 bg-[--background] flex flex-col justify-center items-center text-center">
+          <div className="relative flex flex-row items-center justify-around w-full">
+            <div className="relative w-60 h-60">
+              <div className="absolute inset-0 w-[114%] h-[114%] -top-[7%] -left-[7%] bg-(--primary) -z-10"></div>
+              <div className="absolute inset-0 w-[110%] h-[110%] -top-[5%] -left-[5%] bg-background -z-10"></div>
+              <div className="absolute w-[200%] h-2/3 top-1/6 -left-1/2 -rotate-45 bg-background -z-10"></div>
+              <Image
+                src="/portrait.jpg"
+                alt="portrait lilian brossard"
+                width={240}
+                height={240}
+                className="object-cover z-10"
+              />
+            </div>
+            <div>
+              <h2 className="text-9xl font-bold uppercase font-(family-name:--font-aquire) z-10">
+                <span className="text-(--primary)">L</span>ilian{" "}
+                <span className="text-(--primary)">B</span>rossard
+              </h2>
+              <p className="text-2xl">
+                Je suis Étudiant en informatique mais également à la recherche
+                d'un Stage.
+              </p>
+            </div>
+          </div>
+          <div className="w-full py-20">
+            <hr className="bg-(--red) w-full h-1 border-0 shadow-[0_0_10px_rgba(255,0,0,0.5),0_0_20px_rgba(255,0,0,0.3)]" />
+          </div>
+          <div>
+            <LinkHero />
+          </div>
+          <div className="absolute bottom-1/6 scale-200 right-0 -rotate-45 h-36 w-96 bg-(--secondary) mask-cover mask-[url('/BlackPaint.png')] flex items-center justify-center text-3xl font-bold text-background mt-8 font-(family-name:--font-fruktur) text-shadow-lg text-shadow-foreground/50">
+            <Link
+              href="/CV_LilianBrossard.pdf"
+              download="CV_LilianBrossard.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-(--primary) duration-200 group"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <svg
+                className="inline-block group-hover:fill-(--primary) duration-200"
+                fill="var(--background)"
+                height="24px"
+                width="24px"
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 498.436 498.436"
+                xmlSpace="preserve"
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  {" "}
+                  <g>
+                    {" "}
+                    <g>
+                      {" "}
+                      <g>
+                        {" "}
+                        <path d="M389.277,0H74.15v68.25H22.941v181.13h51.187v249.056h401.368V80.653L389.277,0z M293.805,151.125v14.841H257.07v37.49 h-17.731v-87.987h60.355v14.884H257.07v20.773H293.805z M224.261,160.314c0,7.248-0.906,13.482-2.696,18.723 c-2.2,6.385-5.371,11.584-9.405,15.531c-3.128,3.063-7.226,5.371-12.425,7.032c-4.012,1.23-9.232,1.877-15.747,1.877h-33.392 v-88.009h32.399c7.312,0,12.921,0.539,16.76,1.661c5.134,1.553,9.534,4.228,13.201,8.111c3.689,3.883,6.471,8.585,8.434,14.258 C223.312,145.171,224.261,152.052,224.261,160.314z M86.359,170.258v33.241H68.627v-0.022v-88.009h28.452 c10.785,0,17.817,0.453,21.053,1.337c5.004,1.337,9.297,4.185,12.64,8.542c3.451,4.465,5.134,10.181,5.134,17.127 c0,5.436-0.971,9.923-2.934,13.611c-1.941,3.753-4.422,6.601-7.485,8.736c-2.955,2.049-5.997,3.473-9.103,4.12 c-4.293,0.82-10.354,1.316-18.4,1.316H86.359z M446.375,469.186c-25.842,0-317.306,0-343.105,0c0-13.223,0-116.482,0-219.806 h244.613V68.25H103.292c0-20.535,0-34.751,0-39.108c25.756,0,263.983,0,274.531,0c6.989,6.601,60.873,56.968,68.595,64.151 C446.375,105.136,446.375,442.654,446.375,469.186z"></path>{" "}
+                        <path d="M199.066,135.357c-2.157-2.071-4.875-3.408-8.175-4.12c-2.545-0.582-7.334-0.863-14.539-0.863h-7.981v58.22h13.201 c4.94,0,8.499-0.259,10.721-0.841c2.912-0.712,5.285-1.985,7.161-3.667c1.941-1.726,3.451-4.53,4.681-8.456 c1.186-3.969,1.812-9.362,1.812-16.135c0-6.73-0.604-12.015-1.812-15.596C202.884,140.232,201.201,137.406,199.066,135.357z"></path>{" "}
+                        <path d="M114.724,134.882c-1.855-2.071-4.249-3.343-7.118-3.904c-2.049-0.41-6.363-0.604-12.705-0.604h-8.542v24.957h9.621 c7.01,0,11.648-0.431,13.999-1.381c2.373-0.906,4.228-2.33,5.587-4.293c1.337-1.963,1.963-4.228,1.963-6.86 C117.55,139.628,116.687,136.996,114.724,134.882z"></path>{" "}
+                      </g>{" "}
+                    </g>{" "}
+                    <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>{" "}
+                    <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>{" "}
+                    <g> </g> <g> </g> <g> </g>{" "}
+                  </g>{" "}
+                </g>
+              </svg>{" "}
+              CV
+            </Link>
+          </div>
+        </section>
+        <div className="sticky top-0 z-40">
+          <Navbar />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <p className="mt-4 text-lg">Découvrez mes projets ci-dessous :</p>
+        <div className="mt-8 flex flex-col gap-4">
+          {projects.map((project) => (
+            <Link key={project.slug} href={`/projet/${project.slug}`}>
+              {project.title}
+            </Link>
+          ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
