@@ -31,17 +31,103 @@ export default function Home() {
       <h1 className="sr-only">Lilian Brossard Portfolio</h1>
       <main className="flex flex-col w-full h-full">
         <section className="sticky top-0 w-full h-screen bg-[--background] flex flex-col justify-center items-center text-center">
+          <div className="absolute w-full h-screen -z-10 opacity-25">
+            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern
+                  id="circuit-pattern"
+                  x="0"
+                  y="0"
+                  width="1000"
+                  height="1000"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <rect width="1000" height="1000" fill="var(--background)" />
+                  <path
+                    d="M50,50 L50,250 L250,250 L250,450 L450,450"
+                    stroke="var(--background-secondary)"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <path
+                    d="M450,450 L650,450 L650,250 L850,250"
+                    stroke="var(--background-secondary)"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <path
+                    d="M250,50 L450,50 L450,250"
+                    stroke="var(--background-secondary)"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <path
+                    d="M-150,450 L50,450 L50,650 L250,650"
+                    stroke="var(--background-secondary)"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <path
+                    d="M450,650 L650,650 L650,850"
+                    stroke="var(--background-secondary)"
+                    strokeWidth="20"
+                    fill="none"
+                  />
+                  <circle
+                    cx="50"
+                    cy="250"
+                    r="30"
+                    fill="var(--background-secondary)"
+                  />
+                  <circle
+                    cx="250"
+                    cy="450"
+                    r="30"
+                    fill="var(--background-secondary)"
+                  />
+                  <circle
+                    cx="450"
+                    cy="50"
+                    r="30"
+                    fill="var(--background-secondary)"
+                  />
+                  <circle
+                    cx="650"
+                    cy="650"
+                    r="30"
+                    fill="var(--background-secondary)"
+                  />
+                  <rect
+                    x="200"
+                    y="400"
+                    width="100"
+                    height="100"
+                    fill="var(--background-secondary)"
+                  />
+                  <rect
+                    x="0"
+                    y="600"
+                    width="100"
+                    height="100"
+                    fill="var(--background-secondary)"
+                  />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
+            </svg>
+          </div>
           <div className="relative flex flex-row items-center justify-around w-full">
-            <div className="relative w-60 h-60">
-              <div className="absolute inset-0 w-[114%] h-[114%] -top-[7%] -left-[7%] bg-(--primary) -z-10"></div>
-              <div className="absolute inset-0 w-[110%] h-[110%] -top-[5%] -left-[5%] bg-background -z-10 "></div>
-              <div className="absolute w-[200%] h-2/3 top-1/6 -left-1/2 -rotate-45 bg-background -z-10"></div>
+            <div className="relative w-60 h-60 group transition-all">
+              <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
+              <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
+              <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
+              <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
               <Image
                 src="/portrait.jpg"
                 alt="portrait lilian brossard"
                 width={240}
                 height={240}
-                className="object-cover"
+                className="object-cover group-hover:scale-105 duration-300"
               />
             </div>
             <div>
