@@ -33,8 +33,9 @@ export default function Navbar() {
       id="linkHero"
       className="relative inline-block group"
     >
-      <div className="absolute w-full h-full scale-y-105 scale-x-[1.01] clipPath-Button-Simple bg-(--primary) group-hover:bg-(--foreground) pointer-events-none"></div>
-      <div className="clipPath-Button text-center flex items-center justify-center w-[900px] text-xl lg:text-7xl uppercase font-(family-name:--font-aquire) text-foreground group-hover:text-background bg-background group-hover:bg-(--primary) duration-200 ">
+      <div className="absolute w-full h-full scale-y-105 scale-x-[1.01] clipPath-Button-Simple bg-(--primary) pointer-events-none"></div>
+      <div className="clipPath-Button relative overflow-hidden text-center flex items-center justify-center w-[900px] text-xl lg:text-7xl uppercase font-(family-name:--font-aquire) text-foreground group-hover:text-background bg-background duration-200">
+        <div className="absolute h-full w-0 group-hover:w-full duration-500 group-hover:bg-(--primary)"></div>
         <p
           ref={linkRef}
           className={`whitespace-nowrap w-full h-full ${style.glitch}`}

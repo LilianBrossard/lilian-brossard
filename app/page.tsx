@@ -16,7 +16,7 @@ export default function Home() {
           <div className="relative flex flex-row items-center justify-around w-full">
             <div className="relative w-60 h-60">
               <div className="absolute inset-0 w-[114%] h-[114%] -top-[7%] -left-[7%] bg-(--primary) -z-10"></div>
-              <div className="absolute inset-0 w-[110%] h-[110%] -top-[5%] -left-[5%] bg-background -z-10"></div>
+              <div className="absolute inset-0 w-[110%] h-[110%] -top-[5%] -left-[5%] bg-background -z-10 "></div>
               <div className="absolute w-[200%] h-2/3 top-1/6 -left-1/2 -rotate-45 bg-background -z-10"></div>
               <Image
                 src="/portrait.jpg"
@@ -43,17 +43,17 @@ export default function Home() {
           <div className="w-full flex items-start ml-16">
             <LinkHero />
           </div>
-          <div className="absolute bottom-1/6 scale-200 right-0 -rotate-45 h-36 w-96 bg-(--secondary) mask-cover mask-[url('/BlackPaint.png')] flex items-center justify-center text-3xl font-bold text-background mt-8 font-(family-name:--font-fruktur) text-shadow-lg text-shadow-foreground/50">
+          <div className="absolute bottom-1/6 scale-x-200 right-0 -rotate-12 h-36 w-96 bg-(--secondary) mask-cover mask-[url('/BlackPaint.png')] flex items-center justify-center text-3xl font-bold text-foreground mt-8 font-(family-name:--font-fruktur) text-shadow-lg text-shadow-background/50">
             <Link
               href="/CV_LilianBrossard.pdf"
               download="CV_LilianBrossard.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-(--primary) duration-200 group"
+              className="hover:text-background duration-200 scale-y-200 group"
             >
               <svg
-                className="inline-block group-hover:fill-(--primary) duration-200"
-                fill="var(--background)"
+                className="inline-block group-hover:fill-background duration-200"
+                fill="var(--foreground)"
                 height="24px"
                 width="24px"
                 version="1.1"
