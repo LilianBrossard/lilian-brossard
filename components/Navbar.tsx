@@ -3,7 +3,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   return (
-    <nav className="py-4 px-8 flex justify-between items-center">
+    <nav className="py-4 px-8 flex justify-between items-cente bg-background">
       <ul className="flex gap-6">
         <li>
           <Link href="/">Accueil</Link>

@@ -4,15 +4,33 @@ import LinkHero from "@/components/LinkHero";
 import Link from "next/link";
 import Image from "next/image";
 import { getAllProjects } from "@/utils/MarkdownReader";
+import ParallaxLetter from "@/components/ParallaxLetter";
 
 export default function Home() {
   const projects = getAllProjects();
+  const nom = [
+    "L",
+    "i",
+    "l",
+    "i",
+    "a",
+    "n",
+    " ",
+    "B",
+    "r",
+    "o",
+    "s",
+    "s",
+    "a",
+    "r",
+    "d",
+  ];
 
   return (
     <div className="w-screen min-h-screen">
       <h1 className="sr-only">Lilian Brossard Portfolio</h1>
       <main className="flex flex-col w-full h-full">
-        <section className="w-full h-screen z-50 bg-[--background] flex flex-col justify-center items-center text-center">
+        <section className="sticky top-0 w-full h-screen bg-[--background] flex flex-col justify-center items-center text-center">
           <div className="relative flex flex-row items-center justify-around w-full">
             <div className="relative w-60 h-60">
               <div className="absolute inset-0 w-[114%] h-[114%] -top-[7%] -left-[7%] bg-(--primary) -z-10"></div>
@@ -23,17 +41,37 @@ export default function Home() {
                 alt="portrait lilian brossard"
                 width={240}
                 height={240}
-                className="object-cover z-10"
+                className="object-cover"
               />
             </div>
             <div>
-              <h2 className="text-9xl font-bold uppercase font-(family-name:--font-aquire) z-10">
-                <span className="text-(--primary)">L</span>ilian{" "}
-                <span className="text-(--primary)">B</span>rossard
+              <h2 className="text-9xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
+                {nom.map((letter, index) => (
+                  <ParallaxLetter
+                    key={index}
+                    letter={letter}
+                    index={index}
+                    isPrimary={letter === "L" || letter === "B"}
+                  />
+                ))}
               </h2>
               <p className="text-2xl">
-                Je suis Étudiant en informatique mais également à la recherche
-                d'un Stage.
+                Je suis un{" "}
+                <span className="font-bold text-(--accentuation) relative group cursor-help underline">
+                  Étudiant
+                  <span className="absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 transform -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    3ème année BUT Informatique - Parcours Data et IA - IUT de
+                    Lannion
+                  </span>
+                </span>{" "}
+                en informatique à la recherche d'un{" "}
+                <span className="font-bold text-(--accentuation) relative group cursor-help underline">
+                  Stage
+                  <span className="absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 transform -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    Stage de 14 semaines à partir de mars 2026
+                  </span>
+                </span>
+                .
               </p>
             </div>
           </div>
@@ -92,17 +130,23 @@ export default function Home() {
             </Link>
           </div>
         </section>
+        <div className="relative w-full h-[25vh] overflow-hidden">
+          <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
+          <div className="absolute h-full w-full bg-(--background) clipPath-Transition-2"></div>
+        </div>
         <div className="sticky top-0 z-40">
           <Navbar />
         </div>
-        <p className="mt-4 text-lg">Découvrez mes projets ci-dessous :</p>
-        <div className="mt-8 flex flex-col gap-4">
-          {projects.map((project) => (
-            <Link key={project.slug} href={`/projet/${project.slug}`}>
-              {project.title}
-            </Link>
-          ))}
-        </div>
+        <section className="h-screen w-full bg-background z-10">
+          <p className="mt-4 text-lg">Découvrez mes projets ci-dessous :</p>
+          <div className="mt-8 flex flex-col gap-4">
+            {projects.map((project) => (
+              <Link key={project.slug} href={`/projet/${project.slug}`}>
+                {project.title}
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
