@@ -55,7 +55,7 @@ export default function Navbar() {
     },
   ];
   return (
-    <nav className="py-4 px-8 flex justify-around items-center bg-background">
+    <nav className="w-full py-4 px-8 flex justify-around items-center bg-background">
       <Link
         href="/"
         className="flex flex-row gap-4 justify-center items-center"

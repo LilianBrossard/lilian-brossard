@@ -179,9 +179,9 @@ export default function Home() {
         </section>
         <div className="relative w-full h-[25vh] overflow-hidden">
           <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
-          <div className="absolute h-full w-full bg-(--background) clipPath-Transition-2"></div>
+          <div className="absolute h-full w-full bg-background clipPath-Transition-2"></div>
         </div>
-        <div className="sticky top-0 z-40">
+        <div className="w-full sticky top-0 z-40 shadow-(color:--accentuation)/10 shadow-md">
           <Navbar />
         </div>
         <section className="h-screen w-full bg-background z-10">
