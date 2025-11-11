@@ -1,12 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import LinkHero from "@/components/LinkHero";
 import Circuit from "@/components/Circuit";
+import LinkHero from "@/components/LinkHero";
+import ParallaxLetter from "@/components/ParallaxLetter";
 import Translate from "@/utils/Translate";
+import MainTitle from "@/components/MainTitle";
+
 import Link from "next/link";
 import Image from "next/image";
+
 import { getAllProjects } from "@/utils/MarkdownReader";
-import ParallaxLetter from "@/components/ParallaxLetter";
 
 export default function Home() {
   const projects = getAllProjects();
@@ -29,10 +32,11 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-screen min-h-screen">
+    <div className="w-screen">
       <h1 className="sr-only">Lilian Brossard Portfolio</h1>
       <main className="flex flex-col w-full h-full">
-        <section className="sticky top-0 w-full h-screen bg-[--background] flex flex-col justify-center items-center text-center">
+        {/* Hero Section ==============================================================================================================================*/}
+        <section className="sticky top-0 overflow-hidden w-full h-screen bg-[--background] flex flex-col justify-center items-center text-center">
           <div className="absolute w-full h-screen -z-10 opacity-25">
             <Circuit />
           </div>
@@ -173,7 +177,14 @@ export default function Home() {
                   </g>{" "}
                 </g>
               </svg>{" "}
-              CV
+              <Translate
+                dict={{
+                  FRA: "CV",
+                  ENG: "Resume",
+                  SPA: "Reanudar",
+                  DEU: "Lebenslauf",
+                }}
+              />
             </Link>
           </div>
         </section>
@@ -181,10 +192,38 @@ export default function Home() {
           <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
           <div className="absolute h-full w-full bg-background clipPath-Transition-2"></div>
         </div>
+        {/* Nav Section ==============================================================================================================================*/}
         <div className="w-full sticky top-0 z-40 shadow-(color:--accentuation)/10 shadow-md">
           <Navbar />
         </div>
-        <section className="h-screen w-full bg-background z-10">
+        {/* About Section ==============================================================================================================================*/}
+        <section className="relative w-full bg-background z-10">
+          <div className="absolute -top-[82px]" id="about"></div>
+          <MainTitle
+            titre={{
+              FRA: "À Propos",
+              ENG: "About Me",
+              SPA: "Acerca de mí",
+              DEU: "Über Mich",
+            }}
+            postion={1}
+            links={["#about", "#projects", "#contact"]}
+          />
+          <div className="w-full h-[90vh] flex"></div>
+        </section>
+        {/* Projects Section ===========================================================================================================================*/}
+        <section className="relative h-screen w-full bg-background z-10">
+          <div className="absolute -top-[82px]" id="projects"></div>
+          <MainTitle
+            titre={{
+              FRA: "Mes Projets",
+              ENG: "My Projects",
+              SPA: "Mis Proyectos",
+              DEU: "Meine Projekte",
+            }}
+            postion={2}
+            links={["#about", "#projects", "#contact"]}
+          />
           <p className="mt-4 text-lg">
             <Translate
               dict={{
@@ -202,6 +241,21 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </section>
+        {/* Contact Section ===========================================================================================================================*/}
+        <section className="relative w-full bg-background z-10">
+          <div className="absolute -top-[82px]" id="contact"></div>
+          <MainTitle
+            titre={{
+              FRA: "Contactez Moi",
+              ENG: "Contact Me",
+              SPA: "Contáctame",
+              DEU: "Kontaktiere Mich",
+            }}
+            postion={3}
+            links={["#about", "#projects", "#contact"]}
+          />
+          <div className="w-full h-[90vh] flex"></div>
         </section>
       </main>
       <Footer />

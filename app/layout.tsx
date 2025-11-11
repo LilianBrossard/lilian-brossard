@@ -63,9 +63,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className="scroll-smooth">
       <body
-        className={`${aquire.variable} ${lato.variable} ${fruktur.variable} antialiased font-[--font-lato] w-screen scrolling-smoot text-[--foreground] bg-[--background]`}
+        className={`${aquire.variable} ${lato.variable} ${fruktur.variable} overflow-y-auto antialiased font-[--font-lato] w-screen text-[--foreground] bg-[--background]`}
       >
         <LangProvider>{children}</LangProvider>
       </body>

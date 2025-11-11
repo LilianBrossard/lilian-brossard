@@ -27,21 +27,21 @@ export default function Navbar() {
       }),
     },
     {
+      href: "/#about",
+      label: translateText({
+        FRA: "À propos",
+        ENG: "About",
+        SPA: "Acerca de",
+        DEU: "Über Mich",
+      }),
+    },
+    {
       href: "/projet",
       label: translateText({
         FRA: "projets",
         ENG: "projects",
         SPA: "proyectos",
         DEU: "projekte",
-      }),
-    },
-    {
-      href: "/#about",
-      label: translateText({
-        FRA: "À propos",
-        ENG: "About",
-        SPA: "Acerca de",
-        DEU: "Über",
       }),
     },
     {

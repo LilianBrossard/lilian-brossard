@@ -71,3 +71,23 @@ body {
 .clipPath-Transition-2 {
   clip-path: polygon(100% 25%, 100% 100%, 0% 100%);
 }
+
+@keyframes flux {
+  0% {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+  25% {
+    opacity: 1;
+    transform: translateX(1200%);
+  }
+  26%,
+  100% {
+    opacity: 0;
+    transform: translateX(1200%);
+  }
+}
+
+.animation-flux {
+  animation: flux 4s linear infinite;
+}
