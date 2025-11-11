@@ -2,13 +2,47 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import style from "../app/styles/glitch.module.css";
+import { useLangContext } from "@/contexts/LangContext";
+
+type LangType = "ENG" | "FRA" | "SPA" | "DEU";
 
 export default function Navbar() {
   const linkRef = useRef<HTMLParagraphElement>(null);
+  const { LangVariable } = useLangContext();
+  const translateText = (
+    dict: Partial<Record<LangType, string>>,
+    fallback = ""
+  ): string => {
+    return dict[LangVariable] || fallback;
+  };
   const linkHero = [
-    ["Voir mes projets", "/projet"],
-    ["Qui suis-je ?", "/#about"],
-    ["Contactez-moi", "/#contact"],
+    [
+      translateText({
+        FRA: "Voir mes projets",
+        ENG: "See my projects",
+        SPA: "Ver mis proyectos",
+        DEU: "Meine projekte",
+      }),
+      "/projet",
+    ],
+    [
+      translateText({
+        FRA: "Qui suis-je ?",
+        ENG: "Who am I?",
+        SPA: "¿Quién soy?",
+        DEU: "Wer bin ich?",
+      }),
+      "/#about",
+    ],
+    [
+      translateText({
+        FRA: "Contactez-moi",
+        ENG: "Contact me",
+        SPA: "Contáctame",
+        DEU: "Kontaktiere mich",
+      }),
+      "/#contact",
+    ],
   ];
   const [currentLinkIndex, setcurrentLinkIndex] = useState(0);
 

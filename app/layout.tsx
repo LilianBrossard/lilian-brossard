@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Lato, Fruktur } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
+import { useLangContext, LangProvider } from "@/contexts/LangContext";
 
 const lato = Lato({
   weight: "400",
@@ -66,7 +67,7 @@ export default function RootLayout({
       <body
         className={`${aquire.variable} ${lato.variable} ${fruktur.variable} antialiased font-[--font-lato] w-screen scrolling-smoot text-[--foreground] bg-[--background]`}
       >
-        {children}
+        <LangProvider>{children}</LangProvider>
       </body>
     </html>
   );

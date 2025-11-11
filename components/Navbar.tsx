@@ -1,14 +1,58 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import LinkStyle from "@/components/LinkStyle";
+import LangSelector from "@/components/LangSelector";
+import { useLangContext } from "@/contexts/LangContext";
+
+type LangType = "ENG" | "FRA" | "SPA" | "DEU";
 
 export default function Navbar() {
+  const { LangVariable } = useLangContext();
+  const translateText = (
+    dict: Partial<Record<LangType, string>>,
+    fallback = ""
+  ): string => {
+    return dict[LangVariable] || fallback;
+  };
   const link = [
-    { href: "/", label: "Accueil" },
-    { href: "/projet", label: "Mes projets" },
-    { href: "/#about", label: "À propos" },
-    { href: "/#contact", label: "Contact" },
+    {
+      href: "/",
+      label: translateText({
+        FRA: "Accueil",
+        ENG: "Home",
+        SPA: "Inicio",
+        DEU: "Startseite",
+      }),
+    },
+    {
+      href: "/projet",
+      label: translateText({
+        FRA: "projets",
+        ENG: "projects",
+        SPA: "proyectos",
+        DEU: "projekte",
+      }),
+    },
+    {
+      href: "/#about",
+      label: translateText({
+        FRA: "À propos",
+        ENG: "About",
+        SPA: "Acerca de",
+        DEU: "Über",
+      }),
+    },
+    {
+      href: "/#contact",
+      label: translateText({
+        FRA: "Contact",
+        ENG: "Contact",
+        SPA: "Contacto",
+        DEU: "Kontakt",
+      }),
+    },
   ];
   return (
     <nav className="py-4 px-8 flex justify-around items-center bg-background">
@@ -29,7 +73,10 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
-      <ThemeToggle />
+      <div className="flex gap-4 items-center">
+        <LangSelector />
+        <ThemeToggle />
+      </div>
     </nav>
   );
 }
