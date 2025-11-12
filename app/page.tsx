@@ -13,23 +13,7 @@ import { getAllProjects } from "@/utils/MarkdownReader";
 
 export default function Home() {
   const projects = getAllProjects();
-  const nom = [
-    "L",
-    "i",
-    "l",
-    "i",
-    "a",
-    "n",
-    " ",
-    "B",
-    "r",
-    "o",
-    "s",
-    "s",
-    "a",
-    "r",
-    "d",
-  ];
+  const nom = "Lilian Brossard".split("");
 
   return (
     <div className="w-screen">

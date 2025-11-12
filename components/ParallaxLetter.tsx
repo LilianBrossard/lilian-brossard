@@ -16,7 +16,7 @@ const ParallaxLetter = ({ letter, index, isPrimary }: ParallaxLetterProps) => {
   // Chaque lettre a un décalage différent basé sur son index
   const y = useTransform(
     scrollYProgress,
-    [0, 1], // modfier ces valeurs pour ajuster le timing
+    [0, 0.3], // modfier ces valeurs pour ajuster le timing
     [0, -50 * ((index % 3) + 1)] // Variation du mouvement selon la position
   );
 
