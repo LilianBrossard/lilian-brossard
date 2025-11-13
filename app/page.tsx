@@ -5,6 +5,7 @@ import LinkHero from "@/components/LinkHero";
 import ParallaxLetter from "@/components/ParallaxLetter";
 import Translate from "@/utils/Translate";
 import MainTitle from "@/components/MainTitle";
+import Apropos from "@/components/Apropos";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -193,7 +194,7 @@ export default function Home() {
             postion={1}
             links={["#about", "#projects", "#contact"]}
           />
-          <div className="w-full h-[90vh] flex"></div>
+          <Apropos />
         </section>
         {/* Projects Section ===========================================================================================================================*/}
         <section className="relative h-screen w-full bg-background z-10">
