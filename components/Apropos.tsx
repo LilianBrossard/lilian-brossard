@@ -1,6 +1,7 @@
 "use client";
 import Translate from "@/utils/Translate";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Image from "next/image";
 
 export default function Apropos() {
   const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ possibles
@@ -8,20 +9,60 @@ export default function Apropos() {
   const [tempOriginY, setTempOriginY] = useState(listOriginY[0]); // Position verticale de départ
   const beamCount = 120; // Nombre de faisceaux
 
+  const outilsTechniques = [
+    ["Next.js", "/outils/nextjs.svg"],
+    ["React", "/outils/react.svg"],
+    ["TailwindCSS", "/outils/tailwind.svg"],
+    ["Typescript", "/outils/typescript.svg"],
+    ["HTML / CSS / Javascript", "/outils/html5.png"],
+    ["Python", "/outils/python.svg"],
+    ["Bash", "/outils/bash.svg"],
+    ["C", "/outils/c.png"],
+    ["Java", "/outils/java.svg"],
+    ["PHP", "/outils/php.svg"],
+    ["PostgreSQL", "/outils/postgresql.svg"],
+    ["Git", "/outils/git.png"],
+    ["Docker", "/outils/docker.svg"],
+    ["Linux", "/outils/linux.svg"],
+    ["Shadcn", "/outils/shadcn.png"],
+    ["Hygraph", "/outils/hygraph.jpg"],
+  ];
+
+  const RefInfo = useRef<HTMLDivElement>(null);
+
   function ChangeOrigine(newTempOriginY: number | null) {
     if (newTempOriginY === null) {
+      ShowInfo(listOriginY.indexOf(originY));
       setTempOriginY(originY);
       //   console.log("leave : ", originY);
     } else {
       setTempOriginY(listOriginY[newTempOriginY]);
+      ShowInfo(newTempOriginY);
       //   console.log("pass : ", listOriginY[newTempOriginY]);
     }
   }
   function ChangePermanentOrigin(newOriginY: number) {
+    ShowInfo(newOriginY);
     setOriginY(listOriginY[newOriginY]);
     setTempOriginY(listOriginY[newOriginY]);
     // console.log("clicked : ", listOriginY[newOriginY]);
   }
+
+  function ShowInfo(index: number) {
+    if (RefInfo.current) {
+      const children = RefInfo.current.children;
+      for (let i = 0; i < children.length; i++) {
+        if (i === index) {
+          children[i].classList.add("opacity-100", "pointer-events-auto");
+          children[i].classList.remove("opacity-0", "pointer-events-none");
+        } else {
+          children[i].classList.remove("opacity-100", "pointer-events-auto");
+          children[i].classList.add("opacity-0", "pointer-events-none");
+        }
+      }
+    }
+  }
+
   return (
     <div className="w-full h-[80vh] flex flex-row">
       <div className="w-1/3 h-full flex flex-col justify-around pl-16">
@@ -237,43 +278,269 @@ export default function Apropos() {
           >
             <div className="cursor-pointer clipPath-Button flex flex-row items-center gap-4 p-2 pl-16 w-full text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
               <div className="w-12 h-12">{icon}</div>
-              <Translate dict={dict as Partial<Record<string, string>>} />
+              <p className="text-2xl font-semibold">
+                <Translate dict={dict as Partial<Record<string, string>>} />
+              </p>
             </div>
           </button>
         ))}
       </div>
-      <div className="w-2/3 h-full relative">
-        <div className="relative w-full h-full overflow-hidden">
-          {/* zone droite (projection finale) */}
-          <div className="absolute right-0 top-0 w-1/3 h-full opacity-30" />
-
+      <div className="w-2/3 h-full relative overflow-hidden mr-16 flex flex-row">
+        <div className="relative w-80 h-full">
           {/* faisceau */}
           {Array.from({ length: beamCount }).map((_, i) => {
-            const minY = -1.4 * tempOriginY; // Angle plus grand vers le haut
-            const maxY = -1.4 * tempOriginY + 240; // Angle plus grand vers le bas
+            const minY = -1.35 * tempOriginY; // Angle plus grand vers le haut
+            const maxY = -1.35 * tempOriginY + 235; // Angle plus grand vers le bas
             const targetY = minY + (i / (beamCount - 1)) * (maxY - minY);
             const deltaY = targetY - tempOriginY;
             const angle = Math.atan2(deltaY, 100) * (180 / Math.PI);
             const length = Math.sqrt(100 * 100 + deltaY * deltaY);
 
-            const randomWidth = length * (0.25 + Math.random() * 0.75);
+            const randomWidth = length * (1 + Math.random() * 4);
             return (
               <div
                 key={i}
-                className="absolute left-0 h-px bg-(--red) opacity-40"
+                className="absolute left-0 h-px bg-(--primary) opacity-40"
+                suppressHydrationWarning={true}
                 style={{
                   top: `${tempOriginY}%`,
                   width: `${randomWidth}%`,
                   transformOrigin: "left center",
                   transform: `rotate(${angle}deg)`,
                   transition: "all 0ms ease-in-out",
-                  boxShadow: "0 0 8px rgba(255, 0, 0, 0.5)",
+                  boxShadow: "0 0 8px rgba(255, 255, 0, 0.5)",
                 }}
               />
             );
           })}
         </div>
-        <div className="absolute top-0 right-0 w-3/4 h-full bg-black/50 z-10"></div>
+        <div className="flex-1 h-full z-10 relative">
+          <div className="absolute top-0 left-0 w-full h-full bg-background opacity-70"></div>
+          <div className="absolute top-4 left-4 w-1/4 h-1/4 border-t-(--primary) border-t-4 border-l-(--primary) border-l-4 z-10"></div>
+          <div className="absolute bottom-4 right-4 w-1/6 h-1/6 border-b-(--primary) border-b-4 border-r-(--primary) border-r-4 z-10"></div>
+          <div
+            ref={RefInfo}
+            className="w-full h-full relative border-(--primary) border-4"
+          >
+            <div className="absolute p-8 w-full h-full text-foreground opacity-100 pointer-events-auto transition-opacity duration-300">
+              <h3 className="text-4xl font-bold mb-4">
+                <Translate
+                  dict={{
+                    FRA: "Formation",
+                    ENG: "Education and Training",
+                    SPA: "Educación y formación",
+                    DEU: "Ausbildung und Schulung",
+                  }}
+                />
+              </h3>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "Je suis actuellement en dernière année de BUT Informatique, parcours Data et IA, à l'IUT de Lannion.",
+                    ENG: "I am currently in my final year of a Bachelor's in Computer Science, specializing in Data and AI, at the IUT of Lannion.",
+                    SPA: "Actualmente estoy en mi último año del Grado en Informática, con especialización en Datos e Inteligencia Artificial, en el IUT de Lannion.",
+                    DEU: "Ich befinde mich derzeit im letzten Jahr meines Informatikstudiums mit dem Schwerpunkt Daten und KI am IUT von Lannion.",
+                  }}
+                />
+              </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "Je suis diplômé d'un baccalauréat général avec les spécialisations physique-chimie et NSI (numérique et sciences informatiques), ainsi que des options de droit et de robotique, obtenu en 2023.",
+                    ENG: "I hold a general French baccalaureate with specializations in Physics-Chemistry and Computer Science (NSI), along with electives in Law and Robotics, obtained in 2023.",
+                    SPA: "Poseo el bachillerato general francés con especializaciones en Física-Química e Informática (NSI), además de optativas en Derecho y Robótica, obtenido en 2023.",
+                    DEU: "Ich habe das französische Abitur mit den Schwerpunkten Physik-Chemie und Informatik (NSI) sowie den Wahlfächern Recht und Robotik im Jahr 2023 erworben.",
+                  }}
+                />
+              </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "J'ai également obtenu le PSC1 (diplôme de premiers secours) en 2019.",
+                    ENG: "I also obtained the PSC1 (First Aid Certificate) in 2019.",
+                    SPA: "También obtuve el PSC1 (certificado de primeros auxilios) en 2019.",
+                    DEU: "Ich habe außerdem 2019 das PSC1-Zertifikat (Erste-Hilfe-Diplom) erworben.",
+                  }}
+                />
+              </p>
+            </div>
+            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+              <h3 className="text-4xl font-bold mb-4">
+                <Translate
+                  dict={{
+                    FRA: "Qui suis-je ?",
+                    ENG: "Profile",
+                    SPA: "Perfil",
+                    DEU: "Profil",
+                  }}
+                />
+              </h3>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "Je suis passionné depuis longtemps par l'informatique, la programmation et plus récemment par le design. Je poursuis mes études dans l'objectif d'en apprendre toujours plus sur ces sujets.",
+                    ENG: "I have been passionate about computer science, programming, and more recently, design for a long time. I am continuing my studies with the goal of constantly learning more about these fields.",
+                    SPA: "Desde hace mucho tiempo me apasiona la informática, la programación y, más recientemente, el diseño. Continúo mis estudios con el objetivo de seguir aprendiendo cada vez más sobre estos temas.",
+                    DEU: "Ich begeistere mich seit langem für Informatik, Programmierung und in jüngerer Zeit auch für Design. Ich setze mein Studium mit dem Ziel fort, in diesen Bereichen immer mehr zu lernen.",
+                  }}
+                />
+              </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "Je vis entre Lorient et Lannion en Bretagne. Et j'aime écouter de la musique, jouer à des jeux vidéo, regarder des films et des séries.",
+                    ENG: "I live between Lorient and Lannion in Brittany. I enjoy listening to music, playing video games, and watching movies and TV shows.",
+                    SPA: "Vivo entre Lorient y Lannion, en Bretaña. Me gusta escuchar música, jugar a videojuegos y ver películas y series.",
+                    DEU: "Ich lebe zwischen Lorient und Lannion in der Bretagne. Ich höre gerne Musik, spiele Videospiele und schaue Filme und Serien.",
+                  }}
+                />
+              </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "J'adore créer, de tout ! J'ai pour objectif de toujours m'améliorer afin de me rapprocher un jour de la perfection dans le plus grand nombre de domaines possible.",
+                    ENG: "I love creating — anything! My goal is to keep improving myself and one day come as close as possible to perfection in as many fields as I can.",
+                    SPA: "¡Me encanta crear, de todo! Mi objetivo es mejorar constantemente y acercarme algún día a la perfección en el mayor número posible de ámbitos.",
+                    DEU: "Ich liebe es, Dinge zu erschaffen – alles Mögliche! Mein Ziel ist es, mich ständig zu verbessern und eines Tages in so vielen Bereichen wie möglich der Perfektion näherzukommen.",
+                  }}
+                />
+              </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "De plus, j'aime travailler en équipe : cela permet d'échanger, d'obtenir des retours et de s'adapter en conséquence pour produire le meilleur résultat possible.",
+                    ENG: "Moreover, I enjoy working in a team — it allows for exchange, feedback, and adaptation to achieve the best possible result.",
+                    SPA: "Además, me gusta trabajar en equipo, ya que permite intercambiar ideas, recibir comentarios y adaptarse para lograr el mejor resultado posible.",
+                    DEU: "Außerdem arbeite ich gerne im Team – das ermöglicht Austausch, Feedback und Anpassung, um das bestmögliche Ergebnis zu erzielen.",
+                  }}
+                />
+              </p>
+            </div>
+            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+              <h3 className="text-4xl font-bold mb-4">
+                <Translate
+                  dict={{
+                    FRA: "Compétences informatiques",
+                    ENG: "Computer Skills",
+                    SPA: "Habilidades Informáticas",
+                    DEU: "Computerkenntnisse",
+                  }}
+                />
+              </h3>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "Au cours de mes études et de mes projets personnels, j'ai acquis des compétences en programmation dans plusieurs langages et outils.",
+                    ENG: "Throughout my studies and personal projects, I have gained programming skills in various languages and tools.",
+                    SPA: "A lo largo de mis estudios y proyectos personales, he adquirido competencias en programación en varios lenguajes y herramientas.",
+                    DEU: "Im Laufe meines Studiums und meiner persönlichen Projekte habe ich Programmierkenntnisse in verschiedenen Sprachen und Tools erworben.",
+                  }}
+                />
+              </p>
+              <div className="flex flex-row flex-wrap w-full gap-4 justify-around">
+                {outilsTechniques.map(([nom, src], index) => (
+                  <div
+                    key={index}
+                    className="flex flex-row items-center w-[30%] gap-4 clipPath-Button-Double py-1 px-2 bg-(--foreground-secondary) transition-colors duration-300 cursor-default"
+                  >
+                    <div className="relative inline-block">
+                      <Image
+                        src={src}
+                        alt={nom}
+                        width={48}
+                        height={48}
+                        className="grayscale"
+                      />
+                      <div
+                        className="absolute inset-0 bg-(--primary) mix-blend-multiply"
+                        style={{
+                          maskImage: `url(${src})`,
+                          maskSize: "contain",
+                          maskRepeat: "no-repeat",
+                          maskPosition: "center",
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-xl text-background">{nom}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+              <h3 className="text-4xl font-bold mb-4">
+                <Translate
+                  dict={{
+                    FRA: "Compétences complémentaires",
+                    ENG: "Additional Skills",
+                    SPA: "Competencias complementarias",
+                    DEU: "Ergänzende Kenntnisse",
+                  }}
+                />
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "En BUT Informatique, je suis également formé à de nombreuses compétences transversales.",
+                      ENG: "In my Bachelor's in Computer Science, I am also trained in many cross-disciplinary skills.",
+                      SPA: "En mi Grado en Informática, también estoy formado en muchas competencias transversales.",
+                      DEU: "Im Rahmen meines Informatikstudiums werde ich auch in vielen übergreifenden Kompetenzen ausgebildet.",
+                    }}
+                  />
+                </p>
+
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "Je suis notamment formé en gestion de projet, et j'ai pu mener des projets concrets durant ma formation. L'utilisation de méthodologies agiles comme Scrum ou Kanban fait partie de mes compétences.",
+                      ENG: "I am particularly trained in project management and have led real-world projects during my studies. Using agile methodologies such as Scrum or Kanban is part of my skill set.",
+                      SPA: "Estoy especialmente formado en gestión de proyectos y he dirigido proyectos reales durante mis estudios. El uso de metodologías ágiles como Scrum o Kanban forma parte de mis competencias.",
+                      DEU: "Ich bin besonders in Projektmanagement geschult und habe während meines Studiums praktische Projekte geleitet. Die Anwendung agiler Methoden wie Scrum oder Kanban gehört zu meinen Fähigkeiten.",
+                    }}
+                  />
+                </p>
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "J'ai également des compétences en management d'équipe, répartition des tâches et gestion des conflits.",
+                      ENG: "I also have skills in team management, task distribution, and conflict resolution.",
+                      SPA: "También tengo competencias en gestión de equipos, distribución de tareas y resolución de conflictos.",
+                      DEU: "Ich verfüge außerdem über Kenntnisse im Teammanagement, in der Aufgabenverteilung und im Konfliktmanagement.",
+                    }}
+                  />
+                </p>
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "J'ai des notions en communication, notamment en communication interne à l'entreprise et en gestion des plans de communication lors de changements liés au numérique.",
+                      ENG: "I have knowledge in communication, particularly in internal corporate communication and in managing communication plans during digital transformations.",
+                      SPA: "Tengo conocimientos en comunicación, especialmente en comunicación interna empresarial y en la gestión de planes de comunicación durante transformaciones digitales.",
+                      DEU: "Ich habe Kenntnisse in Kommunikation, insbesondere in der internen Unternehmenskommunikation und im Management von Kommunikationsplänen bei digitalen Veränderungen.",
+                    }}
+                  />
+                </p>
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "J'ai pu réaliser, durant ma formation, des présentations en anglais technique et non technique, ce qui m'a permis d'améliorer mes compétences orales dans cette langue.",
+                      ENG: "During my studies, I was able to give both technical and non-technical presentations in English, which helped me improve my speaking skills in the language.",
+                      SPA: "Durante mi formación, pude realizar presentaciones en inglés técnico y no técnico, lo que me permitió mejorar mis competencias orales en este idioma.",
+                      DEU: "Während meines Studiums konnte ich technische und nicht-technische Präsentationen auf Englisch halten, was mir half, meine mündlichen Sprachkenntnisse in dieser Sprache zu verbessern.",
+                    }}
+                  />
+                </p>
+                <p className="py-4 text-xl">
+                  <Translate
+                    dict={{
+                      FRA: "Enfin, j'ai les bases du droit informatique liées à la protection des données (RGPD, CNIL), à la propriété intellectuelle et aux contrats.",
+                      ENG: "Finally, I have basic knowledge of IT law related to data protection (GDPR, CNIL), intellectual property, and contracts.",
+                      SPA: "Por último, tengo conocimientos básicos de derecho informático relacionados con la protección de datos (RGPD, CNIL), la propiedad intelectual y los contratos.",
+                      DEU: "Schließlich habe ich Grundkenntnisse im IT-Recht in Bezug auf Datenschutz (DSGVO, CNIL), geistiges Eigentum und Verträge.",
+                    }}
+                  />
+                </p>
+              </h3>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

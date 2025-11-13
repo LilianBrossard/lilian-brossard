@@ -38,10 +38,10 @@ export default function Navbar() {
     {
       href: "/projet",
       label: translateText({
-        FRA: "projets",
-        ENG: "projects",
-        SPA: "proyectos",
-        DEU: "projekte",
+        FRA: "Projets",
+        ENG: "Projects",
+        SPA: "Proyectos",
+        DEU: "Projekte",
       }),
     },
     {
