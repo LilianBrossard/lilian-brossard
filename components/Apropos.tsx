@@ -6,7 +6,6 @@ import Image from "next/image";
 export default function Apropos() {
   const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ possibles
   const [originY, setOriginY] = useState(listOriginY[0]); // Position verticale de départ
-  const [tempOriginY, setTempOriginY] = useState(listOriginY[0]); // Position verticale de départ
   const beamCount = 120; // Nombre de faisceaux
 
   const outilsTechniques = [
@@ -31,23 +30,9 @@ export default function Apropos() {
   const RefInfo = useRef<HTMLDivElement>(null);
   const RefButtons = useRef<HTMLDivElement>(null);
 
-  function ChangeOrigine(newTempOriginY: number | null) {
-    if (newTempOriginY === null) {
-      ShowInfo(listOriginY.indexOf(originY));
-      ActiveServeur(listOriginY.indexOf(originY));
-      setTempOriginY(originY);
-      //   console.log("leave : ", originY);
-    } else {
-      setTempOriginY(listOriginY[newTempOriginY]);
-      ShowInfo(newTempOriginY);
-      ActiveServeur(newTempOriginY);
-      //   console.log("pass : ", listOriginY[newTempOriginY]);
-    }
-  }
   function ChangePermanentOrigin(newOriginY: number) {
     ShowInfo(newOriginY);
     setOriginY(listOriginY[newOriginY]);
-    setTempOriginY(listOriginY[newOriginY]);
     ActiveServeur(newOriginY);
     // console.log("clicked : ", listOriginY[newOriginY]);
   }
@@ -76,7 +61,6 @@ export default function Apropos() {
           const icones = [children[i].children[0], children[i].children[1]];
           icones.forEach((icon) => {
             if (icon) {
-              console.log(icon);
               icon.classList.add("bg-(--primary)", "animate-pulse");
               icon.classList.remove("bg-(--foreground-secondary)");
             }
@@ -309,8 +293,6 @@ export default function Apropos() {
           <button
             key={index}
             className="w-full relative p-2 bg-(--foreground-secondary) cursor-pointer hover:bg-foreground transition-colors duration-300 group"
-            onMouseEnter={() => ChangeOrigine(index)}
-            onMouseLeave={() => ChangeOrigine(null)}
             onClick={() => ChangePermanentOrigin(index)}
           >
             {index === 0 && (
@@ -338,10 +320,10 @@ export default function Apropos() {
         <div className="relative w-80 h-full">
           {/* faisceau */}
           {Array.from({ length: beamCount }).map((_, i) => {
-            const minY = -1.35 * tempOriginY; // Angle plus grand vers le haut
-            const maxY = -1.35 * tempOriginY + 235; // Angle plus grand vers le bas
+            const minY = -1.35 * originY; // Angle plus grand vers le haut
+            const maxY = -1.35 * originY + 235; // Angle plus grand vers le bas
             const targetY = minY + (i / (beamCount - 1)) * (maxY - minY);
-            const deltaY = targetY - tempOriginY;
+            const deltaY = targetY - originY;
             const angle = Math.atan2(deltaY, 100) * (180 / Math.PI);
             const length = Math.sqrt(100 * 100 + deltaY * deltaY);
 
@@ -352,7 +334,7 @@ export default function Apropos() {
                 className="absolute left-0 h-px bg-(--primary) opacity-40"
                 suppressHydrationWarning={true}
                 style={{
-                  top: `${tempOriginY}%`,
+                  top: `${originY}%`,
                   width: `${randomWidth}%`,
                   transformOrigin: "left center",
                   transform: `rotate(${angle}deg)`,
