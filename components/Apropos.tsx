@@ -29,15 +29,18 @@ export default function Apropos() {
   ];
 
   const RefInfo = useRef<HTMLDivElement>(null);
+  const RefButtons = useRef<HTMLDivElement>(null);
 
   function ChangeOrigine(newTempOriginY: number | null) {
     if (newTempOriginY === null) {
       ShowInfo(listOriginY.indexOf(originY));
+      ActiveServeur(listOriginY.indexOf(originY));
       setTempOriginY(originY);
       //   console.log("leave : ", originY);
     } else {
       setTempOriginY(listOriginY[newTempOriginY]);
       ShowInfo(newTempOriginY);
+      ActiveServeur(newTempOriginY);
       //   console.log("pass : ", listOriginY[newTempOriginY]);
     }
   }
@@ -45,6 +48,7 @@ export default function Apropos() {
     ShowInfo(newOriginY);
     setOriginY(listOriginY[newOriginY]);
     setTempOriginY(listOriginY[newOriginY]);
+    ActiveServeur(newOriginY);
     // console.log("clicked : ", listOriginY[newOriginY]);
   }
 
@@ -63,15 +67,48 @@ export default function Apropos() {
     }
   }
 
+  function ActiveServeur(index: number) {
+    index = index + 1;
+    if (RefButtons.current) {
+      const children = RefButtons.current.children;
+      for (let i = 0; i < children.length; i++) {
+        if (i === index && i !== 0) {
+          const icones = [children[i].children[0], children[i].children[1]];
+          icones.forEach((icon) => {
+            if (icon) {
+              console.log(icon);
+              icon.classList.add("bg-(--primary)", "animate-pulse");
+              icon.classList.remove("bg-(--foreground-secondary)");
+            }
+          });
+        } else if (i !== 0) {
+          const icones = [children[i].children[0], children[i].children[1]];
+          icones.forEach((icon) => {
+            if (icon) {
+              icon.classList.remove("bg-(--primary)", "animate-pulse");
+              icon.classList.add("bg-(--foreground-secondary)");
+            }
+          });
+        }
+      }
+    }
+  }
+
   return (
     <div className="w-full h-[80vh] flex flex-row">
-      <div className="w-1/3 h-full flex flex-col justify-around pl-16">
+      <div
+        ref={RefButtons}
+        className="w-1/3 h-full relative flex flex-col justify-around pl-16"
+      >
+        <div className="w-3/4 h-5/6 left-1/6 flex justify-center items-center absolute bg-foreground -z-10 p-4">
+          <div className="bg-background w-full h-full"></div>
+        </div>
         {(
           [
             [
               // https://www.svgrepo.com/svg/69867/graduation-diploma
               <svg
-                fill="var(--accentuation)"
+                fill="var(--foreground)"
                 height="100%"
                 width="100%"
                 version="1.1"
@@ -126,7 +163,7 @@ export default function Apropos() {
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4ZM14 8C14 6.9 13.1 6 12 6C10.9 6 10 6.9 10 8C10 9.1 10.9 10 12 10C13.1 10 14 9.1 14 8ZM18 18C17.8 17.29 14.7 16 12 16C9.31 16 6.23 17.28 6 18H18ZM4 18C4 15.34 9.33 14 12 14C14.67 14 20 15.34 20 18V20H4V18Z"
-                    fill="var(--accentuation)"
+                    fill="var(--foreground)"
                   ></path>{" "}
                 </g>
               </svg>,
@@ -156,7 +193,7 @@ export default function Apropos() {
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   <defs>
-                    <style>{`.cls-1{fill:none;stroke:var(--accentuation);stroke-miterlimit:10;stroke-width:1.91px;}`}</style>
+                    <style>{`.cls-1{fill:none;stroke:var(--foreground);stroke-miterlimit:10;stroke-width:1.91px;}`}</style>
                   </defs>
                   <polyline
                     className="cls-1"
@@ -234,7 +271,7 @@ export default function Apropos() {
             [
               // https://www.svgrepo.com/svg/90790/science
               <svg
-                fill="var(--accentuation)"
+                fill="var(--foreground)"
                 height="100%"
                 width="100%"
                 version="1.1"
@@ -271,12 +308,24 @@ export default function Apropos() {
         ).map(([icon, dict], index) => (
           <button
             key={index}
-            className="w-full clipPath-Button-Simple p-1 bg-(--foreground-secondary) hover:bg-foreground transition-colors duration-300 group"
+            className="w-full relative p-2 bg-(--foreground-secondary) cursor-pointer hover:bg-foreground transition-colors duration-300 group"
             onMouseEnter={() => ChangeOrigine(index)}
             onMouseLeave={() => ChangeOrigine(null)}
             onClick={() => ChangePermanentOrigin(index)}
           >
-            <div className="cursor-pointer clipPath-Button flex flex-row items-center gap-4 p-2 pl-16 w-full text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
+            {index === 0 && (
+              <>
+                <div className="absolute top-6 left-6 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
+                <div className="absolute top-6 left-14 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
+              </>
+            )}
+            {index !== 0 && (
+              <>
+                <div className="absolute top-6 left-6 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
+                <div className="absolute top-6 left-14 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
+              </>
+            )}
+            <div className=" clipPath-Button-Double flex flex-row items-center gap-4 p-8 pl-20 w-full text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
               <div className="w-12 h-12">{icon}</div>
               <p className="text-2xl font-semibold">
                 <Translate dict={dict as Partial<Record<string, string>>} />
