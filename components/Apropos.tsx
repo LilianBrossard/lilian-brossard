@@ -4,9 +4,9 @@ import { useState } from "react";
 
 export default function Apropos() {
   const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ possibles
-  const [originY, setOriginY] = useState(13); // Position verticale de départ
-  const [tempOriginY, setTempOriginY] = useState(13); // Position verticale de départ
-  const beamCount = 40; // Nombre de faisceaux
+  const [originY, setOriginY] = useState(listOriginY[0]); // Position verticale de départ
+  const [tempOriginY, setTempOriginY] = useState(listOriginY[0]); // Position verticale de départ
+  const beamCount = 120; // Nombre de faisceaux
 
   function ChangeOrigine(newTempOriginY: number | null) {
     if (newTempOriginY === null) {
@@ -256,16 +256,18 @@ export default function Apropos() {
             const angle = Math.atan2(deltaY, 100) * (180 / Math.PI);
             const length = Math.sqrt(100 * 100 + deltaY * deltaY);
 
+            const randomWidth = length * (0.25 + Math.random() * 0.75);
             return (
               <div
                 key={i}
                 className="absolute left-0 h-px bg-(--red) opacity-40"
                 style={{
                   top: `${tempOriginY}%`,
-                  width: `${length}%`,
+                  width: `${randomWidth}%`,
                   transformOrigin: "left center",
                   transform: `rotate(${angle}deg)`,
                   transition: "all 0ms ease-in-out",
+                  boxShadow: "0 0 8px rgba(255, 0, 0, 0.5)",
                 }}
               />
             );
