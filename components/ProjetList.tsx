@@ -93,7 +93,7 @@ export default function ProjetList({ projects }: ProjetListProps) {
 
   return (
     <div
-      className="w-max flex flex-col items-start justify-start my-16"
+      className="w-max flex flex-col items-start justify-start m-8 lg:m-16"
       ref={containerRef}
       onMouseLeave={() => setHoverID(null)}
     >

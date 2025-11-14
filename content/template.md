@@ -1,0 +1,30 @@
+---
+title:
+  FRA: "Titre"
+  ENG: "Titre"
+  SPA: "Titre"
+  DEU: "Titre"
+date: "2024-09-28"
+description:
+  FRA: ""
+  ENG: ""
+  SPA: ""
+  DEU: ""
+details:
+  - FRA: ""
+    ENG: ""
+    SPA: ""
+    DEU: ""
+  - FRA: ""
+    ENG: ""
+    SPA: ""
+    DEU: ""
+  - FRA: ""
+    ENG: ""
+    SPA: ""
+    DEU: ""
+
+images: ["image.png", "image.png", "image.png"]
+git: "linkexemple"
+site: "linkexemple"
+---

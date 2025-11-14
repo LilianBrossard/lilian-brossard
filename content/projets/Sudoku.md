@@ -1,9 +1,9 @@
 ---
 title:
   FRA: "Sudoku en C"
-  ENG: "Sudoku en C"
+  ENG: "Sudoku in C"
   SPA: "Sudoku en C"
-  DEU: "Sudoku en C"
+  DEU: "Sudoku in C"
 date: "2023-11-24"
 description:
   FRA: "Création d'un sudoku en langage C pour fonctionner dans un terminal Linux et Windows."
