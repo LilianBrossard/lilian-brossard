@@ -1,5 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Translate from "@/utils/Translate";
+
 import Link from "next/link";
 import { getAllProjects } from "@/utils/MarkdownReader";
 
@@ -11,7 +13,7 @@ export default function Home() {
       <h1 className="sr-only">Lilian Brossard Portfolio</h1>
       <main className="flex flex-col w-full h-full">
         <Navbar />
-        <h2 className="text-4xl font-bold uppercase font-[family-name:var(--font-aquire)]">
+        <h2 className="text-4xl font-bold uppercase font-[--font-aquire]">
           Mes projets :
         </h2>
         <div className="sticky top-0 z-40"></div>
@@ -19,7 +21,7 @@ export default function Home() {
         <div className="mt-8 flex flex-col gap-4">
           {projects.map((project) => (
             <Link key={project.slug} href={`/projet/${project.slug}`}>
-              {project.title}
+              <Translate dict={project.title} />
             </Link>
           ))}
         </div>
