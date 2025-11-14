@@ -25,10 +25,19 @@ const ParallaxLetter = ({ letter, index, isPrimary }: ParallaxLetterProps) => {
   return (
     <motion.span
       ref={ref}
-      style={{ y, opacity, display: "inline-block" }}
+      style={{ y, opacity, display: "inline" }}
       className={isPrimary ? "text-(--primary)" : ""}
     >
-      {letter === " " ? "\u00A0" : letter}
+      {letter === " " ? (
+        <>
+          <span className="md:hidden">
+            <br />
+          </span>
+          <span className="hidden md:inline">&nbsp;</span>
+        </>
+      ) : (
+        letter
+      )}
     </motion.span>
   );
 };

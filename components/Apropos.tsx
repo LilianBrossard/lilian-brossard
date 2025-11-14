@@ -1,12 +1,13 @@
 "use client";
 import Translate from "@/utils/Translate";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 export default function Apropos() {
   const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ possibles
   const [originY, setOriginY] = useState(listOriginY[0]); // Position verticale de départ
   const beamCount = 120; // Nombre de faisceaux
+  const [infoVisible, setInfoVisible] = useState(false);
 
   const outilsTechniques = [
     ["Next.js", "/outils/nextjs.svg"],
@@ -28,36 +29,69 @@ export default function Apropos() {
   ];
 
   const RefInfo = useRef<HTMLDivElement>(null);
+  const RefVisibleInfo = useRef<HTMLDivElement>(null);
   const RefButtons = useRef<HTMLDivElement>(null);
 
   function ChangePermanentOrigin(newOriginY: number) {
-    ShowInfo(newOriginY);
     setOriginY(listOriginY[newOriginY]);
-    ActiveServeur(newOriginY);
+    setInfoVisible(true);
     // console.log("clicked : ", listOriginY[newOriginY]);
   }
-
-  function ShowInfo(index: number) {
+  // block xl:block opacity-100 xl:opacity-100
+  useEffect(() => {
     if (RefInfo.current) {
       const children = RefInfo.current.children;
       for (let i = 0; i < children.length; i++) {
-        if (i === index) {
-          children[i].classList.add("opacity-100", "pointer-events-auto");
-          children[i].classList.remove("opacity-0", "pointer-events-none");
+        const currentIndex = listOriginY.indexOf(originY);
+        if (i === currentIndex) {
+          children[i].classList.add(
+            "xl:opacity-100",
+            "pointer-events-auto",
+            "block",
+            "xl:block"
+          );
+          children[i].classList.remove(
+            "xl:opacity-0",
+            "pointer-events-none",
+            "hidden",
+            "xl:block"
+          );
         } else {
-          children[i].classList.remove("opacity-100", "pointer-events-auto");
-          children[i].classList.add("opacity-0", "pointer-events-none");
+          children[i].classList.remove(
+            "xl:opacity-100",
+            "pointer-events-auto",
+            "block",
+            "xl:block"
+          );
+          children[i].classList.add(
+            "xl:opacity-0",
+            "pointer-events-none",
+            "hidden",
+            "xl:block"
+          );
         }
       }
     }
-  }
+  }, [originY]);
 
-  function ActiveServeur(index: number) {
-    index = index + 1;
+  useEffect(() => {
+    if (RefVisibleInfo.current) {
+      if (infoVisible) {
+        RefVisibleInfo.current.classList.remove("-translate-x-[140vh]");
+        RefVisibleInfo.current.classList.add("translate-x-0");
+      } else {
+        RefVisibleInfo.current.classList.add("-translate-x-[140vh]");
+        RefVisibleInfo.current.classList.remove("translate-x-0");
+      }
+    }
+  }, [infoVisible]);
+
+  useEffect(() => {
     if (RefButtons.current) {
       const children = RefButtons.current.children;
       for (let i = 0; i < children.length; i++) {
-        if (i === index && i !== 0) {
+        const currentIndex = listOriginY.indexOf(originY) + 1;
+        if (i === currentIndex && currentIndex !== 0) {
           const icones = [children[i].children[0], children[i].children[1]];
           icones.forEach((icon) => {
             if (icon) {
@@ -65,7 +99,7 @@ export default function Apropos() {
               icon.classList.remove("bg-(--foreground-secondary)");
             }
           });
-        } else if (i !== 0) {
+        } else if (currentIndex !== 0) {
           const icones = [children[i].children[0], children[i].children[1]];
           icones.forEach((icon) => {
             if (icon) {
@@ -76,15 +110,15 @@ export default function Apropos() {
         }
       }
     }
-  }
+  }, [originY]);
 
   return (
-    <div className="w-full h-[80vh] flex flex-row">
+    <div className="w-full h-[80vh] relative flex flex-row">
       <div
         ref={RefButtons}
-        className="w-1/3 h-full relative flex flex-col justify-around pl-16"
+        className="w-full xl:w-1/3 h-full relative flex flex-col justify-around px-4 xl:p-0 xl:pl-16"
       >
-        <div className="w-3/4 h-5/6 left-1/6 flex justify-center items-center absolute bg-foreground -z-10 p-4">
+        <div className="w-3/4 h-5/6 left-1/6 flex justify-center items-center absolute bg-foreground -z-10 p-2 xl:p-4">
           <div className="bg-background w-full h-full"></div>
         </div>
         {(
@@ -292,19 +326,19 @@ export default function Apropos() {
         ).map(([icon, dict], index) => (
           <button
             key={index}
-            className="w-full relative p-2 bg-(--foreground-secondary) cursor-pointer hover:bg-foreground transition-colors duration-300 group"
+            className="w-full relative p-1 xl:p-2 bg-(--foreground-secondary) cursor-pointer hover:bg-foreground transition-colors duration-300 group"
             onClick={() => ChangePermanentOrigin(index)}
           >
             {index === 0 && (
               <>
-                <div className="absolute top-6 left-6 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
-                <div className="absolute top-6 left-14 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
+                <div className="absolute hidden xl:block top-6 left-6 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
+                <div className="absolute hidden xl:block top-6 left-14 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
               </>
             )}
             {index !== 0 && (
               <>
-                <div className="absolute top-6 left-6 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
-                <div className="absolute top-6 left-14 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
+                <div className="absolute hidden xl:block top-6 left-6 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
+                <div className="absolute hidden xl:block top-6 left-14 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
               </>
             )}
             <div className=" clipPath-Button-Double flex flex-row items-center gap-4 p-8 pl-20 w-full text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
@@ -316,9 +350,37 @@ export default function Apropos() {
           </button>
         ))}
       </div>
-      <div className="w-2/3 h-full relative overflow-hidden mr-16 flex flex-row">
-        <div className="relative w-80 h-full">
-          {/* faisceau */}
+      <div
+        className="w-full xl:w-2/3 h-full absolute xl:relative overflow-hidden mr-16 flex flex-row -translate-x-[140vh] xl:translate-x-0 transition-transform duration-500 xl:duration-0"
+        ref={RefVisibleInfo}
+      >
+        <div
+          className="absolute block xl:hidden top-4 right-4 opacity-100 z-20 cursor-pointer"
+          onClick={() => setInfoVisible(false)}
+        >
+          <svg
+            fill="var(--foreground)"
+            viewBox="0 0 16 16"
+            width="48"
+            height="48"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z"
+                fillRule="evenodd"
+              ></path>
+            </g>
+          </svg>
+        </div>
+        <div className="relative hidden xl:block w-80 h-full">
+          {/* faisceaux */}
           {Array.from({ length: beamCount }).map((_, i) => {
             const minY = -1.35 * originY; // Angle plus grand vers le haut
             const maxY = -1.35 * originY + 235; // Angle plus grand vers le bas
@@ -346,14 +408,14 @@ export default function Apropos() {
           })}
         </div>
         <div className="flex-1 h-full z-10 relative">
-          <div className="absolute top-0 left-0 w-full h-full bg-background opacity-70"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-background opacity-98 xl:opacity-70"></div>
           <div className="absolute top-4 left-4 w-1/4 h-1/4 border-t-(--primary) border-t-4 border-l-(--primary) border-l-4 z-10"></div>
           <div className="absolute bottom-4 right-4 w-1/6 h-1/6 border-b-(--primary) border-b-4 border-r-(--primary) border-r-4 z-10"></div>
           <div
             ref={RefInfo}
-            className="w-full h-full relative border-(--primary) border-4"
+            className="w-full h-full relative border-(--primary) border-4 overflow-y-scroll xl:overflow-y-auto"
           >
-            <div className="absolute p-8 w-full h-full text-foreground opacity-100 pointer-events-auto transition-opacity duration-300">
+            <div className="absolute p-8 w-full h-full text-foreground block xl:block opacity-100 xl:opacity-100 pointer-events-auto transition-opacity duration-300">
               <h3 className="text-4xl font-bold mb-4">
                 <Translate
                   dict={{
@@ -395,7 +457,7 @@ export default function Apropos() {
                 />
               </p>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
               <h3 className="text-4xl font-bold mb-4">
                 <Translate
                   dict={{
@@ -447,7 +509,7 @@ export default function Apropos() {
                 />
               </p>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
               <h3 className="text-4xl font-bold mb-4">
                 <Translate
                   dict={{
@@ -468,11 +530,11 @@ export default function Apropos() {
                   }}
                 />
               </p>
-              <div className="flex flex-row flex-wrap w-full gap-4 justify-around">
+              <div className="flex flex-row flex-wrap w-full gap-1 sm:gap-4 justify-around">
                 {outilsTechniques.map(([nom, src], index) => (
                   <div
                     key={index}
-                    className="flex flex-row items-center w-[30%] gap-4 clipPath-Button-Double py-1 px-2 bg-(--foreground-secondary) transition-colors duration-300 cursor-default"
+                    className="flex flex-row items-center w-[40%] sm:w-[30%] gap-1 sm:gap-4 clipPath-Button-Double p-0.5 sm:py-1 sm:px-2 bg-(--foreground-secondary) transition-colors duration-300 cursor-default"
                   >
                     <div className="relative inline-block">
                       <Image
@@ -480,7 +542,7 @@ export default function Apropos() {
                         alt={nom}
                         width={48}
                         height={48}
-                        className="grayscale"
+                        className="grayscale w-12 h-12 object-contain"
                       />
                       <div
                         className="absolute inset-0 bg-(--primary) mix-blend-multiply"
@@ -492,12 +554,12 @@ export default function Apropos() {
                         }}
                       ></div>
                     </div>
-                    <p className="text-xl text-background">{nom}</p>
+                    <p className="text-md md:text-xl text-background">{nom}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground opacity-0 pointer-events-none transition-opacity duration-300">
+            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
               <h3 className="text-4xl font-bold mb-4">
                 <Translate
                   dict={{

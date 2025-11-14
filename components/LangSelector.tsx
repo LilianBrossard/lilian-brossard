@@ -50,11 +50,11 @@ export default function LangSelector() {
       <div className="w-full h-full p-0.5 clipPath-Button-Double bg-(--accentuation)">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-center group w-full h-full clipPath-Button-Double bg-background hover:bg-(--background-secondary) transition-colors"
+          className="flex items-center justify-center gap-2 group w-full h-full clipPath-Button-Double bg-background hover:bg-(--background-secondary) transition-colors"
           aria-label="Sélectionner la langue"
           aria-expanded={isOpen}
         >
-          <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-full h-full top-0 left-0 z-10">
+          <div className="absolute  opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-full h-full top-0 left-0 z-10">
             <Image
               src={currentLang?.flag || ""}
               alt={`${currentLang?.label} flag`}
@@ -62,7 +62,7 @@ export default function LangSelector() {
               objectFit="cover"
             />
           </div>
-          <span className="hidden sm:inline">{currentLang?.label}</span>
+          <span className="inline">{currentLang?.label}</span>
           <svg
             className={`w-4 h-4 transition-transform ${
               isOpen ? "rotate-180" : ""

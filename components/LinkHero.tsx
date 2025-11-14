@@ -67,15 +67,16 @@ export default function Navbar() {
       id="linkHero"
       className="relative inline-block group"
     >
-      <div className="absolute w-full h-full scale-y-105 scale-x-[1.01] clipPath-Button-Simple bg-(--primary) pointer-events-none"></div>
-      <div className="clipPath-Button relative overflow-hidden text-center flex items-center justify-center w-[900px] text-xl lg:text-7xl uppercase font-(family-name:--font-aquire) text-foreground group-hover:text-background bg-background duration-200">
-        <div className="absolute h-full w-0 group-hover:w-full duration-500 group-hover:bg-(--accentuation)"></div>
-        <p
-          ref={linkRef}
-          className={`whitespace-nowrap w-full h-full ${style.glitch}`}
-        >
-          {currentLink[0]}
-        </p>
+      <div className="w-full h-full clipPath-Button-Simple bg-(--primary) p-1">
+        <div className="clipPath-Button relative overflow-hidden text-center flex items-center justify-center w-[360px] lg:w-[600px] xl:w-[900px] text-2xl lg:text-5xl xl:text-7xl uppercase font-(family-name:--font-aquire) text-foreground group-hover:text-background bg-background duration-200">
+          <div className="absolute h-full w-0 group-hover:w-full duration-500 group-hover:bg-(--accentuation)"></div>
+          <p
+            ref={linkRef}
+            className={`whitespace-nowrap w-full h-full ${style.glitch}`}
+          >
+            {currentLink[0]}
+          </p>
+        </div>
       </div>
     </Link>
   );

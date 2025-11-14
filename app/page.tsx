@@ -25,22 +25,24 @@ export default function Home() {
           <div className="absolute w-full h-screen -z-10 opacity-25">
             <Circuit />
           </div>
-          <div className="relative flex flex-row items-center justify-around w-full">
-            <div className="relative w-60 h-60 group Transition-all">
-              <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
-              <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
-              <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
-              <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
-              <Image
-                src="/portrait.jpg"
-                alt="portrait lilian brossard"
-                width={240}
-                height={240}
-                className="object-cover group-hover:scale-105 duration-300"
-              />
+          <div className="relative flex flex-row mt-[20vh] items-center justify-around w-full">
+            <div className="hidden lg:flex flex-row justify-center items-center w-1/4">
+              <div className="relative w-60 h-60 group Transition-all">
+                <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
+                <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
+                <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
+                <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
+                <Image
+                  src="/portrait.jpg"
+                  alt="portrait lilian brossard"
+                  width={240}
+                  height={240}
+                  className="object-cover group-hover:scale-105 duration-300"
+                />
+              </div>
             </div>
-            <div>
-              <h2 className="text-9xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
+            <div className="w-full lg:w-3/4">
+              <h2 className="text-6xl md:text-6xl xl:text-8xl 2xl:text-9xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
                 {nom.map((letter, index) => (
                   <ParallaxLetter
                     key={index}
@@ -50,7 +52,7 @@ export default function Home() {
                   />
                 ))}
               </h2>
-              <p className="text-2xl">
+              <p className="text-xl md:text-2xl xl:text-3xl py-8 px-8">
                 <Translate
                   dict={{
                     FRA: "Je suis un",
@@ -59,7 +61,7 @@ export default function Home() {
                     DEU: "Ich bin ein",
                   }}
                 />{" "}
-                <span className="font-bold text-(--accentuation) relative group cursor-help underline">
+                <span className="font-bold text-(--accentuation) relative group md:cursor-help underline">
                   <Translate
                     dict={{
                       FRA: "Étudiant",
@@ -68,7 +70,7 @@ export default function Home() {
                       DEU: "Student",
                     }}
                   />
-                  <span className="absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden md:inline absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Translate
                       dict={{
                         FRA: "3ème année BUT Informatique - Parcours Data et IA - IUT de Lannion",
@@ -87,7 +89,7 @@ export default function Home() {
                     DEU: "Informatikstudent auf der Suche nach einem",
                   }}
                 />{" "}
-                <span className="font-bold text-(--accentuation) relative group cursor-help underline">
+                <span className="font-bold text-(--accentuation) relative group md:cursor-help underline">
                   <Translate
                     dict={{
                       FRA: "Stage",
@@ -96,7 +98,7 @@ export default function Home() {
                       DEU: "Praktikum",
                     }}
                   />
-                  <span className="absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="hidden md:inline absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Translate
                       dict={{
                         FRA: "Stage de 14 semaines à partir de mars 2026",
@@ -164,24 +166,114 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="w-full py-20">
+          <div className="w-full my-16">
             <hr className="bg-(--primary) w-full h-1 border-0 shadow-[0_0_10px_rgba(255,255,0,0.5),0_0_20px_rgba(255,255,0,0.3)]" />
           </div>
-          <div className="w-full flex justify-center items-center ml-16">
+          <div className="w-full flex justify-center my-8 items-center">
             <LinkHero />
           </div>
+          <Link href="/#apropos" className="bounce mt-16 animate-bounce">
+            <svg
+              viewBox="0 0 24 24"
+              fill="var(--foreground)"
+              xmlns="http://www.w3.org/2000/svg"
+              height="48px"
+              width="48px"
+              className="hidden lg:block"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M5 15C5 16.8565 5.73754 18.6371 7.05029 19.9498C8.36305 21.2626 10.1435 21.9999 12 21.9999C13.8565 21.9999 15.637 21.2626 16.9498 19.9498C18.2625 18.6371 19 16.8565 19 15V9C19 7.14348 18.2625 5.36305 16.9498 4.05029C15.637 2.73754 13.8565 2 12 2C10.1435 2 8.36305 2.73754 7.05029 4.05029C5.73754 5.36305 5 7.14348 5 9V15Z"
+                  stroke="var(--background)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>{" "}
+                <path
+                  d="M12 6V14"
+                  stroke="var(--background)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>{" "}
+                <path
+                  d="M15 11L12 14L9 11"
+                  stroke="var(--background)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>{" "}
+              </g>
+            </svg>
+            <svg
+              viewBox="-0.5 0 20 20"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+              fill="var(--foreground)"
+              height="48px"
+              width="48px"
+              className="block lg:hidden"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <title>scroll_up [#1381]</title>{" "}
+                <desc>Created with Sketch.</desc> <defs> </defs>{" "}
+                <g
+                  id="Page-1"
+                  stroke="none"
+                  strokeWidth="1"
+                  fill="none"
+                  fillRule="evenodd"
+                >
+                  {" "}
+                  <g
+                    id="Dribbble-Light-Preview"
+                    transform="translate(-420.000000, -760.000000)"
+                    fill="var(--foreground)"
+                  >
+                    {" "}
+                    <g id="icons" transform="translate(56.000000, 160.000000)">
+                      {" "}
+                      <path
+                        d="M369.277343,604 C369.859711,604 370.332357,603.552 370.332357,603 L370.332357,601 C370.332357,600.448 369.859711,600 369.277343,600 C368.694975,600 368.222329,600.448 368.222329,601 L368.222329,603 C368.222329,603.552 368.694975,604 369.277343,604 M373.296948,614.464 L371.382097,616.147 C371.049767,616.462 370.332357,616.239 370.332357,615.793 L370.332357,610.657 C370.332357,610.104 369.859711,609.657 369.277343,609.657 C368.694975,609.657 368.222329,610.104 368.222329,610.657 L368.222329,615.791 C368.222329,616.237 367.803488,616.46 367.471159,616.145 L365.726165,614.464 C365.314709,614.073 364.707021,614.073 364.29451,614.464 C363.882,614.854 363.912595,615.488 364.325106,615.879 L367.695877,619.059 L368.079902,619.415 C368.903868,620.195 370.245846,620.195 371.068757,619.415 L374.807728,615.878 C375.220239,615.488 375.231844,614.855 374.820389,614.464 C374.407878,614.074 373.709458,614.074 373.296948,614.464 M382.776252,608.36 L378.654311,610.516 C378.23969,610.787 377.679477,610.731 377.323938,610.394 C376.866061,609.96 376.931472,609.223 377.461089,608.87 L378.719722,608 L369.757375,608 C369.175007,608 368.69814,607.586 368.69814,607.033 C368.69814,606.323 369.376514,606.066 369.748935,606.066 L375.061987,606.059 L375.466057,601.741 C375.802607,600.784 376.75001,600.215 377.793419,600.413 L381.53661,600.745 C382.523048,600.932 382.99253,601.753 382.99253,602.706 L382.99253,607.541 C382.99253,607.87 383.062161,608.174 382.776252,608.36"
+                        id="scroll_up-[#1381]"
+                      >
+                        {" "}
+                      </path>{" "}
+                    </g>{" "}
+                  </g>{" "}
+                </g>{" "}
+              </g>
+            </svg>
+          </Link>
         </section>
-        <div className="relative w-full h-[25vh] overflow-hidden">
+        <div className="relative w-full h-[25vh] overflow-hidden z-20">
           <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
           <div className="absolute h-full w-full bg-background clipPath-Transition-2"></div>
         </div>
         {/* Nav Section ==============================================================================================================================*/}
-        <div className="w-full sticky top-0 z-40 shadow-(color:--accentuation)/10 shadow-md">
+        <div className="block absolute lg:hidden top-[125vh] z-10 w-full h-96 bg-background"></div>
+        <div className="w-full sticky top-0 z-40">
           <Navbar />
+          <div className="block lg:hidden h-16"></div>
         </div>
-        {/* About Section ==============================================================================================================================*/}
-        <section className="relative w-full bg-background z-10">
-          <div className="absolute -top-[82px]" id="about"></div>
+        {/* apropos Section ==============================================================================================================================*/}
+        <section className="relative w-full bg-background z-10 overflow-hidden">
+          <div className="absolute top-0 lg:-top-[82px]" id="apropos"></div>
           <MainTitle
             titre={{
               FRA: "À Propos",
@@ -190,13 +282,13 @@ export default function Home() {
               DEU: "Über Mich",
             }}
             postion={1}
-            links={["#about", "#projects", "#contact"]}
+            links={["#apropos", "#projects", "#contact"]}
           />
           <Apropos />
         </section>
         {/* Projects Section ===========================================================================================================================*/}
-        <section className="relative h-screen w-full bg-background z-10">
-          <div className="absolute -top-[82px]" id="projects"></div>
+        <section className="relative h-screen w-full bg-background z-10 overflow-hidden">
+          <div className="absolute top-0 lg:-top-[82px]" id="projects"></div>
           <MainTitle
             titre={{
               FRA: "Mes Projets",
@@ -205,7 +297,7 @@ export default function Home() {
               DEU: "Meine Projekte",
             }}
             postion={2}
-            links={["#about", "#projects", "#contact"]}
+            links={["#apropos", "#projects", "#contact"]}
           />
           <p className="mt-4 text-lg">
             <Translate
@@ -226,8 +318,8 @@ export default function Home() {
           </div>
         </section>
         {/* Contact Section ===========================================================================================================================*/}
-        <section className="relative w-full bg-background z-10">
-          <div className="absolute -top-[82px]" id="contact"></div>
+        <section className="relative w-full bg-background z-10 overflow-hidden">
+          <div className="absolute top-0 lg:-top-[82px]" id="contact"></div>
           <MainTitle
             titre={{
               FRA: "Contactez Moi",
@@ -236,7 +328,7 @@ export default function Home() {
               DEU: "Kontaktiere Mich",
             }}
             postion={3}
-            links={["#about", "#projects", "#contact"]}
+            links={["#apropos", "#projects", "#contact"]}
           />
           <div className="w-full h-[90vh] flex"></div>
         </section>
