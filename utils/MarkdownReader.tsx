@@ -3,13 +3,21 @@ import path from "path";
 import matter from "gray-matter";
 
 const projectsDirectory = path.join(process.cwd(), "content/projets");
+type LangType = "ENG" | "FRA" | "SPA" | "DEU";
+type DictTraductionType = {
+  [K in LangType]: string;
+};
 
 export interface Project {
   slug: string;
-  title: string;
-  description: string;
+  title: DictTraductionType;
+  description: DictTraductionType;
   date: string;
-  content: string;
+  details: DictTraductionType[];
+  images: string[];
+  git?: string | null;
+  site?: string | null;
+  content?: string;
 }
 
 export function getAllProjects(): Project[] {
@@ -25,7 +33,11 @@ export function getAllProjects(): Project[] {
       title: data.title,
       description: data.description,
       date: data.date,
+      details: data.details,
+      images: data.images,
       content,
+      git: data.git || null,
+      site: data.site || null,
     };
   });
 
@@ -43,7 +55,11 @@ export function getProjectBySlug(slug: string): Project | null {
       title: data.title,
       description: data.description,
       date: data.date,
+      details: data.details,
+      images: data.images,
       content,
+      git: data.git || null,
+      site: data.site || null,
     };
   } catch {
     return null;

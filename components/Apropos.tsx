@@ -569,7 +569,7 @@ export default function Apropos() {
                     DEU: "Ergänzende Kenntnisse",
                   }}
                 />
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "En BUT Informatique, je suis également formé à de nombreuses compétences transversales.",
@@ -580,7 +580,7 @@ export default function Apropos() {
                   />
                 </p>
 
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "Je suis notamment formé en gestion de projet, et j'ai pu mener des projets concrets durant ma formation. L'utilisation de méthodologies agiles comme Scrum ou Kanban fait partie de mes compétences.",
@@ -590,7 +590,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "J'ai également des compétences en management d'équipe, répartition des tâches et gestion des conflits.",
@@ -600,7 +600,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "J'ai des notions en communication, notamment en communication interne à l'entreprise et en gestion des plans de communication lors de changements liés au numérique.",
@@ -610,7 +610,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "J'ai pu réaliser, durant ma formation, des présentations en anglais technique et non technique, ce qui m'a permis d'améliorer mes compétences orales dans cette langue.",
@@ -620,7 +620,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl">
+                <p className="py-4 text-xl font-light">
                   <Translate
                     dict={{
                       FRA: "Enfin, j'ai les bases du droit informatique liées à la protection des données (RGPD, CNIL), à la propriété intellectuelle et aux contrats.",

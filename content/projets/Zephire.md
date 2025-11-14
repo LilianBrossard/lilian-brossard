@@ -1,0 +1,37 @@
+---
+title:
+  FRA: "Zephire"
+  ENG: "Zephire"
+  SPA: "Zephire"
+  DEU: "Zephire"
+date: "2024-09-28"
+description:
+  FRA: "J'ai créé un site de météo en direct à partir de n'importe quel lieu."
+  ENG: "I created a live weather website accessible from any location."
+  SPA: "He creado un sitio web de meteorología en directo accesible desde cualquier lugar."
+  DEU: "Ich habe eine Live-Wetter-Website erstellt, die von jedem Ort aus zugänglich ist."
+details:
+  - FRA: "Ce projet consiste à créer un site qui donne accès à la météo du monde entier en direct"
+    ENG: "This project consists of creating a website that provides live weather information from around the world."
+    SPA: "Este proyecto consiste en crear un sitio web que ofrece información meteorológica en directo de todo el mundo."
+    DEU: "Dieses Projekt besteht darin, eine Website zu erstellen, die Echtzeit-Wetterinformationen aus aller Welt bereitstellt."
+  - FRA: "C'est mon premier site créé avec next.js en tsx. J'ai donc expérimenté le maximum d'effets de React et NextJS."
+    ENG: "This is my first website built with Next.js in TSX. I experimented with as many React and Next.js features as possible."
+    SPA: "Este es mi primer sitio creado con Next.js en TSX. Experimenté con la mayor cantidad posible de funciones de React y Next.js."
+    DEU: "Dies ist meine erste Website, die ich mit Next.js in TSX erstellt habe. Dabei habe ich mit möglichst vielen Funktionen von React und Next.js experimentiert."
+  - FRA: "J'ai pu utiliser plusieurs API pour me permettre de récupérer les données en temps réel et optimiser leur utilisation dans le but d'économiser les ressources réseau et la limite de requêtes."
+    ENG: "I used several APIs to retrieve real-time data and optimized their usage to reduce network resources and stay within request limits."
+    SPA: "Utilicé varias API para obtener datos en tiempo real y optimicé su uso con el fin de ahorrar recursos de red y respetar los límites de solicitudes."
+    DEU: "Ich habe mehrere APIs verwendet, um Echtzeitdaten abzurufen und ihre Nutzung zu optimieren, um Netzwerkressourcen zu sparen und Anfragebegrenzungen einzuhalten."
+  - FRA: "J'ai réalisé une interface basique mais explicite et facile d'utilisation tout en profitant de React avec Tailwind pour créer des effets visuels agréables."
+    ENG: "I designed a simple but clear and user-friendly interface, while using React and Tailwind to create pleasant visual effects."
+    SPA: "Diseñé una interfaz básica pero clara y fácil de usar, aprovechando React y Tailwind para crear efectos visuales agradables."
+    DEU: "Ich habe eine einfache, aber klare und benutzerfreundliche Oberfläche erstellt und dabei React und Tailwind genutzt, um ansprechende visuelle Effekte zu erzeugen."
+  - FRA: "Pour conclure, ce projet m'a permis de découvrir React et Nextjs et de m'améliorer dans le domaine des API."
+    ENG: "To conclude, this project allowed me to discover React and Next.js and improve my skills in working with APIs."
+    SPA: "Para concluir, este proyecto me permitió descubrir React y Next.js y mejorar mis habilidades en el uso de API."
+    DEU: "Abschließend hat mir dieses Projekt ermöglicht, React und Next.js kennenzulernen und meine Fähigkeiten im Umgang mit APIs zu verbessern."
+images: ["zephire.png", "zephire.png", "zephire.png"]
+git: "https://github.com/LilianBrossard/zephire"
+site: "https://zephire.vercel.app/"
+---

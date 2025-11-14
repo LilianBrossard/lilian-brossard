@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Circuit from "@/components/Circuit";
 import LinkHero from "@/components/LinkHero";
+import LinkProjets from "@/components/LinkProjets";
 import ParallaxLetter from "@/components/ParallaxLetter";
 import Translate from "@/utils/Translate";
 import MainTitle from "@/components/MainTitle";
@@ -287,7 +288,7 @@ export default function Home() {
           <Apropos />
         </section>
         {/* Projects Section ===========================================================================================================================*/}
-        <section className="relative h-screen w-full bg-background z-10 overflow-hidden">
+        <section className="relative w-full bg-background z-10 overflow-hidden">
           <div className="absolute top-0 lg:-top-[82px]" id="projects"></div>
           <MainTitle
             titre={{
@@ -299,22 +300,96 @@ export default function Home() {
             postion={2}
             links={["#apropos", "#projects", "#contact"]}
           />
-          <p className="mt-4 text-lg">
+          <h3 className="my-4 text-lg lg:text-2xl xl:text-4xl text-foreground text-center p-8 clipPath-s">
             <Translate
               dict={{
-                FRA: "Découvrez mes projets ci-dessous :",
-                ENG: "Discover my projects below:",
-                SPA: "Descubre mis proyectos a continuación:",
-                DEU: "Entdecken Sie unten meine Projekte:",
+                FRA: "Voici mes trois derniers projets réalisés",
+                ENG: "Here are my three latest completed projects",
+                SPA: "Aquí están mis tres últimos proyectos completados",
+                DEU: "Hier sind meine drei neuesten abgeschlossenen Projekte",
               }}
             />
-          </p>
-          <div className="mt-8 flex flex-col gap-4">
-            {projects.map((project) => (
-              <Link key={project.slug} href={`/projet/${project.slug}`}>
-                {project.title}
-              </Link>
+          </h3>
+          <div className="flex flex-col gap-16 items-center w-full">
+            {projects.slice(0, 3).map((project) => (
+              <div
+                key={project.slug}
+                className="relative w-11/12 lg:h-[80vh] transition-colors duration-300"
+              >
+                <div className="hidden lg:flex group/circle w-full h-full relative bg-(--background-secondary) clipPath-SdCard flex-row justify-center items-start overflow-hidden">
+                  <div className="absolute -z-10 top-0 left-0 w-0 h-0 group-hover/circle:w-[75vw] group-hover/circle:h-[75vw] transition-all duration-700 rounded-br-full bg-background opacity-30"></div>
+                  <div className="w-5/12 h-full p-8 xl:p-16 flex flex-col justify-start items-start overflow-hidden">
+                    <Link href={`/projet/${project.slug}`}>
+                      <h4 className="text-3xl xl:text-4xl font-bold font-(family-name:--font-aquire) uppercase text-foreground hover:text-(--accentuation) transition-colors duration-300">
+                        <Translate dict={project.title} />
+                      </h4>
+                    </Link>
+                    <p className="my-4 text-lg text-foreground">
+                      <Translate dict={project.description} />
+                    </p>
+                    <hr className="h-1 w-full bg-(--foreground-secondary)" />
+                    {project.details.map((detail, index) => (
+                      <p key={index} className="mt-8 text-md text-foreground">
+                        <Translate dict={detail} />
+                      </p>
+                    ))}
+                  </div>
+                  <div className="w-5/12 h-full p-16 flex justify-center items-center">
+                    <div className="relative">
+                      <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-2 border-l-2 border-(--primary)"></div>
+                      <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-2 border-r-2 border-(--primary)"></div>
+                      {project.images[0] && (
+                        <Image
+                          src={`/projets/${project.images[0]}`}
+                          alt={project.title.FRA}
+                          width={1000}
+                          height={1000}
+                          className="object-contain border-2 border-(--primary)"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <LinkProjets
+                    git={project.git}
+                    site={project.site}
+                    project={`/projet/${project.slug}`}
+                    toutProjet="/projet"
+                  />
+                </div>
+                <div className="flex lg:hidden w-full h-full relative bg-(--background-secondary) flex-col justify-start items-start gap-4 overflow-hidden p-6">
+                  <Link href={`/projet/${project.slug}`}>
+                    <h4 className="text-3xl font-bold font-(family-name:--font-aquire) uppercase text-foreground hover:text-(--accentuation) transition-colors duration-300">
+                      <Translate dict={project.title} />
+                    </h4>
+                  </Link>
+                  <p className="text-md text-foreground">
+                    <Translate dict={project.description} />
+                  </p>
+                  <hr className="h-1 w-full bg-(--foreground-secondary)" />
+                  <div className="relative">
+                    <div className="absolute inset-0 w-1/2 h-1/2 -top-[2%] -left-[2%] border-t-2 border-l-2 border-(--primary)"></div>
+                    <div className="absolute inset-0 w-1/2 h-1/2 top-[52%] left-[52%] border-b-2 border-r-2 border-(--primary)"></div>
+                    {project.images[0] && (
+                      <Image
+                        src={`/projets/${project.images[0]}`}
+                        alt={project.title.FRA}
+                        width={1000}
+                        height={1000}
+                        className="object-contain border-2 border-(--primary)"
+                      />
+                    )}
+                  </div>
+                  <hr className="h-1 w-full bg-(--foreground-secondary)" />
+                  <LinkProjets
+                    site={project.site}
+                    project={`/projet/${project.slug}`}
+                  />
+                </div>
+              </div>
             ))}
+          </div>
+          <div className="w-full flex justify-center my-16 items-center">
+            <LinkHero projet={true} />
           </div>
         </section>
         {/* Contact Section ===========================================================================================================================*/}

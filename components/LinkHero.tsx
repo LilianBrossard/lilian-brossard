@@ -6,7 +6,11 @@ import { useLangContext } from "@/contexts/LangContext";
 
 type LangType = "ENG" | "FRA" | "SPA" | "DEU";
 
-export default function Navbar() {
+interface LinkHeroProps {
+  projet?: boolean;
+}
+
+export default function LinkHero({ projet = false }: LinkHeroProps) {
   const linkRef = useRef<HTMLParagraphElement>(null);
   const { LangVariable } = useLangContext();
   const translateText = (
@@ -57,13 +61,16 @@ export default function Navbar() {
   const currentLink = linkHero[currentLinkIndex];
   useEffect(() => {
     if (linkRef.current) {
-      linkRef.current.setAttribute("data-text", currentLink[0]);
+      linkRef.current.setAttribute(
+        "data-text",
+        projet ? linkHero[0][0] : currentLink[0]
+      );
     }
   }, [currentLink]);
 
   return (
     <Link
-      href={currentLink[1]}
+      href={projet ? linkHero[0][1] : currentLink[1]}
       id="linkHero"
       className="relative inline-block group"
     >
@@ -74,7 +81,7 @@ export default function Navbar() {
             ref={linkRef}
             className={`whitespace-nowrap w-full h-full ${style.glitch}`}
           >
-            {currentLink[0]}
+            {projet ? linkHero[0][0] : currentLink[0]}
           </p>
         </div>
       </div>
