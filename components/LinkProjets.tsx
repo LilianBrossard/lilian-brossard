@@ -14,6 +14,7 @@ interface LinkProjetsProps {
   site?: string | null;
   project?: string | null;
   toutProjet?: string | null;
+  horizontal?: boolean;
 }
 
 export default function LinkProjets({
@@ -21,6 +22,7 @@ export default function LinkProjets({
   site = null,
   project = null,
   toutProjet = null,
+  horizontal = false,
 }: LinkProjetsProps) {
   const { LangVariable } = useLangContext();
 
@@ -67,7 +69,11 @@ export default function LinkProjets({
   ];
 
   return (
-    <div className="w-full lg:w-1/6 lg:h-4/5 flex flex-col gap-2 justify-around items-center lg:items-end">
+    <div
+      className={`w-full flex ${
+        horizontal ? "flex-row" : "flex-col lg:w-1/6 lg:h-4/5"
+      } gap-2 justify-around items-center lg:items-end`}
+    >
       {git && (
         <LinkStyle
           lien={git}
