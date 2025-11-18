@@ -131,16 +131,11 @@ export default async function ProjectPage({
             <LinkProjets
               site={project.site}
               git={project.git}
-              project={`/projet/${project.slug}`}
               horizontal={true}
             />
           </div>
           <div className="block lg:hidden py-16">
-            <LinkProjets
-              site={project.site}
-              git={project.git}
-              project={`/projet/${project.slug}`}
-            />
+            <LinkProjets site={project.site} git={project.git} />
           </div>
         </div>
       </div>
