@@ -12,32 +12,61 @@ description:
   DEU: "Ich habe eine sehr visuelle Website erstellt, um Kochrezepte zu präsentieren."
 
 details:
-  - FRA: "Ce projet consiste à créer un site purement esthétique."
-    ENG: "This project consists of creating a purely aesthetic website."
-    SPA: "Este proyecto consiste en crear un sitio puramente estético."
-    DEU: "Dieses Projekt besteht darin, eine rein ästhetische Website zu erstellen."
+  # --- SECTION 1 : Présentation générale ---
+  - - FRA: "Présentation du projet"
+      ENG: "Project Overview"
+      SPA: "Presentación del proyecto"
+      DEU: "Projektübersicht"
+    - FRA: "Ce projet consiste à créer un site web principalement esthétique, avec un fort accent sur l’aspect visuel et l’animation."
+      ENG: "This project consists of creating a primarily aesthetic website with a strong focus on visuals and animations."
+      SPA: "Este proyecto consiste en crear un sitio principalmente estético, con un fuerte énfasis en los aspectos visuales y las animaciones."
+      DEU: "Dieses Projekt besteht darin, eine ästhetisch orientierte Website mit starkem Fokus auf visuelle Gestaltung und Animationen zu erstellen."
 
-  - FRA: "Durant ce projet réalisé avec Next.js en TSX, j'ai amélioré mes compétences de front-end avec React et Next.js."
-    ENG: "During this project built with Next.js in TSX, I improved my front-end skills with React and Next.js."
-    SPA: "Durante este proyecto realizado con Next.js en TSX, mejoré mis habilidades de front-end con React y Next.js."
-    DEU: "Während dieses Projekts, das mit Next.js in TSX umgesetzt wurde, verbesserte ich meine Frontend-Kenntnisse mit React und Next.js."
+  # --- SECTION 2 : Technologies & objectifs ---
+  - - FRA: "Technologies et objectifs (Développement front-end)"
+      ENG: "Technologies and Objectives (Front-end Development)"
+      SPA: "Tecnologías y objetivos (Desarrollo front-end)"
+      DEU: "Technologien und Ziele (Frontend-Entwicklung)"
+    - FRA: "Le site a été développé avec Next.js en TSX. Ce choix m’a permis de renforcer mes compétences en React et d’appliquer de bonnes pratiques de développement front-end."
+      ENG: "The site was developed with Next.js in TSX. This allowed me to strengthen my React skills and apply good front-end development practices."
+      SPA: "El sitio fue desarrollado con Next.js en TSX, lo que me permitió reforzar mis habilidades en React y aplicar buenas prácticas de desarrollo front-end."
+      DEU: "Die Website wurde mit Next.js in TSX entwickelt, was mir ermöglichte, meine React-Kenntnisse zu vertiefen und gute Frontend-Praktiken anzuwenden."
+    - FRA: "J’ai également progressé dans l'utilisation d’API simples et dans l’optimisation de certaines interactions côté client."
+      ENG: "I also improved in using simple APIs and optimizing certain client-side interactions."
+      SPA: "También mejoré en el uso de APIs simples y en la optimización de algunas interacciones del lado del cliente."
+      DEU: "Ich habe außerdem Fortschritte im Umgang mit einfachen APIs und bei der Optimierung bestimmter clientseitiger Interaktionen gemacht."
 
-  - FRA: "J'ai pu utiliser des librairies comme Framer Motion pour créer des effets visuels de qualité, comme des scrolls horizontaux et des effets avancés au survol de la souris."
-    ENG: "I was able to use libraries such as Framer Motion to create high-quality visual effects, including horizontal scrolling and advanced hover animations."
-    SPA: "Pude utilizar librerías como Framer Motion para crear efectos visuales de calidad, como desplazamientos horizontales y animaciones avanzadas al pasar el ratón."
-    DEU: "Ich konnte Bibliotheken wie Framer Motion verwenden, um hochwertige visuelle Effekte zu erstellen, darunter horizontales Scrollen und erweiterte Hover-Animationen."
+  # --- SECTION 3 : Animations & expérience utilisateur ---
+  - - FRA: "Réalisation d’animations et expérience utilisateur"
+      ENG: "Animation Creation and User Experience"
+      SPA: "Realización de animaciones y experiencia de usuario"
+      DEU: "Erstellung von Animationen und Benutzererlebnis"
+    - FRA: "J’ai utilisé Framer Motion pour intégrer des animations fluides, notamment pour dynamiser la navigation et améliorer la lisibilité des contenus."
+      ENG: "I used Framer Motion to integrate smooth animations, particularly to enhance navigation and improve content readability."
+      SPA: "Utilicé Framer Motion para integrar animaciones fluidas, especialmente para mejorar la navegación y la legibilidad del contenido."
+      DEU: "Ich habe Framer Motion eingesetzt, um flüssige Animationen zu integrieren, insbesondere zur Verbesserung der Navigation und Lesbarkeit der Inhalte."
+    - FRA: "Les effets incluent des scrolls horizontaux et des animations avancées au survol, réalisés dans un objectif d’optimisation de l’expérience utilisateur."
+      ENG: "The effects include horizontal scrolling and advanced hover animations, designed to optimize the user experience."
+      SPA: "Los efectos incluyen desplazamiento horizontal y animaciones avanzadas al pasar el ratón, diseñados para optimizar la experiencia del usuario."
+      DEU: "Zu den Effekten gehören horizontales Scrollen und erweiterte Hover-Animationen, die auf eine Optimierung des Benutzererlebnisses abzielen."
 
-  - FRA: "J'ai réalisé une interface basique mais explicite et facile d'utilisation."
-    ENG: "I designed a simple yet clear and easy-to-use interface."
-    SPA: "Diseñé una interfaz básica pero clara y fácil de usar."
-    DEU: "Ich habe eine einfache, aber klare und benutzerfreundliche Oberfläche entwickelt."
+  # --- SECTION 4 : Interface utilisateur ---
+  - - FRA: "Réalisation d’interface utilisateur"
+      ENG: "User Interface Creation"
+      SPA: "Realización de interfaz de usuario"
+      DEU: "Erstellung der Benutzeroberfläche"
+    - FRA: "J’ai conçu une interface simple, claire et intuitive, dans l’objectif de tester différentes approches UX et d’améliorer ma capacité à structurer une page web."
+      ENG: "I designed a simple, clear, and intuitive interface to experiment with different UX approaches and improve my ability to structure a web page."
+      SPA: "Diseñé una interfaz simple, clara e intuitiva para experimentar con diferentes enfoques UX y mejorar mi capacidad para estructurar una página web."
+      DEU: "Ich habe eine einfache, klare und intuitive Benutzeroberfläche entworfen, um verschiedene UX-Ansätze auszuprobieren und meine Fähigkeit zur Strukturierung einer Webseite zu verbessern."
 
-  - FRA: "Pour conclure, ce projet m'a permis d'améliorer mes compétences avec React et Next.js et de progresser dans le domaine des API."
-    ENG: "To conclude, this project allowed me to improve my skills with React and Next.js and to progress in working with APIs."
-    SPA: "Para concluir, este proyecto me permitió mejorar mis habilidades con React y Next.js y avanzar en el uso de APIs."
-    DEU: "Abschließend hat mir dieses Projekt geholfen, meine Fähigkeiten in React und Next.js zu verbessern und im Umgang mit APIs Fortschritte zu machen."
-
-images: ["chogastronomique.png", "chogastronomique.png", "chogastronomique.png"]
+images:
+  [
+    "chogastronomique1.png",
+    "chogastronomique2.png",
+    "chogastronomique3.png",
+    "chogastronomique4.png",
+  ]
 git: "https://github.com/LilianBrossard/ChoGastronomique"
 site: "https://cho-gastronomique.vercel.app/"
 ---

@@ -5,7 +5,7 @@ import matter from "gray-matter";
 const projectsDirectory = path.join(process.cwd(), "content/projets");
 type LangType = "ENG" | "FRA" | "SPA" | "DEU";
 type DictTraductionType = {
-  [K in LangType]: string;
+  [K in LangType]?: string; // Notez le "?" qui rend chaque langue optionnelle
 };
 
 export interface Project {
@@ -13,7 +13,7 @@ export interface Project {
   title: DictTraductionType;
   description: DictTraductionType;
   date: string;
-  details: DictTraductionType[];
+  details: Partial<DictTraductionType>[][];
   images: string[];
   git?: string | null;
   site?: string | null;

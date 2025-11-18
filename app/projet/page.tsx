@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Translate from "@/utils/Translate";
 import MainTitle from "@/components/MainTitle";
 import ProjetList from "@/components/ProjetList";
+import Circuit from "@/components/Circuit";
 
 import { getAllProjects } from "@/utils/MarkdownReader";
 
@@ -13,6 +14,9 @@ export default function Home() {
     <div className="w-screen min-h-screen">
       <h1 className="sr-only">Lilian Brossard Portfolio</h1>
       <main className="flex flex-col w-full h-full">
+        <div className="absolute w-full h-screen -z-10 opacity-25">
+          <Circuit />
+        </div>
         <div className="w-full sticky top-0 z-40">
           <Navbar />
           <div className="block lg:hidden h-16"></div>

@@ -13,20 +13,38 @@ description:
   DEU: "Erstellung einer Datenbank, die einen Studiengang in Informatik abbildet."
 
 details:
-  - FRA: "Ce projet en duo, réalisé dans le cadre de mes études, a nécessité plusieurs étapes :"
-    ENG: "This two-person project, carried out as part of my studies, required several steps:"
-    SPA: "Este proyecto en pareja, realizado en el marco de mis estudios, requirió varias etapas:"
-    DEU: "Dieses Projekt zu zweit, das im Rahmen meines Studiums durchgeführt wurde, erforderte mehrere Schritte:"
+  # --- SECTION 1 : Modélisation de base de données ---
+  - - FRA: "Modélisation de base de données"
+      ENG: "Database Modeling"
+      SPA: "Modelado de bases de datos"
+      DEU: "Datenbankmodellierung"
+    - FRA: "Ce projet en duo, réalisé dans le cadre de mes études, a nécessité plusieurs étapes :"
+      ENG: "This two-person project, carried out as part of my studies, required several steps:"
+      SPA: "Este proyecto en pareja, realizado en el marco de mis estudios, requirió varias etapas:"
+      DEU: "Dieses Projekt zu zweit, das im Rahmen meines Studiums durchgeführt wurde, erforderte mehrere Schritte:"
+    - FRA: "Tout d’abord, la création d’un diagramme de classes à partir d’un descriptif détaillé de la base de données."
+      ENG: "First, we designed a class diagram based on a detailed description of the database."
+      SPA: "Primero, diseñamos un diagrama de clases a partir de una descripción detallada de la base de datos."
+      DEU: "Zunächst erstellten wir ein Klassendiagramm basierend auf einer detaillierten Beschreibung der Datenbank."
 
-  - FRA: "Tout d’abord, la création d’un diagramme de classes à partir d’un descriptif détaillé de la base de données."
-    ENG: "First, we designed a class diagram based on a detailed description of the database."
-    SPA: "Primero, diseñamos un diagrama de clases a partir de una descripción detallada de la base de datos."
-    DEU: "Zunächst erstellten wir ein Klassendiagramm basierend auf einer detaillierten Beschreibung der Datenbank."
-
-  - FRA: "Puis, la création et la gestion de la base de données en PostgreSQL, ainsi que sa mise en place sur un serveur local."
-    ENG: "Then, we created and managed the database in PostgreSQL and deployed it on a local server."
-    SPA: "Luego, creamos y gestionamos la base de datos en PostgreSQL y la implementamos en un servidor local."
-    DEU: "Anschließend erstellten und verwalteten wir die Datenbank in PostgreSQL und richteten sie auf einem lokalen Server ein."
+  # --- SECTION 2 : Gestion de base de données ---
+  - - FRA: "Gestion de base de données"
+      ENG: "Database Management"
+      SPA: "Gestión de bases de datos"
+      DEU: "Datenbankverwaltung"
+    - FRA: "Puis, la création et la gestion de la base de données en PostgreSQL, ainsi que sa mise en place sur un serveur local."
+      ENG: "Then, we created and managed the database in PostgreSQL and deployed it on a local server."
+      SPA: "Luego, creamos y gestionamos la base de datos en PostgreSQL y la implementamos en un servidor local."
+      DEU: "Anschließend erstellten und verwalteten wir die Datenbank in PostgreSQL und richteten sie auf einem lokalen Server ein."
+  # --- SECTION 3 : Collaboration et organisation ---
+  - - FRA: "Collaboration et organisation"
+      ENG: "Collaboration and Organization"
+      SPA: "Colaboración y organización"
+      DEU: "Zusammenarbeit und Organisation"
+    - FRA: "Ce projet en duo m’a permis de collaborer efficacement : répartition des tâches, vérification mutuelle du travail réalisé, et adaptation continue aux contraintes du projet."
+      ENG: "This two-person project allowed me to collaborate effectively: dividing tasks, reviewing each other's work, and continuously adapting to project constraints."
+      SPA: "Este proyecto en pareja me permitió colaborar de manera eficaz: dividir las tareas, revisar el trabajo del otro y adaptarnos continuamente a las exigencias del proyecto."
+      DEU: "Dieses Zwei-Personen-Projekt ermöglichte mir eine effiziente Zusammenarbeit: Aufgabenverteilung, gegenseitige Überprüfung der Ergebnisse und kontinuierliche Anpassung an die Projektanforderungen."
 
 images: ["BDD_SQL.jpg"]
 git: "https://github.com/LilianBrossard/butinfoSQL"

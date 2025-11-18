@@ -12,32 +12,47 @@ description:
   DEU: "Ich habe eine Unternehmens-Website als Showcase erstellt, die Ihre sein könnte."
 
 details:
-  - FRA: "Ce projet consiste à créer un site qui pourrait être celui d'une entreprise de la tech et de l'innovation, que j'ai d'abord conçu et réfléchi sous forme de maquettes avant de le réaliser."
-    ENG: "This project consists of creating a website that could belong to a tech and innovation company, which I first designed and planned through mockups before developing it."
-    SPA: "Este proyecto consiste en crear un sitio web que podría pertenecer a una empresa de tecnología e innovación, el cual primero diseñé y planifiqué mediante maquetas antes de desarrollarlo."
-    DEU: "Dieses Projekt besteht darin, eine Website zu erstellen, die einem Tech- und Innovationsunternehmen gehören könnte und die ich zunächst anhand von Mockups entworfen und geplant habe, bevor ich sie umgesetzt habe."
+  # --- SECTION 1 : Présentation générale ---
+  - - FRA: "Présentation du projet"
+      ENG: "Project Overview"
+      SPA: "Presentación del proyecto"
+      DEU: "Projektübersicht"
+    - FRA: "Ce projet consistait à créer un site web pouvant représenter une entreprise de tech et d’innovation. J’ai d’abord conçu et réfléchi le projet sous forme de maquettes avant de le réaliser."
+      ENG: "This project involved creating a website representing a tech and innovation company. I first designed and planned it through mockups before developing it."
+      SPA: "Este proyecto consistió en crear un sitio web que pudiera representar a una empresa de tecnología e innovación. Primero lo diseñé y planifiqué mediante maquetas antes de desarrollarlo."
+      DEU: "Dieses Projekt bestand darin, eine Website zu erstellen, die ein Tech- und Innovationsunternehmen repräsentieren könnte. Ich entwarf und plante das Projekt zunächst anhand von Mockups, bevor ich es umsetzte."
 
-  - FRA: "Ce projet m'a permis d'améliorer et de maîtriser Hygraph et son administration, et d'optimiser une véritable arborescence complexe dans les pages du site."
-    ENG: "This project allowed me to improve and master Hygraph and its administration, and to optimize a fully functional and complex page architecture."
-    SPA: "Este proyecto me permitió mejorar y dominar Hygraph y su administración, así como optimizar una arquitectura de páginas completa y compleja."
-    DEU: "Dieses Projekt ermöglichte es mir, Hygraph und dessen Verwaltung zu verbessern und zu beherrschen sowie eine vollständige und komplexe Seitenarchitektur zu optimieren."
+  # --- SECTION 2 : Gestion et optimisation des contenus ---
+  - - FRA: "Gestion et optimisation des contenus"
+      ENG: "Content Management and Optimization"
+      SPA: "Gestión y optimización de contenidos"
+      DEU: "Inhaltsverwaltung und Optimierung"
+    - FRA: "J’ai amélioré et maîtrisé Hygraph et son administration, et optimisé une arborescence complexe de pages afin de structurer efficacement le contenu."
+      ENG: "I improved and mastered Hygraph and its administration, optimizing a complex page structure to efficiently manage the content."
+      SPA: "Mejoré y dominé Hygraph y su administración, optimizando una estructura compleja de páginas para gestionar eficientemente el contenido."
+      DEU: "Ich verbesserte und beherrschte Hygraph und dessen Verwaltung und optimierte eine komplexe Seitenstruktur, um Inhalte effizient zu verwalten."
 
-  - FRA: "J'ai également peaufiné ma maîtrise de Tailwind CSS et de Hygraph (un headless CMS), ainsi que d'Astro dans la réalisation de sites web."
-    ENG: "I also refined my mastery of Tailwind CSS and Hygraph (a headless CMS), as well as Astro, in building modern websites."
-    SPA: "También perfeccioné mi dominio de Tailwind CSS y Hygraph (un CMS headless), así como de Astro, en la creación de sitios web modernos."
-    DEU: "Ich habe außerdem meine Kenntnisse in Tailwind CSS und Hygraph (einem Headless-CMS) sowie in Astro bei der Erstellung moderner Websites verbessert."
+  # --- SECTION 3 : Développement et intégration technique ---
+  - - FRA: "Développement et intégration"
+      ENG: "Development and Technical Implementation"
+      SPA: "Desarrollo e implementación técnica"
+      DEU: "Entwicklung und technische Umsetzung"
+    - FRA: "J’ai peaufiné ma maîtrise de Tailwind CSS, Hygraph et Astro pour réaliser le site, et optimisé les requêtes API en les factorisant dans des fonctions JavaScript pour améliorer la lisibilité et la propreté du code."
+      ENG: "I refined my skills in Tailwind CSS, Hygraph, and Astro to build the site, and optimized API requests by factoring them into JavaScript functions to improve code readability and cleanliness."
+      SPA: "Perfeccioné mis habilidades en Tailwind CSS, Hygraph y Astro para construir el sitio, y optimicé las peticiones API agrupándolas en funciones de JavaScript para mejorar la legibilidad y limpieza del código."
+      DEU: "Ich verbesserte meine Kenntnisse in Tailwind CSS, Hygraph und Astro für die Umsetzung der Website und optimierte API-Anfragen, indem ich sie in JavaScript-Funktionen auslagerte, um die Lesbarkeit und Sauberkeit des Codes zu verbessern."
 
-  - FRA: "J'ai optimisé les requêtes API en les factorisant dans des fonctions JavaScript afin d'améliorer la lisibilité et la propreté du code."
-    ENG: "I optimized API requests by factoring them into JavaScript functions to improve code readability and cleanliness."
-    SPA: "Optimicé las peticiones API agrupándolas en funciones de JavaScript para mejorar la legibilidad y limpieza del código."
-    DEU: "Ich habe die API-Anfragen optimiert, indem ich sie in JavaScript-Funktionen ausgelagert habe, um die Lesbarkeit und Sauberkeit des Codes zu verbessern."
+  # --- SECTION 4 : Compétences développées ---
+  - - FRA: "Compétences développées"
+      ENG: "Skills Developed"
+      SPA: "Habilidades desarrolladas"
+      DEU: "Entwickelte Kompetenzen"
+    - FRA: "Ce projet m’a permis de renforcer mes compétences en gestion de contenu, en optimisation technique et en développement web front-end."
+      ENG: "This project helped me strengthen my skills in content management, technical optimization, and front-end web development."
+      SPA: "Este proyecto me permitió reforzar mis competencias en gestión de contenido, optimización técnica y desarrollo web front-end."
+      DEU: "Dieses Projekt half mir, meine Kompetenzen in Inhaltsverwaltung, technischer Optimierung und Frontend-Webentwicklung zu stärken."
 
-  - FRA: "Pour conclure, ce projet m'a permis de me perfectionner avec Hygraph et Tailwind CSS."
-    ENG: "To conclude, this project allowed me to refine my skills with Hygraph and Tailwind CSS."
-    SPA: "Para concluir, este proyecto me permitió perfeccionar mis habilidades con Hygraph y Tailwind CSS."
-    DEU: "Abschließend hat mir dieses Projekt geholfen, meine Fähigkeiten mit Hygraph und Tailwind CSS weiter zu verbessern."
-
-images: ["VotreSite.png", "VotreSite.png", "VotreSite.png"]
+images: ["VotreSite1.png", "VotreSite2.png", "VotreSite3.png", "VotreSite4.png"]
 git: "https://github.com/LilianBrossard/Votre-Site"
 site: "https://votre-site-akfr.vercel.app/"
 ---

@@ -99,6 +99,10 @@ body {
   );
 }
 
+.clipPath-imageCard {
+  clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 50% 90%, 40% 100%, 0% 100%);
+}
+
 @keyframes flux {
   0% {
     opacity: 1;

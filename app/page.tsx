@@ -240,24 +240,19 @@ export default function Home() {
                   fill="none"
                   fillRule="evenodd"
                 >
-                  {" "}
                   <g
                     id="Dribbble-Light-Preview"
                     transform="translate(-420.000000, -760.000000)"
                     fill="var(--foreground)"
                   >
-                    {" "}
                     <g id="icons" transform="translate(56.000000, 160.000000)">
-                      {" "}
                       <path
                         d="M369.277343,604 C369.859711,604 370.332357,603.552 370.332357,603 L370.332357,601 C370.332357,600.448 369.859711,600 369.277343,600 C368.694975,600 368.222329,600.448 368.222329,601 L368.222329,603 C368.222329,603.552 368.694975,604 369.277343,604 M373.296948,614.464 L371.382097,616.147 C371.049767,616.462 370.332357,616.239 370.332357,615.793 L370.332357,610.657 C370.332357,610.104 369.859711,609.657 369.277343,609.657 C368.694975,609.657 368.222329,610.104 368.222329,610.657 L368.222329,615.791 C368.222329,616.237 367.803488,616.46 367.471159,616.145 L365.726165,614.464 C365.314709,614.073 364.707021,614.073 364.29451,614.464 C363.882,614.854 363.912595,615.488 364.325106,615.879 L367.695877,619.059 L368.079902,619.415 C368.903868,620.195 370.245846,620.195 371.068757,619.415 L374.807728,615.878 C375.220239,615.488 375.231844,614.855 374.820389,614.464 C374.407878,614.074 373.709458,614.074 373.296948,614.464 M382.776252,608.36 L378.654311,610.516 C378.23969,610.787 377.679477,610.731 377.323938,610.394 C376.866061,609.96 376.931472,609.223 377.461089,608.87 L378.719722,608 L369.757375,608 C369.175007,608 368.69814,607.586 368.69814,607.033 C368.69814,606.323 369.376514,606.066 369.748935,606.066 L375.061987,606.059 L375.466057,601.741 C375.802607,600.784 376.75001,600.215 377.793419,600.413 L381.53661,600.745 C382.523048,600.932 382.99253,601.753 382.99253,602.706 L382.99253,607.541 C382.99253,607.87 383.062161,608.174 382.776252,608.36"
                         id="scroll_up-[#1381]"
-                      >
-                        {" "}
-                      </path>{" "}
-                    </g>{" "}
-                  </g>{" "}
-                </g>{" "}
+                      ></path>
+                    </g>
+                  </g>
+                </g>
               </g>
             </svg>
           </Link>
@@ -328,11 +323,36 @@ export default function Home() {
                       <Translate dict={project.description} />
                     </p>
                     <hr className="h-1 w-full bg-(--foreground-secondary)" />
-                    {project.details.map((detail, index) => (
-                      <p key={index} className="mt-8 text-md text-foreground">
-                        <Translate dict={detail} />
-                      </p>
-                    ))}
+                    <div className="max-h-3/4 overflow-hidden">
+                      {project.details.slice(0, 2).map((detail, index) => (
+                        <div key={index}>
+                          {detail.map((dict, numDict) => (
+                            <p
+                              key={`${index}-${numDict}`}
+                              className={`mt-8 text-foreground ${
+                                numDict === 0
+                                  ? "text-xl font-bold"
+                                  : "text-md pl-2"
+                              }`}
+                            >
+                              <Translate dict={dict} />
+                            </p>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                    <Link href={`/projet/${project.slug}`}>
+                      <h4 className="mt-8 text-md text-foreground underline font-stretch-expanded hover:text-(--accentuation) transition-colors duration-300">
+                        <Translate
+                          dict={{
+                            FRA: "En savoir plus",
+                            ENG: "Learn more",
+                            SPA: "Más información",
+                            DEU: "Mehr erfahren",
+                          }}
+                        />
+                      </h4>
+                    </Link>
                   </div>
                   <div className="w-5/12 h-full p-16 flex justify-center items-center">
                     <div className="relative">
@@ -341,7 +361,7 @@ export default function Home() {
                       {project.images[0] && (
                         <Image
                           src={`/projets/${project.images[0]}`}
-                          alt={project.title.FRA}
+                          alt={project.title.FRA || "Project image"}
                           width={1000}
                           height={1000}
                           className="object-contain border-2 border-(--primary)"
@@ -372,7 +392,7 @@ export default function Home() {
                     {project.images[0] && (
                       <Image
                         src={`/projets/${project.images[0]}`}
-                        alt={project.title.FRA}
+                        alt={project.title.FRA || "Project image"}
                         width={1000}
                         height={1000}
                         className="object-contain border-2 border-(--primary)"
@@ -456,11 +476,9 @@ export default function Home() {
                         strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
-                        {" "}
                         <g id="mail-filled">
-                          {" "}
-                          <path d="M24,5.7V21H0V5.7l12,10L24,5.7z M12,13l12-9.9V3H0v0.1L12,13z"></path>{" "}
-                        </g>{" "}
+                          <path d="M24,5.7V21H0V5.7l12,10L24,5.7z M12,13l12-9.9V3H0v0.1L12,13z"></path>
+                        </g>
                       </g>
                     </svg>
                     lilian.brossard@gmail.com
