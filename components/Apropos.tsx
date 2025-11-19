@@ -491,10 +491,10 @@ export default function Apropos() {
               <p className="py-4 text-xl">
                 <Translate
                   dict={{
-                    FRA: "J'adore créer, de tout ! J'ai pour objectif de toujours m'améliorer afin de me rapprocher un jour de la perfection dans le plus grand nombre de domaines possible.",
-                    ENG: "I love creating — anything! My goal is to keep improving myself and one day come as close as possible to perfection in as many fields as I can.",
-                    SPA: "¡Me encanta crear, de todo! Mi objetivo es mejorar constantemente y acercarme algún día a la perfección en el mayor número posible de ámbitos.",
-                    DEU: "Ich liebe es, Dinge zu erschaffen – alles Mögliche! Mein Ziel ist es, mich ständig zu verbessern und eines Tages in so vielen Bereichen wie möglich der Perfektion näherzukommen.",
+                    FRA: "J'adore créer, de tout ! J'ai pour objectif de toujours m'améliorer.",
+                    ENG: "I love creating — anything! My goal is to keep improving myself.",
+                    SPA: "¡Me encanta crear, de todo! Mi objetivo es mejorar constantemente.",
+                    DEU: "Ich liebe es, Dinge zu erschaffen – alles Mögliche! Mein Ziel ist es, mich ständig zu verbessern.",
                   }}
                 />
               </p>
