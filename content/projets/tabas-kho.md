@@ -1,9 +1,9 @@
 ---
 title:
-  FRA: "Site de streaming"
-  ENG: "Streaming Website"
-  SPA: "Sitio de Streaming"
-  DEU: "Streaming-Website"
+  FRA: "Tabas'Kho"
+  ENG: "Tabas'Kho"
+  SPA: "Tabas'Kho"
+  DEU: "Tabas'Kho"
 
 date: "2023-12-27"
 description:

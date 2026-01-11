@@ -72,6 +72,15 @@ export default function Navbar() {
         DEU: "Kontakt",
       }),
     },
+    {
+      href: "/competences",
+      label: translateText({
+        FRA: "Compétences",
+        ENG: "Skills",
+        SPA: "Habilidades",
+        DEU: "Fähigkeiten",
+      }),
+    },
   ];
 
   const navigationLink = (

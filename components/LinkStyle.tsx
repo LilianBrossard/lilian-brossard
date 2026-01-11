@@ -46,7 +46,7 @@ export default function LinkStyle({
     <Link
       href={lien}
       target={target ? target : undefined}
-      className={`group relative clipPath-Button-Simple w-36 h-12 text-foreground hover:text-background text-lg md:text-xl lg:text-2xl text-center flex items-center justify-center bg-(--accentuation) duration-200 ${specialClass}`}
+      className={`group relative clipPath-Button-Simple w-36 h-12 text-foreground hover:text-background text-lg md:text-xl text-center flex items-center justify-center bg-(--accentuation) duration-200 ${specialClass}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
