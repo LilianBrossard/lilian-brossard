@@ -508,6 +508,16 @@ export default function Apropos() {
                   }}
                 />
               </p>
+              <p className="py-4 text-xl">
+                <Translate
+                  dict={{
+                    FRA: "À l'issue de mon BUT Informatique, mon ambition est d'intégrer le monde professionnel en tant que développeur dès qu'une opportunité stimulante se présentera. J'ai à cœur de mettre mes compétences au service de projets concrets et innovants au sein d'une équipe dynamique. À plus long terme, j'envisage d'évoluer vers le statut de développeur freelance, afin de relever des défis variés et de mettre mon expertise au profit d'une clientèle diversifiée en toute autonomie.",
+                    ENG: "Upon completing my BUT in Computer Science, my ambition is to enter the professional world as a developer as soon as a stimulating opportunity arises. I am eager to apply my skills to concrete and innovative projects within a dynamic team. In the longer term, I plan to transition into freelance development to take on diverse challenges and provide my expertise to a broad range of clients independently.",
+                    SPA: "Al finalizar mi BUT en Informática, mi ambición es incorporarme al mundo profesional como desarrollador en cuanto se presente una oportunidad estimulante. Deseo poner mis habilidades al servicio de proyectos concretos e innovadores dentro de un equipo dinámico. A largo plazo, planeo evolucionar hacia el estatus de desarrollador freelance para afrontar desafíos variados y ofrecer mi experiencia a una clientela diversa de forma autónoma.",
+                    DEU: "Nach Abschluss meines BUT in Informatik ist es mein Ziel, als Entwickler in die Berufswelt einzusteigen, sobald sich eine spannende Gelegenheit bietet. Ich freue mich darauf, meine Fähigkeiten in konkrete und innovative Projekte innerhalb eines dynamischen Teams einzubringen. Langfristig plane ich den Schritt in die Selbstständigkeit als Freelance-Entwickler, um vielfältige Herausforderungen anzunehmen und mein Fachwissen einem breiten Kundenkreis eigenverantwortlich anzubieten.",
+                  }}
+                />
+              </p>
             </div>
             <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
               <h3 className="text-4xl font-bold mb-4">
