@@ -6,6 +6,8 @@ title:
   DEU: "Tabas'Kho"
 
 date: "2023-12-27"
+tags: ["JavaScript", "CSS", "Figma"]
+context: "etudes"
 description:
   FRA: "J'ai travaillé sur un site de critique et de streaming de séries."
   ENG: "I worked on a series review and streaming website."
@@ -65,10 +67,10 @@ details:
 
 images:
   [
-    "peaky_blinders_site1.png",
-    "peaky_blinders_site2.png",
-    "peaky_blinders_site3.png",
-    "peaky_blinders_site4.png",
+    "peaky_blinders_site1.webp",
+    "peaky_blinders_site2.webp",
+    "peaky_blinders_site3.webp",
+    "peaky_blinders_site4.webp",
   ]
 git: "https://github.com/LilianBrossard/PeakyBlinders"
 site: "https://lilianbrossard.github.io/PeakyBlinders/"

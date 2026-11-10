@@ -6,6 +6,8 @@ title:
   DEU: "Pact"
 
 date: "2025-03-01"
+tags: ["PHP", "PostgreSQL", "JavaScript", "Docker"]
+context: "etudes"
 
 description:
   FRA: "Pact est un site de mise en relation entre clients et professionnels du tourisme dans les Côtes-d'Armor."
@@ -86,21 +88,21 @@ details:
 
 images:
   [
-    "pact1.png",
-    "pact2.png",
-    "pact3.png",
-    "pact4.png",
-    "pact5.png",
-    "pact6.png",
-    "pact7.png",
-    "pact8.png",
-    "pact9.png",
-    "pact10.png",
-    "pact11.png",
-    "pact12.png",
-    "pact13.png",
-    "pact14.png",
-    "pact15.png",
+    "pact1.webp",
+    "pact2.webp",
+    "pact3.webp",
+    "pact4.webp",
+    "pact5.webp",
+    "pact6.webp",
+    "pact7.webp",
+    "pact8.webp",
+    "pact9.webp",
+    "pact10.webp",
+    "pact11.webp",
+    "pact12.webp",
+    "pact13.webp",
+    "pact14.webp",
+    "pact15.webp",
   ]
 git: "https://github.com/Victouu/A7-PACT"
 site: null

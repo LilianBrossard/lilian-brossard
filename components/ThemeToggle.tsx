@@ -1,23 +1,54 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+import { useTranslate } from "@/contexts/LangContext";
 
 type Theme = "light" | "dark";
 
+export const THEME_STORAGE_KEY = "theme";
+
+// Le thème est porté par l'attribut data-theme de <html> : on l'observe
+// pour que tous les boutons (menu mobile et desktop) restent synchronisés.
+function subscribe(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
+}
+
+function getSnapshot(): Theme {
+  return document.documentElement.getAttribute("data-theme") === "light"
+    ? "light"
+    : "dark";
+}
+
+function getServerSnapshot(): Theme {
+  return "dark";
+}
+
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const t = useTranslate();
 
   const toggleTheme = () => {
-    // Logic to toggle theme
     const newTheme = theme === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", newTheme);
-    setTheme(newTheme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+    } catch {}
   };
 
   return (
     <button
       onClick={toggleTheme}
-      aria-label="Toggle theme"
+      aria-label={t({
+        FRA: "Changer de thème",
+        ENG: "Toggle theme",
+        SPA: "Cambiar el tema",
+        DEU: "Design wechseln",
+      })}
       className="clipPath-Button-Double bg-(--accentuation) relative inline-flex p-1 h-10 w-20 items-center transition-colors duration-300"
     >
       <span

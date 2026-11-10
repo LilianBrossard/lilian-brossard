@@ -5,6 +5,8 @@ title:
   SPA: "SciExplora"
   DEU: "SciExplora"
 date: "2023-11-01"
+tags: ["HTML", "CSS"]
+context: "perso"
 description:
   FRA: "Site statique en HTML/CSS avec quelques légères animations."
   ENG: "Static HTML/CSS website with some light animations."
@@ -42,7 +44,7 @@ details:
       SPA: "Este proyecto me permitió reforzar mis habilidades en implementación de interfaces web, dominio de CSS y flexbox, y atención a los detalles visuales."
       DEU: "Dieses Projekt half mir, meine Fähigkeiten in der Umsetzung von Weboberflächen, CSS- und Flexbox-Kenntnissen sowie im Auge für visuelle Details zu verbessern."
 
-images: ["sciexplora1.png", "sciexplora2.png"]
+images: ["sciexplora1.webp", "sciexplora2.webp"]
 git: "https://github.com/LilianBrossard/SciExplora"
 site: "https://lilianbrossard.github.io/SciExplora/"
 ---

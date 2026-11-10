@@ -1,66 +1,57 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import type { Dict } from "@/utils/i18n";
 
 const projectsDirectory = path.join(process.cwd(), "content/projets");
-type LangType = "ENG" | "FRA" | "SPA" | "DEU";
-type DictTraductionType = {
-  [K in LangType]?: string; // Notez le "?" qui rend chaque langue optionnelle
-};
 
 export interface Project {
   slug: string;
-  title: DictTraductionType;
-  description: DictTraductionType;
+  title: Dict;
+  description: Dict;
   date: string;
-  details: Partial<DictTraductionType>[][];
+  details: Dict[][];
+  /** Technologies citées dans la description du projet */
+  tags: string[];
+  /** Contexte : projet personnel ou d'études (si connu) */
+  context: "perso" | "etudes" | null;
   images: string[];
   git?: string | null;
   site?: string | null;
   content?: string;
 }
 
-export function getAllProjects(): Project[] {
-  const fileNames = fs.readdirSync(projectsDirectory);
-  const projects = fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, "");
-    const fullPath = path.join(projectsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
+function readProject(slug: string): Project {
+  const fullPath = path.join(projectsDirectory, `${slug}.md`);
+  const { data, content } = matter(fs.readFileSync(fullPath, "utf8"));
 
-    return {
-      slug,
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      details: data.details,
-      images: data.images,
-      content,
-      git: data.git || null,
-      site: data.site || null,
-    };
-  });
+  return {
+    slug,
+    title: data.title,
+    description: data.description,
+    date: data.date,
+    details: data.details ?? [],
+    images: data.images ?? [],
+    tags: Array.isArray(data.tags) ? data.tags : [],
+    context: data.context === "perso" || data.context === "etudes" ? data.context : null,
+    content,
+    git: data.git || null,
+    site: data.site || null,
+  };
+}
+
+export function getAllProjects(): Project[] {
+  const projects = fs
+    .readdirSync(projectsDirectory)
+    .filter((fileName) => fileName.endsWith(".md"))
+    .map((fileName) => readProject(fileName.replace(/\.md$/, "")));
 
   return projects.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 export function getProjectBySlug(slug: string): Project | null {
   try {
-    const fullPath = path.join(projectsDirectory, `${slug}.md`);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
-
-    return {
-      slug,
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      details: data.details,
-      images: data.images,
-      content,
-      git: data.git || null,
-      site: data.site || null,
-    };
+    return readProject(slug);
   } catch {
     return null;
   }

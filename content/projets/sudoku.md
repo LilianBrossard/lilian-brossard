@@ -5,6 +5,8 @@ title:
   SPA: "Sudoku en C"
   DEU: "Sudoku in C"
 date: "2023-11-24"
+tags: ["C"]
+context: "etudes"
 description:
   FRA: "Création d'un sudoku en langage C pour fonctionner dans un terminal Linux et Windows."
   ENG: "Creation of a Sudoku game in the C language designed to run in a Linux or Windows terminal."
@@ -52,7 +54,7 @@ details:
       SPA: "Redacté documentación completa adaptada al programa y finalicé el cuaderno de pruebas. Esto me permitió formalizar la conducción del proyecto y garantizar la calidad del código."
       DEU: "Ich habe eine vollständige Dokumentation passend zum Programm erstellt und das Testheft abgeschlossen. Dies ermöglichte es mir, die Projektleitung zu formalisieren und die Codequalität sicherzustellen."
 
-images: ["sudoku.png"]
+images: ["sudoku.webp"]
 git: "https://github.com/LilianBrossard/Sudoku"
 site: null
 ---

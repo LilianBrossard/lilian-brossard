@@ -1,21 +1,13 @@
 "use client";
-import { useLangContext } from "@/contexts/LangContext";
-
-type LangType = "ENG" | "FRA" | "SPA" | "DEU";
+import { useTranslate } from "@/contexts/LangContext";
+import type { Dict } from "@/utils/i18n";
 
 interface TransProps {
-  dict: Partial<Record<LangType, string>>;
+  dict: Dict;
   fallback?: string;
 }
 
 export default function Translate({ dict, fallback = "" }: TransProps): string {
-  const { LangVariable } = useLangContext();
-
-  return (
-    dict[LangVariable] ||
-    dict.FRA ||
-    dict.ENG ||
-    Object.values(dict)[0] ||
-    fallback
-  );
+  const t = useTranslate();
+  return t(dict, fallback);
 }

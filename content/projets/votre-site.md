@@ -5,6 +5,7 @@ title:
   SPA: "Su Sitio"
   DEU: "Ihre Seite"
 date: "2024-04-01"
+tags: ["Astro", "Hygraph", "Tailwind", "JavaScript"]
 description:
   FRA: "J'ai créé un site vitrine d'entreprise qui pourrait être le vôtre."
   ENG: "I created a company showcase website that could be yours."
@@ -52,7 +53,7 @@ details:
       SPA: "Este proyecto me permitió reforzar mis competencias en gestión de contenido, optimización técnica y desarrollo web front-end."
       DEU: "Dieses Projekt half mir, meine Kompetenzen in Inhaltsverwaltung, technischer Optimierung und Frontend-Webentwicklung zu stärken."
 
-images: ["VotreSite1.png", "VotreSite2.png", "VotreSite3.png", "VotreSite4.png"]
+images: ["VotreSite1.webp", "VotreSite2.webp", "VotreSite3.webp", "VotreSite4.webp"]
 git: "https://github.com/LilianBrossard/Votre-Site"
 site: "https://votre-site-akfr.vercel.app/"
 ---

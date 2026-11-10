@@ -1,25 +1,36 @@
 @import "tailwindcss";
 
+/*
+  Couleur d'accent du site.
+  Test en cours : bleu clair du CV (#95e8fd) à la place du jaune (#fff200).
+  Pour revenir au jaune : remettre --primary: #fff200 ci-dessous, et
+  --primary: #2b2b2b (ou autre couleur foncée) dans le thème clair.
+*/
 :root {
   --black: #0c0c0c;
   --background: #0c0c0c;
   --background-secondary: #2b2b2b;
   --foreground: #ffffff;
   --foreground-secondary: #d4d4d4;
-  --primary: #fff200;
-  --secondary: #ffb800;
-  --red: #ff2626;
+  --muted: #8a8a8a;
+  --primary: #95e8fd;
   --accentuation: var(--primary);
-  --accentuation-inverse: var(--background-secondary);
+  --accentuation-inverse: var(--black);
+  --glow: color-mix(in srgb, var(--primary) 55%, transparent);
+  --glow-soft: color-mix(in srgb, var(--primary) 25%, transparent);
+  --focus: var(--primary);
 }
 
+/* Thème clair : accent plus foncé pour rester lisible sur fond blanc */
 :root[data-theme="light"] {
   --background: #ffffff;
-  --background-secondary: #d4d4d4;
+  --background-secondary: #e4e4e4;
   --foreground: #000000;
   --foreground-secondary: #2b2b2b;
-  --accentuation: var(--foreground-secondary);
-  --accentuation-inverse: var(--primary);
+  --muted: #5c5c5c;
+  --primary: #0e7490;
+  --accentuation: var(--primary);
+  --accentuation-inverse: #ffffff;
 }
 
 @theme inline {
@@ -99,6 +110,47 @@ body {
   );
 }
 
+/* Coins coupés de taille fixe : ne rogne pas le contenu des cartes, quelle que soit leur taille */
+@utility clip-corners {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 28px) 0,
+    100% 28px,
+    100% 100%,
+    28px 100%,
+    0 calc(100% - 28px)
+  );
+}
+
+/* Version utilitaire Tailwind de la forme "carte SD" (permet lg:clip-sdcard) */
+@utility clip-sdcard {
+  clip-path: polygon(
+    0% 0%,
+    50% 0%,
+    50% 5%,
+    60% 5%,
+    60% 4%,
+    62% 4%,
+    62% 2%,
+    68% 2%,
+    68% 4%,
+    70% 4%,
+    70% 0%,
+    100% 0%,
+    100% 88%,
+    94% 100%,
+    60% 100%,
+    60% 97%,
+    50% 97%,
+    50% 100%,
+    0% 100%,
+    0% 75%,
+    1% 70%,
+    1% 40%,
+    0% 35%
+  );
+}
+
 .clipPath-imageCard {
   clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 50% 90%, 40% 100%, 0% 100%);
 }
@@ -121,4 +173,38 @@ body {
 
 .animation-flux {
   animation: flux 4s linear infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sélection au clavier visible partout.
+   Les formes découpées (clip-path) masquent le contour : on retire la
+   découpe le temps du focus pour que le contour reste visible. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+.clipPath-Button:focus-visible,
+.clipPath-Button-Simple:focus-visible,
+.clipPath-Button-Double:focus-visible {
+  clip-path: none;
+}
+
+/* Respecte le réglage système « réduire les animations » */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

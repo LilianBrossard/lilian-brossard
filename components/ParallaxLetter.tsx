@@ -1,7 +1,11 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 
 interface ParallaxLetterProps {
   letter: string;
@@ -10,21 +14,20 @@ interface ParallaxLetterProps {
 }
 
 const ParallaxLetter = ({ letter, index, isPrimary }: ParallaxLetterProps) => {
-  const ref = useRef<HTMLSpanElement>(null);
   const { scrollYProgress } = useScroll();
+  const reduceMotion = useReducedMotion();
 
   // Chaque lettre a un décalage différent basé sur son index
   const y = useTransform(
     scrollYProgress,
     [0, 0.3], // modfier ces valeurs pour ajuster le timing
-    [0, -50 * ((index % 3) + 1)] // Variation du mouvement selon la position
+    [0, reduceMotion ? 0 : -50 * ((index % 3) + 1)] // Variation du mouvement selon la position
   );
 
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
 
   return (
     <motion.span
-      ref={ref}
       style={{ y, opacity, display: "inline" }}
       className={isPrimary ? "text-(--primary)" : ""}
     >

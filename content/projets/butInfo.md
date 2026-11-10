@@ -6,6 +6,8 @@ title:
   DEU: "Datenbank"
 
 date: "2024-01-20"
+tags: ["PostgreSQL"]
+context: "etudes"
 description:
   FRA: "Création d'une base de données représentant une formation de BUT Informatique."
   ENG: "Creation of a database representing a Computer Science Bachelor's technical program."
@@ -46,7 +48,7 @@ details:
       SPA: "Este proyecto en pareja me permitió colaborar de manera eficaz: dividir las tareas, revisar el trabajo del otro y adaptarnos continuamente a las exigencias del proyecto."
       DEU: "Dieses Zwei-Personen-Projekt ermöglichte mir eine effiziente Zusammenarbeit: Aufgabenverteilung, gegenseitige Überprüfung der Ergebnisse und kontinuierliche Anpassung an die Projektanforderungen."
 
-images: ["BDD_SQL.jpg"]
+images: ["BDD_SQL.webp"]
 git: "https://github.com/LilianBrossard/butinfoSQL"
 site: null
 ---

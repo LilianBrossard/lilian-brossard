@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Circuit() {
   return (
     <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
       <defs>

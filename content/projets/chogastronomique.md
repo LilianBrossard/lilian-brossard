@@ -5,6 +5,7 @@ title:
   SPA: "Cho'Gastronomique"
   DEU: "Cho'Gastronomique"
 date: "2024-10-10"
+tags: ["Next.js", "React", "TypeScript"]
 description:
   FRA: "J'ai créé un site très visuel pour présenter des recettes de cuisine."
   ENG: "I created a highly visual website to showcase cooking recipes."
@@ -62,10 +63,10 @@ details:
 
 images:
   [
-    "chogastronomique1.png",
-    "chogastronomique2.png",
-    "chogastronomique3.png",
-    "chogastronomique4.png",
+    "chogastronomique1.webp",
+    "chogastronomique2.webp",
+    "chogastronomique3.webp",
+    "chogastronomique4.webp",
   ]
 git: "https://github.com/LilianBrossard/ChoGastronomique"
 site: "https://cho-gastronomique.vercel.app/"

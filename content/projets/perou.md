@@ -6,6 +6,7 @@ title:
   DEU: "Peru"
 
 date: "2024-03-24"
+tags: ["Astro", "Hygraph", "Tailwind"]
 description:
   FRA: "Ici, je présente la création d’un pays dans un jeu vidéo."
   ENG: "Here, I showcase the creation of a country within a video game."
@@ -73,7 +74,7 @@ details:
       SPA: "Para concluir, este proyecto me aportó sólidos conocimientos sobre Hygraph y Tailwind CSS."
       DEU: "Abschließend vermittelte mir dieses Projekt fundierte Kenntnisse in Hygraph und Tailwind CSS."
 
-images: ["Perou1.png", "Perou2.png", "Perou3.png", "Perou4.png", "Perou5.png"]
+images: ["Perou1.webp", "Perou2.webp", "Perou3.webp", "Perou4.webp", "Perou5.webp"]
 git: "https://github.com/LilianBrossard/Perou"
 site: "https://perou.vercel.app/"
 ---

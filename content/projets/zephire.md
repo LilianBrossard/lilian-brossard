@@ -5,6 +5,7 @@ title:
   SPA: "Zephire"
   DEU: "Zephire"
 date: "2024-09-28"
+tags: ["Next.js", "React", "Tailwind", "API"]
 description:
   FRA: "J'ai créé un site de météo en direct à partir de n'importe quel lieu."
   ENG: "I created a live weather website accessible from any location."
@@ -61,7 +62,7 @@ details:
       SPA: "Este proyecto me permitió reforzar mis habilidades de desarrollo front-end con React y Next.js, así como mi capacidad para gestionar y optimizar APIs para un uso eficiente de los datos."
       DEU: "Dieses Projekt half mir, meine Frontend-Entwicklungsfähigkeiten mit React und Next.js zu stärken sowie meine Fähigkeit, APIs zu verwalten und für eine effiziente Datennutzung zu optimieren."
 
-images: ["zephire1.png", "zephire2.png", "zephire3.png", "zephire4.png"]
+images: ["zephire1.webp", "zephire2.webp", "zephire3.webp", "zephire4.webp"]
 git: "https://github.com/LilianBrossard/zephire"
 site: "https://zephire.vercel.app/"
 ---

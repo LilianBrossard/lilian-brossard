@@ -5,6 +5,8 @@ title:
   SPA: "Anvil Aerospace"
   DEU: "Anvil Aerospace"
 date: "2024-01-27"
+tags: ["Astro"]
+context: "perso"
 description:
   FRA: "J'ai travaillé sur un site de référencement de vaisseaux fictifs."
   ENG: "I worked on a website that catalogs fictional spacecraft."
@@ -51,7 +53,7 @@ details:
       SPA: "Desarrollé varias funcionalidades clave: un carrusel para visualizar naves, animaciones ligeras y una integración limpia con Astro. Esto reforzó mis habilidades en diseño, desarrollo y optimización de interfaces web."
       DEU: "Ich entwickelte mehrere zentrale Funktionen: ein Karussell zur Anzeige der Raumschiffe, leichte Animationen und eine saubere Integration mit Astro. Dies stärkte meine Fähigkeiten in der Gestaltung, Entwicklung und Optimierung von Weboberflächen."
 
-images: ["anvil1.png", "anvil2.png", "anvil3.png", "anvil4.png"]
+images: ["anvil1.webp", "anvil2.webp", "anvil3.webp", "anvil4.webp"]
 git: "https://github.com/LilianBrossard/anvil"
 site: "https://lilianbrossard.github.io/anvil/"
 ---

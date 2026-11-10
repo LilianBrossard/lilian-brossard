@@ -1,13 +1,35 @@
 "use client";
 import Translate from "@/utils/Translate";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
+const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ des faisceaux (une par bouton)
+const beamCount = 120; // Nombre de faisceaux
+
+// Pseudo-aléatoire déterministe (calcul entier) : même résultat côté serveur
+// et navigateur, contrairement à Math.random() ou Math.sin().
+function pseudoRandom(n: number) {
+  let x = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b);
+  x ^= x >>> 13;
+  x = Math.imul(x, 0xc2b2ae35);
+  x ^= x >>> 16;
+  return (x >>> 0) / 4294967296;
+}
+
+// Classes des panneaux d'info : sur grand écran ils sont superposés et on
+// joue sur l'opacité, sur petit écran seul le panneau actif est affiché.
+function panelClass(active: boolean) {
+  return `relative col-start-1 row-start-1 p-6 lg:p-8 text-foreground transition-opacity duration-300 ${
+    active
+      ? "block opacity-100"
+      : "hidden xl:block xl:opacity-0 xl:invisible xl:pointer-events-none"
+  }`;
+}
 
 export default function Apropos() {
-  const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ possibles
-  const [originY, setOriginY] = useState(listOriginY[0]); // Position verticale de départ
-  const beamCount = 120; // Nombre de faisceaux
-  const [infoVisible, setInfoVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const originY = listOriginY[activeIndex];
 
   const outilsTechniques = [
     ["Next.js", "/outils/nextjs.svg"],
@@ -26,99 +48,20 @@ export default function Apropos() {
     ["Linux", "/outils/linux.svg"],
     ["Shadcn", "/outils/shadcn.png"],
     ["Hygraph", "/outils/hygraph.jpg"],
+    ["Astro", "/outils/astro.svg"],
+    ["MySQL", "/outils/mysql.svg"],
+    ["Figma", "/outils/figma.svg"],
+    ["Jira", "/outils/jira.svg"],
   ];
 
-  const RefInfo = useRef<HTMLDivElement>(null);
-  const RefVisibleInfo = useRef<HTMLDivElement>(null);
-  const RefButtons = useRef<HTMLDivElement>(null);
-
-  function ChangePermanentOrigin(newOriginY: number) {
-    setOriginY(listOriginY[newOriginY]);
-    setInfoVisible(true);
-    // console.log("clicked : ", listOriginY[newOriginY]);
+  function selectSection(index: number) {
+    setActiveIndex(index);
   }
-  // block xl:block opacity-100 xl:opacity-100
-  useEffect(() => {
-    if (RefInfo.current) {
-      const children = RefInfo.current.children;
-      for (let i = 0; i < children.length; i++) {
-        const currentIndex = listOriginY.indexOf(originY);
-        if (i === currentIndex) {
-          children[i].classList.add(
-            "xl:opacity-100",
-            "pointer-events-auto",
-            "block",
-            "xl:block"
-          );
-          children[i].classList.remove(
-            "xl:opacity-0",
-            "pointer-events-none",
-            "hidden",
-            "xl:block"
-          );
-        } else {
-          children[i].classList.remove(
-            "xl:opacity-100",
-            "pointer-events-auto",
-            "block",
-            "xl:block"
-          );
-          children[i].classList.add(
-            "xl:opacity-0",
-            "pointer-events-none",
-            "hidden",
-            "xl:block"
-          );
-        }
-      }
-    }
-  }, [originY]);
-
-  useEffect(() => {
-    if (RefVisibleInfo.current) {
-      if (infoVisible) {
-        RefVisibleInfo.current.classList.remove("-translate-x-[140vh]");
-        RefVisibleInfo.current.classList.add("translate-x-0");
-      } else {
-        RefVisibleInfo.current.classList.add("-translate-x-[140vh]");
-        RefVisibleInfo.current.classList.remove("translate-x-0");
-      }
-    }
-  }, [infoVisible]);
-
-  useEffect(() => {
-    if (RefButtons.current) {
-      const children = RefButtons.current.children;
-      for (let i = 0; i < children.length; i++) {
-        const currentIndex = listOriginY.indexOf(originY) + 1;
-        if (i === currentIndex && currentIndex !== 0) {
-          const icones = [children[i].children[0], children[i].children[1]];
-          icones.forEach((icon) => {
-            if (icon) {
-              icon.classList.add("bg-(--primary)", "animate-pulse");
-              icon.classList.remove("bg-(--foreground-secondary)");
-            }
-          });
-        } else if (currentIndex !== 0) {
-          const icones = [children[i].children[0], children[i].children[1]];
-          icones.forEach((icon) => {
-            if (icon) {
-              icon.classList.remove("bg-(--primary)", "animate-pulse");
-              icon.classList.add("bg-(--foreground-secondary)");
-            }
-          });
-        }
-      }
-    }
-  }, [originY]);
 
   return (
-    <div className="w-full h-[80vh] relative flex flex-row">
-      <div
-        ref={RefButtons}
-        className="w-full xl:w-1/3 h-full relative flex flex-col justify-around px-4 xl:p-0 xl:pl-16"
-      >
-        <div className="w-3/4 h-5/6 left-1/6 flex justify-center items-center absolute bg-foreground -z-10 p-2 xl:p-4">
+    <div className="w-full max-w-[1600px] mx-auto relative flex flex-col xl:flex-row gap-6 xl:gap-0 px-4 md:px-8 xl:px-0 xl:pr-16 py-8 xl:py-12">
+      <div className="w-full xl:w-1/3 relative grid grid-cols-2 gap-3 xl:flex xl:flex-col xl:justify-around xl:gap-6 xl:pl-16">
+        <div className="hidden xl:flex w-3/4 h-5/6 left-1/6 justify-center items-center absolute bg-foreground -z-10 p-4">
           <div className="bg-background w-full h-full"></div>
         </div>
         {(
@@ -126,6 +69,7 @@ export default function Apropos() {
             [
               // https://www.svgrepo.com/svg/69867/graduation-diploma
               <svg
+                key="formation"
                 fill="var(--foreground)"
                 height="100%"
                 width="100%"
@@ -163,6 +107,7 @@ export default function Apropos() {
             [
               // https://www.svgrepo.com/svg/440005/person
               <svg
+                key="profil"
                 viewBox="0 0 24 24"
                 height="100%"
                 width="100%"
@@ -195,6 +140,7 @@ export default function Apropos() {
             [
               // https://www.svgrepo.com/svg/456202/computer-memory
               <svg
+                key="competences"
                 viewBox="0 0 24 24"
                 height="100%"
                 width="100%"
@@ -289,6 +235,7 @@ export default function Apropos() {
             [
               // https://www.svgrepo.com/svg/90790/science
               <svg
+                key="complementaires"
                 fill="var(--foreground)"
                 height="100%"
                 width="100%"
@@ -326,60 +273,32 @@ export default function Apropos() {
         ).map(([icon, dict], index) => (
           <button
             key={index}
-            className="w-full relative p-1 xl:p-2 bg-(--foreground-secondary) cursor-pointer hover:bg-foreground transition-colors duration-300 group"
-            onClick={() => ChangePermanentOrigin(index)}
+            className={`w-full relative p-1 xl:p-2 cursor-pointer hover:bg-foreground transition-colors duration-300 group ${index === activeIndex ? "bg-(--primary) xl:bg-(--foreground-secondary)" : "bg-(--foreground-secondary)"}`}
+            onClick={() => selectSection(index)}
+            aria-pressed={index === activeIndex}
           >
-            {index === 0 && (
-              <>
-                <div className="absolute hidden xl:block top-6 left-6 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
-                <div className="absolute hidden xl:block top-6 left-14 bg-(--primary) animate-pulse w-4 h-4 z-10 "></div>
-              </>
-            )}
-            {index !== 0 && (
-              <>
-                <div className="absolute hidden xl:block top-6 left-6 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
-                <div className="absolute hidden xl:block top-6 left-14 bg-(--foreground-secondary) w-4 h-4 z-10"></div>
-              </>
-            )}
-            <div className=" clipPath-Button-Double flex flex-row items-center gap-4 p-8 pl-20 w-full text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
-              <div className="w-12 h-12">{icon}</div>
-              <p className="text-2xl font-semibold">
-                <Translate dict={dict as Partial<Record<string, string>>} />
+            {/* Les deux petits carrés clignotent sur le bouton actif */}
+            {["left-3", "left-8"].map((left) => (
+              <div
+                key={left}
+                className={`absolute hidden xl:block top-3 ${left} w-3 h-3 z-10 ${
+                  index === activeIndex
+                    ? "bg-(--primary) animate-pulse"
+                    : "bg-(--foreground-secondary)"
+                }`}
+              ></div>
+            ))}
+            <div className="clipPath-Button-Double h-full flex flex-col xl:flex-row items-center gap-2 xl:gap-4 px-3 py-4 xl:py-5 xl:pl-14 xl:pr-6 w-full text-center xl:text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
+              <div className="w-8 h-8 xl:w-10 xl:h-10 shrink-0">{icon}</div>
+              <p className="text-sm sm:text-base xl:text-xl font-semibold leading-tight">
+                <Translate dict={dict} />
               </p>
             </div>
           </button>
         ))}
       </div>
-      <div
-        className="w-full xl:w-2/3 h-full absolute xl:relative overflow-hidden mr-16 flex flex-row -translate-x-[140vh] xl:translate-x-0 transition-transform duration-500 xl:duration-0"
-        ref={RefVisibleInfo}
-      >
-        <div
-          className="absolute block xl:hidden top-4 right-4 opacity-100 z-20 cursor-pointer"
-          onClick={() => setInfoVisible(false)}
-        >
-          <svg
-            fill="var(--foreground)"
-            viewBox="0 0 16 16"
-            width="48"
-            height="48"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
-              <path
-                d="M0 14.545L1.455 16 8 9.455 14.545 16 16 14.545 9.455 8 16 1.455 14.545 0 8 6.545 1.455 0 0 1.455 6.545 8z"
-                fillRule="evenodd"
-              ></path>
-            </g>
-          </svg>
-        </div>
-        <div className="relative hidden xl:block w-80 h-full">
+      <div className="w-full xl:w-2/3 relative flex flex-row overflow-hidden">
+        <div className="relative hidden xl:block w-40 2xl:w-64 shrink-0">
           {/* faisceaux */}
           {Array.from({ length: beamCount }).map((_, i) => {
             const minY = -1.35 * originY; // Angle plus grand vers le haut
@@ -389,34 +308,33 @@ export default function Apropos() {
             const angle = Math.atan2(deltaY, 100) * (180 / Math.PI);
             const length = Math.sqrt(100 * 100 + deltaY * deltaY);
 
-            const randomWidth = length * (1 + Math.random() * 4);
+            // Longueur variable, différente pour chaque section
+            const randomWidth =
+              length * (1 + pseudoRandom(i + activeIndex * beamCount) * 4);
             return (
               <div
                 key={i}
                 className="absolute left-0 h-px bg-(--primary) opacity-40"
-                suppressHydrationWarning={true}
                 style={{
                   top: `${originY}%`,
-                  width: `${randomWidth}%`,
+                  // Arrondis pour que serveur et navigateur produisent le même texte
+                  width: `${randomWidth.toFixed(2)}%`,
                   transformOrigin: "left center",
-                  transform: `rotate(${angle}deg)`,
+                  transform: `rotate(${angle.toFixed(3)}deg)`,
                   transition: "all 0ms ease-in-out",
-                  boxShadow: "0 0 8px rgba(255, 255, 0, 0.5)",
+                  boxShadow: "0 0 8px var(--glow)",
                 }}
               />
             );
           })}
         </div>
-        <div className="flex-1 h-full z-10 relative">
+        <div className="flex-1 min-w-0 z-10 relative">
           <div className="absolute top-0 left-0 w-full h-full bg-background opacity-98 xl:opacity-70"></div>
           <div className="absolute top-4 left-4 w-1/4 h-1/4 border-t-(--primary) border-t-4 border-l-(--primary) border-l-4 z-10"></div>
           <div className="absolute bottom-4 right-4 w-1/6 h-1/6 border-b-(--primary) border-b-4 border-r-(--primary) border-r-4 z-10"></div>
-          <div
-            ref={RefInfo}
-            className="w-full h-full relative border-(--primary) border-4 overflow-y-scroll xl:overflow-y-auto"
-          >
-            <div className="absolute p-8 w-full h-full text-foreground block xl:block opacity-100 xl:opacity-100 pointer-events-auto transition-opacity duration-300">
-              <h3 className="text-4xl font-bold mb-4">
+          <div className="w-full relative border-(--primary) border-4 grid">
+            <div className={panelClass(activeIndex === 0)}>
+              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
                 <Translate
                   dict={{
                     FRA: "Formation",
@@ -426,17 +344,50 @@ export default function Apropos() {
                   }}
                 />
               </h3>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
-                    FRA: "Je suis actuellement en dernière année de BUT Informatique, parcours Data et IA, à l'IUT de Lannion.",
-                    ENG: "I am currently in my final year of a Bachelor's in Computer Science, specializing in Data and AI, at the IUT of Lannion.",
-                    SPA: "Actualmente estoy en mi último año del Grado en Informática, con especialización en Datos e Inteligencia Artificial, en el IUT de Lannion.",
-                    DEU: "Ich befinde mich derzeit im letzten Jahr meines Informatikstudiums mit dem Schwerpunkt Daten und KI am IUT von Lannion.",
+                    FRA: "Je suis diplômé d'un Bachelor Universitaire de Technologie (BUT) Informatique, parcours Data et IA, obtenu en 2026 à l'",
+                    ENG: "I hold a Bachelor of Technology (BUT) in Computer Science, Data and AI track, obtained in 2026 from the ",
+                    SPA: "Soy titulado en un Bachelor Universitario de Tecnología (BUT) en Informática, especialización en Datos e IA, obtenido en 2026 en el ",
+                    DEU: "Ich habe 2026 meinen Bachelor of Technology (BUT) in Informatik mit dem Schwerpunkt Daten und KI am ",
+                  }}
+                />
+                <Link
+                  href="https://iut-lannion.univ-rennes.fr/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-(--accentuation) underline hover:text-foreground transition-colors duration-200"
+                >
+                  <Translate
+                    dict={{
+                      FRA: "Institut Universitaire de Technologie (IUT) de Lannion",
+                      ENG: "University Institute of Technology (IUT) of Lannion",
+                      SPA: "Instituto Universitario de Tecnología (IUT) de Lannion",
+                      DEU: "Universitätsinstitut für Technologie (IUT) in Lannion",
+                    }}
+                  />
+                </Link>
+                <Translate
+                  dict={{
+                    FRA: ".",
+                    ENG: ".",
+                    SPA: ".",
+                    DEU: " abgeschlossen.",
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
+                <Translate
+                  dict={{
+                    FRA: "Ces trois années de formation (2023 - 2026) m'ont permis d'acquérir des compétences en programmation, systèmes et réseaux, ainsi qu'en anglais, droit, management et communication.",
+                    ENG: "These three years of training (2023 - 2026) allowed me to develop skills in programming, systems and networks, as well as in English, law, management and communication.",
+                    SPA: "Estos tres años de formación (2023 - 2026) me permitieron adquirir competencias en programación, sistemas y redes, así como en inglés, derecho, gestión y comunicación.",
+                    DEU: "Diese dreijährige Ausbildung (2023 - 2026) hat mir Kompetenzen in Programmierung, Systemen und Netzwerken sowie in Englisch, Recht, Management und Kommunikation vermittelt.",
+                  }}
+                />
+              </p>
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "Je suis diplômé d'un baccalauréat général avec les spécialisations physique-chimie et NSI (numérique et sciences informatiques), ainsi que des options de droit et de robotique, obtenu en 2023.",
@@ -446,7 +397,7 @@ export default function Apropos() {
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "J'ai également obtenu le PSC1 (diplôme de premiers secours) en 2019.",
@@ -457,8 +408,8 @@ export default function Apropos() {
                 />
               </p>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
-              <h3 className="text-4xl font-bold mb-4">
+            <div className={panelClass(activeIndex === 1)}>
+              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
                 <Translate
                   dict={{
                     FRA: "Qui suis-je ?",
@@ -468,17 +419,17 @@ export default function Apropos() {
                   }}
                 />
               </h3>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
-                    FRA: "Je suis passionné depuis longtemps par l'informatique, la programmation et plus récemment par le design. Je poursuis mes études dans l'objectif d'en apprendre toujours plus sur ces sujets.",
-                    ENG: "I have been passionate about computer science, programming, and more recently, design for a long time. I am continuing my studies with the goal of constantly learning more about these fields.",
-                    SPA: "Desde hace mucho tiempo me apasiona la informática, la programación y, más recientemente, el diseño. Continúo mis estudios con el objetivo de seguir aprendiendo cada vez más sobre estos temas.",
-                    DEU: "Ich begeistere mich seit langem für Informatik, Programmierung und in jüngerer Zeit auch für Design. Ich setze mein Studium mit dem Ziel fort, in diesen Bereichen immer mehr zu lernen.",
+                    FRA: "Je suis passionné depuis longtemps par l'informatique, la programmation et plus récemment par le design. Je continue d'apprendre chaque jour pour toujours progresser sur ces sujets.",
+                    ENG: "I have been passionate about computer science, programming, and more recently, design for a long time. I keep learning every day to keep improving in these fields.",
+                    SPA: "Desde hace mucho tiempo me apasiona la informática, la programación y, más recientemente, el diseño. Sigo aprendiendo cada día para seguir progresando en estos temas.",
+                    DEU: "Ich begeistere mich seit langem für Informatik, Programmierung und in jüngerer Zeit auch für Design. Ich lerne jeden Tag dazu, um mich in diesen Bereichen stetig weiterzuentwickeln.",
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "Je vis entre Lorient et Lannion en Bretagne. Et j'aime écouter de la musique, jouer à des jeux vidéo, regarder des films et des séries.",
@@ -488,7 +439,7 @@ export default function Apropos() {
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "J'adore créer, de tout ! J'ai pour objectif de toujours m'améliorer.",
@@ -498,7 +449,7 @@ export default function Apropos() {
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "De plus, j'aime travailler en équipe : cela permet d'échanger, d'obtenir des retours et de s'adapter en conséquence pour produire le meilleur résultat possible.",
@@ -508,7 +459,7 @@ export default function Apropos() {
                   }}
                 />
               </p>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "À l'issue de mon BUT Informatique, mon ambition est d'intégrer le monde professionnel en tant que développeur dès qu'une opportunité stimulante se présentera. J'ai à cœur de mettre mes compétences au service de projets concrets et innovants au sein d'une équipe dynamique. À plus long terme, j'envisage d'évoluer vers le statut de développeur freelance, afin de relever des défis variés et de mettre mon expertise au profit d'une clientèle diversifiée en toute autonomie.",
@@ -519,8 +470,8 @@ export default function Apropos() {
                 />
               </p>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
-              <h3 className="text-4xl font-bold mb-4">
+            <div className={panelClass(activeIndex === 2)}>
+              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
                 <Translate
                   dict={{
                     FRA: "Compétences informatiques",
@@ -530,7 +481,7 @@ export default function Apropos() {
                   }}
                 />
               </h3>
-              <p className="py-4 text-xl">
+              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                 <Translate
                   dict={{
                     FRA: "Au cours de mes études et de mes projets personnels, j'ai acquis des compétences en programmation dans plusieurs langages et outils.",
@@ -552,7 +503,7 @@ export default function Apropos() {
                         alt={nom}
                         width={48}
                         height={48}
-                        className="grayscale w-12 h-12 object-contain"
+                        className="grayscale w-8 h-8 sm:w-10 sm:h-10 object-contain"
                       />
                       <div
                         className="absolute inset-0 bg-(--primary) mix-blend-multiply"
@@ -564,13 +515,13 @@ export default function Apropos() {
                         }}
                       ></div>
                     </div>
-                    <p className="text-md md:text-xl text-background">{nom}</p>
+                    <p className="text-sm md:text-base text-background">{nom}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="absolute p-8 w-full h-full text-foreground hidden xl:block opacity-100 xl:opacity-0 pointer-events-none transition-opacity duration-300">
-              <h3 className="text-4xl font-bold mb-4">
+            <div className={panelClass(activeIndex === 3)}>
+              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
                 <Translate
                   dict={{
                     FRA: "Compétences complémentaires",
@@ -579,18 +530,19 @@ export default function Apropos() {
                     DEU: "Ergänzende Kenntnisse",
                   }}
                 />
-                <p className="py-4 text-xl font-light">
+              </h3>
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
-                      FRA: "En BUT Informatique, je suis également formé à de nombreuses compétences transversales.",
-                      ENG: "In my Bachelor's in Computer Science, I am also trained in many cross-disciplinary skills.",
-                      SPA: "En mi Grado en Informática, también estoy formado en muchas competencias transversales.",
-                      DEU: "Im Rahmen meines Informatikstudiums werde ich auch in vielen übergreifenden Kompetenzen ausgebildet.",
+                      FRA: "Mon BUT Informatique m'a également formé à de nombreuses compétences transversales.",
+                      ENG: "My Bachelor of Technology in Computer Science also trained me in many cross-disciplinary skills.",
+                      SPA: "Mi Bachelor en Informática también me formó en muchas competencias transversales.",
+                      DEU: "Mein Informatikstudium hat mich auch in vielen übergreifenden Kompetenzen ausgebildet.",
                     }}
                   />
                 </p>
 
-                <p className="py-4 text-xl font-light">
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
                       FRA: "Je suis notamment formé en gestion de projet, et j'ai pu mener des projets concrets durant ma formation. L'utilisation de méthodologies agiles comme Scrum ou Kanban fait partie de mes compétences.",
@@ -600,7 +552,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl font-light">
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
                       FRA: "J'ai également des compétences en management d'équipe, répartition des tâches et gestion des conflits.",
@@ -610,7 +562,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl font-light">
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
                       FRA: "J'ai des notions en communication, notamment en communication interne à l'entreprise et en gestion des plans de communication lors de changements liés au numérique.",
@@ -620,7 +572,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl font-light">
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
                       FRA: "J'ai pu réaliser, durant ma formation, des présentations en anglais technique et non technique, ce qui m'a permis d'améliorer mes compétences orales dans cette langue.",
@@ -630,7 +582,7 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-                <p className="py-4 text-xl font-light">
+                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
                   <Translate
                     dict={{
                       FRA: "Enfin, j'ai les bases du droit informatique liées à la protection des données (RGPD, CNIL), à la propriété intellectuelle et aux contrats.",
@@ -640,7 +592,6 @@ export default function Apropos() {
                     }}
                   />
                 </p>
-              </h3>
             </div>
           </div>
         </div>

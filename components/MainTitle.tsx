@@ -1,35 +1,33 @@
 "use client";
 import Link from "next/link";
-import { useLangContext } from "@/contexts/LangContext";
-import { div } from "framer-motion/client";
-type LangType = "ENG" | "FRA" | "SPA" | "DEU";
+import { useTranslate } from "@/contexts/LangContext";
+import type { Dict } from "@/utils/i18n";
+
+export interface SectionLink {
+  href: string;
+  label: Dict;
+}
 
 interface MainTitleProps {
-  titre?: Partial<Record<LangType, string>>;
-  postion?: number;
-  links?: string[];
+  titre: Dict;
+  /** Position du titre parmi les sections (1 = première). */
+  position?: number;
+  /** Sections de la page : les autres sont affichées en carrés cliquables. */
+  sections?: SectionLink[];
+  as?: "h1" | "h2";
 }
 
 export default function MainTitle({
-  titre = {
-    FRA: "Undifind",
-    ENG: "Undifind",
-    SPA: "Undifind",
-    DEU: "Undifind",
-  },
-  postion = 1,
-  links = ["/"],
+  titre,
+  position = 1,
+  sections,
+  as: Heading = "h2",
 }: MainTitleProps) {
-  const { LangVariable } = useLangContext();
-  const translateText = (
-    dict: Partial<Record<LangType, string>>,
-    fallback = ""
-  ): string => {
-    return dict[LangVariable] || fallback;
-  };
+  const t = useTranslate();
+  const items = sections ?? [{ href: "#", label: titre }];
 
   return (
-    <div className="relative flex flex-row justify-center lg:justify-around items-center text-3xl lg:text-6xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
+    <div className="relative flex flex-row justify-center lg:justify-around items-center py-2 text-3xl lg:text-6xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
       <div className="absolute w-full h-full left-0 top-0 flex flex-col justify-center gap-1 lg:gap-2">
         {Array.from({ length: 3 }).map((_, index) => (
           <hr
@@ -42,23 +40,32 @@ export default function MainTitle({
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
-            className="w-1/12 animation-flux h-1 bg-foreground border-0 shadow-[0_0_10px_rgba(255,250,0,1),0_0_20px_rgba(255,250,0,0.5)]"
+            className="w-1/12 animation-flux h-1 bg-foreground border-0 shadow-[0_0_10px_var(--primary),0_0_20px_var(--glow)]"
           />
         ))}
       </div>
-      {links.map((element, index) => (
-        <div key={index} className="z-10 lg:p-2 bg-background">
-          <Link href={element} className="hover:animate-pulse">
-            {postion === index + 1 ? (
-              <h2 className=" p-2 bg-background lg:p-0 lg:px-1">
-                {translateText(titre)}
-              </h2>
-            ) : (
-              <div className="hidden lg:block w-12 h-12 bg-foreground opacity-80"></div>
-            )}
-          </Link>
-        </div>
-      ))}
+      {items.map((section, index) =>
+        index + 1 === position ? (
+          <div key={section.href} className="z-10 bg-background px-3 lg:px-4">
+            <Heading className="py-1">{t(titre)}</Heading>
+          </div>
+        ) : (
+          <div key={section.href} className="z-10 hidden lg:block bg-background px-2">
+            <Link
+              href={section.href}
+              aria-label={t(section.label)}
+              className="group/sq relative block w-12 h-12 border-2 border-(--muted) bg-background hover:bg-foreground hover:border-foreground focus-visible:bg-foreground transition-colors duration-200"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-3 px-2 py-1 text-sm font-normal normal-case tracking-normal font-(family-name:--font-lato) bg-(--background-secondary) text-foreground opacity-0 group-hover/sq:opacity-100 group-focus-visible/sq:opacity-100 transition-opacity duration-200"
+              >
+                {t(section.label)}
+              </span>
+            </Link>
+          </div>
+        )
+      )}
     </div>
   );
 }

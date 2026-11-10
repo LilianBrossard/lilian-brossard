@@ -6,6 +6,7 @@ title:
   DEU: "Shallow Red"
 
 date: "2025-11-20"
+tags: ["Next.js", "TypeScript"]
 
 description:
   FRA: "Shallow Red est une IA d’échecs entièrement locale, intégrée dans un site Next.js, permettant de jouer contre un moteur d’analyse inspiré du fonctionnement de Deep Blue."
@@ -74,7 +75,7 @@ details:
       SPA: "Este proyecto representa mi primera implementación completa e independiente de un motor de ajedrez, combinando algoritmia, optimización, ergonomía e IA integrada."
       DEU: "Dieses Projekt stellt meine erste vollständige und eigenständige Implementierung einer Schach-Engine dar, die Algorithmik, Optimierung, Benutzerfreundlichkeit und eingebettete KI vereint."
 
-images: ["ShallowRed1.png", "ShallowRed2.png", "ShallowRed3.png"]
+images: ["ShallowRed1.webp", "ShallowRed2.webp", "ShallowRed3.webp"]
 git: "https://github.com/LilianBrossard/shallow-red"
 site: "https://shallow-red.vercel.app/"
 ---

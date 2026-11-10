@@ -1,49 +1,76 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Circuit from "@/components/Circuit";
-import LinkHero from "@/components/LinkHero";
-import LinkProjets from "@/components/LinkProjets";
 import ParallaxLetter from "@/components/ParallaxLetter";
 import Translate from "@/utils/Translate";
-import MainTitle from "@/components/MainTitle";
+import MainTitle, { type SectionLink } from "@/components/MainTitle";
 import Apropos from "@/components/Apropos";
+import ExperiencesSection from "@/components/ExperiencesSection";
+import ContactSection from "@/components/ContactSection";
+import ActionButton from "@/components/ActionButton";
+import {
+  ArrowRightIcon,
+  DownloadIcon,
+  ExternalIcon,
+  GithubIcon,
+  MailIcon,
+} from "@/components/icons";
 
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 
 import { getAllProjects } from "@/utils/MarkdownReader";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
+// Sections de l'accueil, dans l'ordre (utilisées par les titres de section)
+const sections: SectionLink[] = [
+  { href: "#apropos", label: { FRA: "À propos", ENG: "About", SPA: "Acerca de", DEU: "Über Mich" } },
+  { href: "#experiences", label: { FRA: "Expériences", ENG: "Experience", SPA: "Experiencia", DEU: "Erfahrung" } },
+  { href: "#projects", label: { FRA: "Projets", ENG: "Projects", SPA: "Proyectos", DEU: "Projekte" } },
+  { href: "#contact", label: { FRA: "Contact", ENG: "Contact", SPA: "Contacto", DEU: "Kontakt" } },
+];
+
+// Décalage des ancres sous la barre de navigation collante
+const anchor = "scroll-mt-16 lg:scroll-mt-20";
 
 export default function Home() {
   const projects = getAllProjects();
   const nom = "Lilian Brossard".split("");
 
   return (
-    <div className="w-screen">
-      <h1 className="sr-only">Lilian Brossard Portfolio</h1>
-      <main className="flex flex-col w-full h-full">
-        {/* Hero Section ==============================================================================================================================*/}
-        <section className="sticky top-0 overflow-hidden w-full h-screen bg-background flex flex-col justify-center items-center text-center">
-          <div className="absolute w-full h-screen -z-10 opacity-25">
+    <div className="w-full">
+      <h1 className="sr-only">Lilian Brossard - Portfolio</h1>
+      {/* Barre de navigation visible dès l'arrivée, par-dessus l'en-tête */}
+      <div className="sticky top-0 z-50 h-0">
+        <Navbar />
+      </div>
+      <main className="flex flex-col w-full">
+        {/* En-tête =================================================================================================================================*/}
+        <section className="sticky top-0 overflow-hidden w-full h-[100svh] min-h-[540px] bg-background flex flex-col justify-center items-center text-center">
+          <div className="absolute inset-0 -z-10 opacity-25">
             <Circuit />
           </div>
-          <div className="relative flex flex-row mt-[20vh] items-center justify-around w-full">
-            <div className="hidden lg:flex flex-row justify-center items-center w-1/4">
-              <div className="relative w-60 h-60 group Transition-all">
-                <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
-                <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-4 border-l-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
-                <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 group-hover:scale-110 duration-300"></div>
-                <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-4 border-r-4 border-(--primary) -z-10 scale-110 group-hover:scale-125 duration-300"></div>
-                <Image
-                  src="/portrait.jpg"
-                  alt="portrait lilian brossard"
-                  width={240}
-                  height={240}
-                  className="object-cover group-hover:scale-105 duration-300"
-                />
-              </div>
+          <div className="relative w-full max-w-[1600px] px-6 md:px-12 pt-16 lg:pt-20 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-16">
+            <div className="relative shrink-0 w-24 h-24 sm:w-32 sm:h-32 lg:w-60 lg:h-60 group max-lg:[@media(max-height:760px)]:hidden">
+              <div className="absolute w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-2 border-l-2 lg:border-t-4 lg:border-l-4 border-(--primary) group-hover:scale-110 duration-300"></div>
+              <div className="absolute w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-2 border-l-2 lg:border-t-4 lg:border-l-4 border-(--primary) scale-110 group-hover:scale-125 duration-300"></div>
+              <div className="absolute w-1/2 h-1/2 top-[55%] left-[55%] border-b-2 border-r-2 lg:border-b-4 lg:border-r-4 border-(--primary) group-hover:scale-110 duration-300"></div>
+              <div className="absolute w-1/2 h-1/2 top-[55%] left-[55%] border-b-2 border-r-2 lg:border-b-4 lg:border-r-4 border-(--primary) scale-110 group-hover:scale-125 duration-300"></div>
+              <Image
+                src="/portrait.jpg"
+                alt="Portrait de Lilian Brossard"
+                fill
+                priority
+                sizes="(min-width: 1024px) 240px, 128px"
+                className="object-cover group-hover:scale-105 duration-300"
+              />
             </div>
-            <div className="w-full lg:w-3/4">
-              <h2 className="text-6xl md:text-6xl xl:text-8xl 2xl:text-9xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
+            <div className="flex flex-col items-center gap-4 lg:gap-6 min-w-0">
+              <h2 className="text-5xl sm:text-6xl xl:text-8xl min-[1700px]:text-9xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap leading-none">
                 {nom.map((letter, index) => (
                   <ParallaxLetter
                     key={index}
@@ -53,207 +80,141 @@ export default function Home() {
                   />
                 ))}
               </h2>
-              <p className="text-xl md:text-2xl xl:text-3xl py-8 px-8">
+              <p className="text-sm sm:text-base lg:text-lg font-bold uppercase tracking-[0.35em] text-(--accentuation)">
                 <Translate
                   dict={{
-                    FRA: "Je suis un",
-                    ENG: "I am a",
-                    SPA: "Soy un",
-                    DEU: "Ich bin ein",
+                    FRA: "Développeur",
+                    ENG: "Developer",
+                    SPA: "Desarrollador",
+                    DEU: "Entwickler",
                   }}
-                />{" "}
-                <span className="font-bold text-(--accentuation) relative group md:cursor-help underline">
-                  <Translate
-                    dict={{
-                      FRA: "Étudiant",
-                      ENG: "Student",
-                      SPA: "Estudiante",
-                      DEU: "Student",
-                    }}
-                  />
-                  <span className="hidden md:inline absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Translate
-                      dict={{
-                        FRA: "3ème année BUT Informatique - Parcours Data et IA - IUT de Lannion",
-                        ENG: "3rd year Bachelor's in Computer Science - Data and AI Track - IUT of Lannion",
-                        SPA: "3er año de Licenciatura en Informática - Especialización en Datos e IA - IUT de Lannion",
-                        DEU: "3. Jahr Bachelor in Informatik - Daten- und KI-Schwerpunkt - IUT Lannion",
-                      }}
-                    />
-                  </span>
-                </span>{" "}
+                />
+              </p>
+              <p className="max-w-3xl text-base md:text-lg xl:text-xl leading-relaxed text-(--foreground-secondary)">
                 <Translate
                   dict={{
-                    FRA: "en informatique à la recherche d'un",
-                    ENG: "computer science student looking for a",
-                    SPA: "de informática en busca de un",
-                    DEU: "Informatikstudent auf der Suche nach einem",
+                    FRA: "Diplômé d'un ",
+                    ENG: "Holding a ",
+                    SPA: "Titulado con un ",
+                    DEU: "Als Absolvent eines ",
                   }}
-                />{" "}
-                <span className="font-bold text-(--accentuation) relative group md:cursor-help underline">
+                />
+                <strong className="font-semibold text-foreground">
                   <Translate
                     dict={{
-                      FRA: "Stage",
-                      ENG: "Internship",
-                      SPA: "Pasantía",
-                      DEU: "Praktikum",
+                      FRA: "Bachelor Universitaire de Technologie Informatique",
+                      ENG: "Bachelor of Technology in Computer Science",
+                      SPA: "Bachelor Universitario de Tecnología en Informática",
+                      DEU: "Bachelor of Technology in Informatik",
                     }}
                   />
-                  <span className="hidden md:inline absolute invisible group-hover:visible bg-(--background-secondary) text-foreground text-sm py-2 px-3 bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Translate
-                      dict={{
-                        FRA: "Stage de 14 semaines à partir de mars 2026",
-                        ENG: "14-week internship starting from March 2026",
-                        SPA: "Pasantía de 14 semanas a partir de marzo de 2026",
-                        DEU: "14-wöchiges Praktikum ab März 2026",
-                      }}
-                    />
-                  </span>
-                </span>
-                {". "}
-                <Link
-                  href="/CV_LilianBrossard.pdf"
-                  download="CV_LilianBrossard.pdf"
+                </strong>
+                <Translate
+                  dict={{
+                    FRA: " à l'",
+                    ENG: " from the ",
+                    SPA: " por el ",
+                    DEU: " am ",
+                  }}
+                />
+                <a
+                  href="https://iut-lannion.univ-rennes.fr/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-(--accentuation-inverse) p-2 clipPath-Button-Double hover:bg-(--accentuation) duration-200 group font-bold text-(--accentuation) relative group underline"
+                  className="font-semibold text-foreground underline decoration-(--accentuation) decoration-2 underline-offset-4 hover:text-(--accentuation) transition-colors duration-200"
                 >
-                  <svg
-                    className="inline-block group-hover:fill-(--accentuation-inverse) duration-200"
-                    fill="var(--accentuation)"
-                    height="24px"
-                    width="24px"
-                    version="1.1"
-                    id="Capa_1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 498.436 498.436"
-                    xmlSpace="preserve"
-                  >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <g>
-                        {" "}
-                        <g>
-                          {" "}
-                          <g>
-                            {" "}
-                            <path d="M389.277,0H74.15v68.25H22.941v181.13h51.187v249.056h401.368V80.653L389.277,0z M293.805,151.125v14.841H257.07v37.49 h-17.731v-87.987h60.355v14.884H257.07v20.773H293.805z M224.261,160.314c0,7.248-0.906,13.482-2.696,18.723 c-2.2,6.385-5.371,11.584-9.405,15.531c-3.128,3.063-7.226,5.371-12.425,7.032c-4.012,1.23-9.232,1.877-15.747,1.877h-33.392 v-88.009h32.399c7.312,0,12.921,0.539,16.76,1.661c5.134,1.553,9.534,4.228,13.201,8.111c3.689,3.883,6.471,8.585,8.434,14.258 C223.312,145.171,224.261,152.052,224.261,160.314z M86.359,170.258v33.241H68.627v-0.022v-88.009h28.452 c10.785,0,17.817,0.453,21.053,1.337c5.004,1.337,9.297,4.185,12.64,8.542c3.451,4.465,5.134,10.181,5.134,17.127 c0,5.436-0.971,9.923-2.934,13.611c-1.941,3.753-4.422,6.601-7.485,8.736c-2.955,2.049-5.997,3.473-9.103,4.12 c-4.293,0.82-10.354,1.316-18.4,1.316H86.359z M446.375,469.186c-25.842,0-317.306,0-343.105,0c0-13.223,0-116.482,0-219.806 h244.613V68.25H103.292c0-20.535,0-34.751,0-39.108c25.756,0,263.983,0,274.531,0c6.989,6.601,60.873,56.968,68.595,64.151 C446.375,105.136,446.375,442.654,446.375,469.186z"></path>{" "}
-                            <path d="M199.066,135.357c-2.157-2.071-4.875-3.408-8.175-4.12c-2.545-0.582-7.334-0.863-14.539-0.863h-7.981v58.22h13.201 c4.94,0,8.499-0.259,10.721-0.841c2.912-0.712,5.285-1.985,7.161-3.667c1.941-1.726,3.451-4.53,4.681-8.456 c1.186-3.969,1.812-9.362,1.812-16.135c0-6.73-0.604-12.015-1.812-15.596C202.884,140.232,201.201,137.406,199.066,135.357z"></path>{" "}
-                            <path d="M114.724,134.882c-1.855-2.071-4.249-3.343-7.118-3.904c-2.049-0.41-6.363-0.604-12.705-0.604h-8.542v24.957h9.621 c7.01,0,11.648-0.431,13.999-1.381c2.373-0.906,4.228-2.33,5.587-4.293c1.337-1.963,1.963-4.228,1.963-6.86 C117.55,139.628,116.687,136.996,114.724,134.882z"></path>{" "}
-                          </g>{" "}
-                        </g>{" "}
-                        <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>{" "}
-                        <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>{" "}
-                        <g> </g> <g> </g> <g> </g>{" "}
-                      </g>{" "}
-                    </g>
-                  </svg>{" "}
                   <Translate
                     dict={{
-                      FRA: "CV",
-                      ENG: "Resume",
-                      SPA: "Reanudar",
-                      DEU: "Lebenslauf",
+                      FRA: "Institut Universitaire de Technologie de Lannion",
+                      ENG: "University Institute of Technology of Lannion",
+                      SPA: "Instituto Universitario de Tecnología de Lannion",
+                      DEU: "Universitätsinstitut für Technologie in Lannion",
                     }}
                   />
-                </Link>
+                </a>
+                <Translate
+                  dict={{
+                    FRA: ", je suis ouvert aux ",
+                    ENG: ", I am open to ",
+                    SPA: ", estoy abierto a ",
+                    DEU: " bin ich offen für ",
+                  }}
+                />
+                <strong className="font-semibold text-foreground">
+                  <Translate
+                    dict={{
+                      FRA: "propositions d'emploi",
+                      ENG: "job offers",
+                      SPA: "ofertas de empleo",
+                      DEU: "Stellenangebote",
+                    }}
+                  />
+                </strong>
+                .
               </p>
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 pt-1">
+                <ActionButton href="/projet" variant="primary" icon={<ArrowRightIcon size={18} />}>
+                  <Translate
+                    dict={{
+                      FRA: "Voir mes projets",
+                      ENG: "See my projects",
+                      SPA: "Ver mis proyectos",
+                      DEU: "Meine Projekte",
+                    }}
+                  />
+                </ActionButton>
+                <ActionButton
+                  href="/CV_LilianBrossard.pdf"
+                  download="CV_LilianBrossard.pdf"
+                  icon={<DownloadIcon size={18} />}
+                >
+                  <Translate
+                    dict={{
+                      FRA: "Télécharger mon CV",
+                      ENG: "Download my resume",
+                      SPA: "Descargar mi CV",
+                      DEU: "Lebenslauf herunterladen",
+                    }}
+                  />
+                </ActionButton>
+                <ActionButton href="#contact" icon={<MailIcon size={18} />}>
+                  <Translate
+                    dict={{
+                      FRA: "Me contacter",
+                      ENG: "Contact me",
+                      SPA: "Contactarme",
+                      DEU: "Kontakt aufnehmen",
+                    }}
+                  />
+                </ActionButton>
+              </div>
             </div>
           </div>
-          <div className="w-full my-16">
-            <hr className="bg-(--primary) w-full h-1 border-0 shadow-[0_0_10px_rgba(255,255,0,0.5),0_0_20px_rgba(255,255,0,0.3)]" />
+          <div className="w-full mt-10 lg:mt-14 [@media(max-height:700px)]:mt-6">
+            <hr className="bg-(--primary) w-full h-1 border-0 shadow-[0_0_10px_var(--glow),0_0_20px_var(--glow-soft)]" />
           </div>
-          <div className="w-full flex justify-center my-8 items-center">
-            <LinkHero />
-          </div>
-          <Link href="/#apropos" className="bounce mt-16 animate-bounce">
+          <Link
+            href="/#apropos"
+            className="mt-6 p-2 animate-bounce [@media(max-height:700px)]:hidden"
+            aria-label="À propos"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="var(--foreground)"
               xmlns="http://www.w3.org/2000/svg"
-              height="48px"
-              width="48px"
-              className="hidden lg:block"
+              height="40px"
+              width="40px"
+              aria-hidden="true"
             >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
+              <path
+                d="M5 15C5 16.8565 5.73754 18.6371 7.05029 19.9498C8.36305 21.2626 10.1435 21.9999 12 21.9999C13.8565 21.9999 15.637 21.2626 16.9498 19.9498C18.2625 18.6371 19 16.8565 19 15V9C19 7.14348 18.2625 5.36305 16.9498 4.05029C15.637 2.73754 13.8565 2 12 2C10.1435 2 8.36305 2.73754 7.05029 4.05029C5.73754 5.36305 5 7.14348 5 9V15Z"
+                stroke="var(--background)"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  d="M5 15C5 16.8565 5.73754 18.6371 7.05029 19.9498C8.36305 21.2626 10.1435 21.9999 12 21.9999C13.8565 21.9999 15.637 21.2626 16.9498 19.9498C18.2625 18.6371 19 16.8565 19 15V9C19 7.14348 18.2625 5.36305 16.9498 4.05029C15.637 2.73754 13.8565 2 12 2C10.1435 2 8.36305 2.73754 7.05029 4.05029C5.73754 5.36305 5 7.14348 5 9V15Z"
-                  stroke="var(--background)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-                <path
-                  d="M12 6V14"
-                  stroke="var(--background)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-                <path
-                  d="M15 11L12 14L9 11"
-                  stroke="var(--background)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-              </g>
-            </svg>
-            <svg
-              viewBox="-0.5 0 20 20"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              fill="var(--foreground)"
-              height="48px"
-              width="48px"
-              className="block lg:hidden"
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <title>scroll_up [#1381]</title>{" "}
-                <desc>Created with Sketch.</desc> <defs> </defs>{" "}
-                <g
-                  id="Page-1"
-                  stroke="none"
-                  strokeWidth="1"
-                  fill="none"
-                  fillRule="evenodd"
-                >
-                  <g
-                    id="Dribbble-Light-Preview"
-                    transform="translate(-420.000000, -760.000000)"
-                    fill="var(--foreground)"
-                  >
-                    <g id="icons" transform="translate(56.000000, 160.000000)">
-                      <path
-                        d="M369.277343,604 C369.859711,604 370.332357,603.552 370.332357,603 L370.332357,601 C370.332357,600.448 369.859711,600 369.277343,600 C368.694975,600 368.222329,600.448 368.222329,601 L368.222329,603 C368.222329,603.552 368.694975,604 369.277343,604 M373.296948,614.464 L371.382097,616.147 C371.049767,616.462 370.332357,616.239 370.332357,615.793 L370.332357,610.657 C370.332357,610.104 369.859711,609.657 369.277343,609.657 C368.694975,609.657 368.222329,610.104 368.222329,610.657 L368.222329,615.791 C368.222329,616.237 367.803488,616.46 367.471159,616.145 L365.726165,614.464 C365.314709,614.073 364.707021,614.073 364.29451,614.464 C363.882,614.854 363.912595,615.488 364.325106,615.879 L367.695877,619.059 L368.079902,619.415 C368.903868,620.195 370.245846,620.195 371.068757,619.415 L374.807728,615.878 C375.220239,615.488 375.231844,614.855 374.820389,614.464 C374.407878,614.074 373.709458,614.074 373.296948,614.464 M382.776252,608.36 L378.654311,610.516 C378.23969,610.787 377.679477,610.731 377.323938,610.394 C376.866061,609.96 376.931472,609.223 377.461089,608.87 L378.719722,608 L369.757375,608 C369.175007,608 368.69814,607.586 368.69814,607.033 C368.69814,606.323 369.376514,606.066 369.748935,606.066 L375.061987,606.059 L375.466057,601.741 C375.802607,600.784 376.75001,600.215 377.793419,600.413 L381.53661,600.745 C382.523048,600.932 382.99253,601.753 382.99253,602.706 L382.99253,607.541 C382.99253,607.87 383.062161,608.174 382.776252,608.36"
-                        id="scroll_up-[#1381]"
-                      ></path>
-                    </g>
-                  </g>
-                </g>
-              </g>
+              ></path>
+              <path d="M12 6V14" stroke="var(--background)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+              <path d="M15 11L12 14L9 11" stroke="var(--background)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
             </svg>
           </Link>
         </section>
@@ -261,30 +222,21 @@ export default function Home() {
           <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
           <div className="absolute h-full w-full bg-background clipPath-Transition-2"></div>
         </div>
-        {/* Nav Section ==============================================================================================================================*/}
-        <div className="block absolute lg:hidden top-[125vh] z-10 w-full h-96 bg-background"></div>
-        <div className="w-full sticky top-0 z-40">
-          <Navbar />
-          <div className="block lg:hidden h-16"></div>
-        </div>
-        {/* apropos Section ==============================================================================================================================*/}
-        <section className="relative w-full bg-background z-10 overflow-hidden">
-          <div className="absolute top-0 lg:-top-[82px]" id="apropos"></div>
-          <MainTitle
-            titre={{
-              FRA: "À Propos",
-              ENG: "About Me",
-              SPA: "Acerca de mí",
-              DEU: "Über Mich",
-            }}
-            postion={1}
-            links={["#apropos", "#projects", "#contact"]}
-          />
+
+        {/* À propos ================================================================================================================================*/}
+        <section id="apropos" className={`relative w-full bg-background z-10 overflow-hidden pt-4 ${anchor}`}>
+          <MainTitle titre={sections[0].label} position={1} sections={sections} />
           <Apropos />
         </section>
-        {/* Projects Section ===========================================================================================================================*/}
-        <section className="relative w-full bg-background z-10 overflow-hidden">
-          <div className="absolute top-0 lg:-top-[82px]" id="projects"></div>
+
+        {/* Expériences =============================================================================================================================*/}
+        <section id="experiences" className={`relative w-full bg-background z-10 overflow-hidden pt-8 ${anchor}`}>
+          <MainTitle titre={sections[1].label} position={2} sections={sections} />
+          <ExperiencesSection />
+        </section>
+
+        {/* Projets =================================================================================================================================*/}
+        <section id="projects" className={`relative w-full bg-background z-10 overflow-hidden pt-8 ${anchor}`}>
           <MainTitle
             titre={{
               FRA: "Mes Projets",
@@ -292,10 +244,10 @@ export default function Home() {
               SPA: "Mis Proyectos",
               DEU: "Meine Projekte",
             }}
-            postion={2}
-            links={["#apropos", "#projects", "#contact"]}
+            position={3}
+            sections={sections}
           />
-          <h3 className="my-4 text-lg lg:text-2xl xl:text-4xl text-foreground text-center p-8 clipPath-s">
+          <p className="mt-10 mb-8 px-4 text-lg lg:text-2xl text-(--foreground-secondary) text-center">
             <Translate
               dict={{
                 FRA: "Voici mes trois derniers projets réalisés",
@@ -304,45 +256,38 @@ export default function Home() {
                 DEU: "Hier sind meine drei neuesten abgeschlossenen Projekte",
               }}
             />
-          </h3>
-          <div className="flex flex-col gap-16 items-center w-full">
-            {projects.slice(0, 3).map((project) => (
-              <div
-                key={project.slug}
-                className="relative w-11/12 lg:h-[80vh] transition-colors duration-300"
-              >
-                <div className="hidden lg:flex group/circle w-full h-full relative bg-(--background-secondary) clipPath-SdCard flex-row justify-center items-start overflow-hidden">
-                  <div className="absolute -z-10 top-0 left-0 w-0 h-0 group-hover/circle:w-[75vw] group-hover/circle:h-[75vw] transition-all duration-700 rounded-br-full bg-background opacity-30"></div>
-                  <div className="w-5/12 h-full p-8 xl:p-16 flex flex-col justify-start items-start overflow-hidden">
-                    <Link href={`/projet/${project.slug}`}>
-                      <h4 className="text-3xl xl:text-4xl font-bold font-(family-name:--font-aquire) uppercase text-foreground hover:text-(--accentuation) transition-colors duration-300">
+          </p>
+          <div className="flex flex-col gap-10 lg:gap-14 items-center w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-16">
+            {projects.slice(0, 3).map((project) => {
+              const detail = project.details[0] ?? [];
+              return (
+                <article
+                  key={project.slug}
+                  className="group/circle relative w-full bg-(--background-secondary) lg:clip-sdcard overflow-hidden grid gap-6 lg:gap-12 lg:grid-cols-2 items-center p-6 md:p-8 xl:p-14"
+                >
+                  <div className="absolute top-0 left-0 w-0 h-0 group-hover/circle:w-[75vw] group-hover/circle:h-[75vw] transition-all duration-700 rounded-br-full bg-background opacity-30 pointer-events-none"></div>
+                  <div className="relative flex flex-col gap-4 min-w-0">
+                    <h3 className="text-2xl md:text-3xl xl:text-4xl font-bold font-(family-name:--font-aquire) uppercase">
+                      <Link
+                        href={`/projet/${project.slug}`}
+                        className="hover:text-(--accentuation) transition-colors duration-300"
+                      >
                         <Translate dict={project.title} />
-                      </h4>
-                    </Link>
-                    <p className="my-4 text-lg text-foreground">
+                      </Link>
+                    </h3>
+                    <p className="text-base lg:text-lg leading-relaxed">
                       <Translate dict={project.description} />
                     </p>
-                    <hr className="h-1 w-full bg-(--foreground-secondary)" />
-                    <div className="max-h-3/4 overflow-hidden">
-                      {project.details.slice(0, 2).map((detail, index) => (
-                        <div key={index}>
-                          {detail.map((dict, numDict) => (
-                            <p
-                              key={`${index}-${numDict}`}
-                              className={`mt-8 text-foreground ${
-                                numDict === 0
-                                  ? "text-xl font-bold"
-                                  : "text-md pl-2"
-                              }`}
-                            >
-                              <Translate dict={dict} />
-                            </p>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                    <Link href={`/projet/${project.slug}`}>
-                      <h4 className="mt-8 text-md text-foreground underline font-stretch-expanded hover:text-(--accentuation) transition-colors duration-300">
+                    {detail.length > 1 && (
+                      <>
+                        <hr className="h-0.5 border-0 w-full bg-(--muted)" />
+                        <p className="text-sm lg:text-base leading-relaxed text-(--foreground-secondary) line-clamp-4">
+                          <Translate dict={detail[1]} />
+                        </p>
+                      </>
+                    )}
+                    <div className="flex flex-wrap gap-3 pt-2">
+                      <ActionButton href={`/projet/${project.slug}`} variant="primary" icon={<ArrowRightIcon size={18} />}>
                         <Translate
                           dict={{
                             FRA: "En savoir plus",
@@ -351,241 +296,69 @@ export default function Home() {
                             DEU: "Mehr erfahren",
                           }}
                         />
-                      </h4>
-                    </Link>
-                  </div>
-                  <div className="w-5/12 h-full p-16 flex justify-center items-center">
-                    <div className="relative">
-                      <div className="absolute inset-0 w-1/2 h-1/2 -top-[5%] -left-[5%] border-t-2 border-l-2 border-(--primary)"></div>
-                      <div className="absolute inset-0 w-1/2 h-1/2 top-[55%] left-[55%] border-b-2 border-r-2 border-(--primary)"></div>
-                      {project.images[0] && (
-                        <Image
-                          src={`/projets/${project.images[0]}`}
-                          alt={project.title.FRA || "Project image"}
-                          width={1000}
-                          height={1000}
-                          className="object-contain border-2 border-(--primary)"
-                        />
+                      </ActionButton>
+                      {project.site && (
+                        <ActionButton href={project.site} external icon={<ExternalIcon size={18} />}>
+                          <Translate dict={{ FRA: "Site web", ENG: "Website", SPA: "Sitio web", DEU: "Webseite" }} />
+                        </ActionButton>
+                      )}
+                      {project.git && (
+                        <ActionButton href={project.git} external icon={<GithubIcon size={18} />}>
+                          GitHub
+                        </ActionButton>
                       )}
                     </div>
                   </div>
-                  <LinkProjets
-                    git={project.git}
-                    site={project.site}
-                    project={`/projet/${project.slug}`}
-                    toutProjet="/projet"
-                  />
-                </div>
-                <div className="flex lg:hidden w-full h-full relative bg-(--background-secondary) flex-col justify-start items-start gap-4 overflow-hidden p-6">
-                  <Link href={`/projet/${project.slug}`}>
-                    <h4 className="text-3xl font-bold font-(family-name:--font-aquire) uppercase text-foreground hover:text-(--accentuation) transition-colors duration-300">
-                      <Translate dict={project.title} />
-                    </h4>
-                  </Link>
-                  <p className="text-md text-foreground">
-                    <Translate dict={project.description} />
-                  </p>
-                  <hr className="h-1 w-full bg-(--foreground-secondary)" />
-                  <div className="relative">
-                    <div className="absolute inset-0 w-1/2 h-1/2 -top-[2%] -left-[2%] border-t-2 border-l-2 border-(--primary)"></div>
-                    <div className="absolute inset-0 w-1/2 h-1/2 top-[52%] left-[52%] border-b-2 border-r-2 border-(--primary)"></div>
-                    {project.images[0] && (
+                  {project.images[0] && (
+                    <Link
+                      href={`/projet/${project.slug}`}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      className="relative block order-first lg:order-none"
+                    >
+                      <div className="absolute w-1/2 h-1/2 -top-[4%] -left-[3%] border-t-2 border-l-2 border-(--primary)"></div>
+                      <div className="absolute w-1/2 h-1/2 top-[54%] left-[53%] border-b-2 border-r-2 border-(--primary)"></div>
                       <Image
                         src={`/projets/${project.images[0]}`}
-                        alt={project.title.FRA || "Project image"}
+                        alt=""
                         width={1000}
                         height={1000}
-                        className="object-contain border-2 border-(--primary)"
+                        sizes="(min-width: 1024px) 45vw, 90vw"
+                        className="relative object-contain w-full h-auto border-2 border-(--primary)"
                       />
-                    )}
-                  </div>
-                  <hr className="h-1 w-full bg-(--foreground-secondary)" />
-                  <LinkProjets
-                    site={project.site}
-                    project={`/projet/${project.slug}`}
-                  />
-                </div>
-              </div>
-            ))}
+                    </Link>
+                  )}
+                </article>
+              );
+            })}
           </div>
-          <div className="w-full flex justify-center my-16 items-center">
-            <LinkHero projet={true} />
-          </div>
-        </section>
-        {/* Contact Section ===========================================================================================================================*/}
-        <section className="relative w-full bg-background z-10 overflow-hidden">
-          <div className="absolute top-0 lg:-top-[82px]" id="contact"></div>
-          <MainTitle
-            titre={{
-              FRA: "Contactez Moi",
-              ENG: "Contact Me",
-              SPA: "Contáctame",
-              DEU: "Kontaktiere Mich",
-            }}
-            postion={3}
-            links={["#apropos", "#projects", "#contact"]}
-          />
-          <div className="w-full flex flex-col gap-8 lg:gap-20 items-center py-12 px-4 my-8 md:px-12 lg:px-24 border-2 border-(--primary)">
-            <div className="flex flex-col gap-4 lg:gap-8 p-4 md:px-8 lg:px-16 xl:px-24 items-center">
-              <h4 className="text-lg md:text-xl xl:text-3xl font-bold text-(--accentuation) drop-shadow-lg">
-                <Translate
-                  dict={{
-                    FRA: "Je serais ravi d'échanger avec vous !",
-                    ENG: "I would be delighted to connect with you!",
-                    SPA: "¡Me encantaría conectarme contigo!",
-                    DEU: "Ich würde mich freuen, mit Ihnen in Kontakt zu treten!",
-                  }}
-                />
-              </h4>
-              <p className="text-md md:text-lg xl:text-2xl text-foreground text-center max-w-2xl">
-                <Translate
-                  dict={{
-                    FRA: "N'hésitez pas à me contacter par email ou par téléphone pour toute opportunité de stage, collaboration ou simplement pour discuter de projets passionnants.",
-                    ENG: "Feel free to reach out to me via email or phone for any internship opportunities, collaborations, or simply to discuss exciting projects.",
-                    SPA: "No dudes en contactarme por correo electrónico o teléfono para cualquier oportunidad de pasantía, colaboración o simplemente para discutir proyectos emocionantes.",
-                    DEU: "Zögern Sie nicht, mich per E-Mail oder Telefon zu kontaktieren für Praktikumsmöglichkeiten, Kooperationen oder einfach um spannende Projekte zu besprechen.",
-                  }}
-                />
-              </p>
-            </div>
-            <div className="flex flex-col lg:flex-row lg:justify-around w-full gap-8 lg:gap-20 items-center">
-              <div className="clipPath-Button-Double bg-(--primary) lg:w-1/3 p-0.5">
-                <div className="flex w-full flex-col items-center clipPath-Button-Double gap-6 lg:gap-12 bg-background p-6">
-                  <Link
-                    href="mailto:lilian.brossard@gmail.com"
-                    className="flex items-center gap-3 w-max underline text-md md:text-lg xl:text-2xl text-foreground hover:text-(--accentuation) transition-all duration-300 font-semibold"
-                  >
-                    <svg
-                      fill="var(--accentuation)"
-                      height="28px"
-                      width="28px"
-                      version="1.1"
-                      id="Filled_Icons"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 24 24"
-                      enableBackground="new 0 0 24 24"
-                      xmlSpace="preserve"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <g id="mail-filled">
-                          <path d="M24,5.7V21H0V5.7l12,10L24,5.7z M12,13l12-9.9V3H0v0.1L12,13z"></path>
-                        </g>
-                      </g>
-                    </svg>
-                    lilian.brossard@gmail.com
-                  </Link>
-                  <Link
-                    href="tel:+33647577828"
-                    className="flex items-center gap-3 w-max underline text-md md:text-lg xl:text-2xl text-foreground hover:text-(--accentuation) transition-all duration-300 font-semibold"
-                  >
-                    <svg
-                      fill="var(--accentuation)"
-                      version="1.1"
-                      height="28px"
-                      width="28px"
-                      id="Capa_1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      viewBox="0 0 95.098 95.098"
-                      xmlSpace="preserve"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <g>
-                          <path d="M92.961,0H2.137C0.957,0,0,0.957,0,2.137v90.824c0,1.18,0.957,2.137,2.137,2.137h90.824c1.18,0,2.137-0.957,2.137-2.137 V2.137C95.098,0.957,94.141,0,92.961,0z M79.561,69.389l-7.929,7.928c-0.069,0.069-0.144,0.133-0.226,0.188l-0.187,0.128 c-1.995,1.595-4.623,2.403-7.815,2.403c-8.939,0-21.317-6.601-31.534-16.816C17.515,48.863,11.207,31.551,17.51,23.806l0.015-0.017 c0.07-0.125,0.157-0.241,0.261-0.344l7.915-7.915c0.624-0.624,1.634-0.624,2.257,0l13.54,13.54 c0.299,0.299,0.468,0.705,0.468,1.128c0,0.423-0.169,0.829-0.468,1.128l-7.072,7.072c0.616,1.729,3.103,7.845,9.238,13.98 c5.914,5.913,11.053,7.793,12.986,8.328l7.113-7.113c0.623-0.623,1.633-0.623,2.256,0l13.541,13.54 c0.299,0.299,0.467,0.705,0.467,1.128S79.859,69.09,79.561,69.389z"></path>
-                        </g>
-                      </g>
-                    </svg>
-                    06 47 57 78 28
-                  </Link>
-                </div>
-              </div>
-              <div className="clipPath-Button-Double bg-(--primary) lg:w-1/3 p-0.5">
-                <div className="flex w-full flex-col items-center clipPath-Button-Double gap-6 lg:gap-12 bg-background p-6">
-                  <Link
-                    href="https://github.com/LilianBrossard"
-                    className="flex items-center gap-3 w-max underline text-md md:text-lg xl:text-2xl text-foreground hover:text-(--accentuation) transition-all duration-300 font-semibold"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg
-                      fill="var(--accentuation)"
-                      viewBox="-1.5 0 19 19"
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="28px"
-                      width="28px"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <path d="M15.917 1.666V17.5h-5.15c-.424 0-.557-.238-.557-.455 0-.266.01-1.141.01-2.226a1.935 1.935 0 0 0-.552-1.502c1.808-.202 3.706-.887 3.706-4.005a3.134 3.134 0 0 0-.834-2.177 2.914 2.914 0 0 0-.081-2.147s-.68-.218-2.23.832a7.684 7.684 0 0 0-4.063 0c-1.55-1.05-2.23-.832-2.23-.832a2.918 2.918 0 0 0-.08 2.147 3.142 3.142 0 0 0-.835 2.177c0 3.11 1.894 3.806 3.696 4.011a1.737 1.737 0 0 0-.516 1.084 1.726 1.726 0 0 1-2.361-.674 1.706 1.706 0 0 0-1.243-.836s-.793-.01-.056.494a2.145 2.145 0 0 1 .9 1.187s.478 1.578 2.735 1.088c.004.676.01 1.186.01 1.38 0 .214-.147.454-.553.454H.083V1.666z"></path>
-                      </g>
-                    </svg>
-                    GitHub
-                  </Link>
-                  <Link
-                    href="https://www.linkedin.com/in/lilian-brossard-1b6147294/"
-                    className="flex items-center gap-3 w-max underline text-md md:text-lg xl:text-2xl text-foreground hover:text-(--accentuation) transition-all duration-300 font-semibold"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg
-                      fill="var(--accentuation)"
-                      height="28"
-                      width="28"
-                      version="1.1"
-                      id="Layer_1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      viewBox="-143 145 512 512"
-                      xmlSpace="preserve"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <path d="M-143,145v512h512V145H-143z M41.4,508.1H-8.5V348.4h49.9V508.1z M15.1,328.4h-0.4c-18.1,0-29.8-12.2-29.8-27.7 c0-15.8,12.1-27.7,30.5-27.7c18.4,0,29.7,11.9,30.1,27.7C45.6,316.1,33.9,328.4,15.1,328.4z M241,508.1h-56.6v-82.6 c0-21.6-8.8-36.4-28.3-36.4c-14.9,0-23.2,10-27,19.6c-1.4,3.4-1.2,8.2-1.2,13.1v86.3H71.8c0,0,0.7-146.4,0-159.7h56.1v25.1 c3.3-11,21.2-26.6,49.8-26.6c35.5,0,63.3,23,63.3,72.4V508.1z"></path>{" "}
-                      </g>
-                    </svg>
-                    LinkedIn
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-full flex justify-center items-center mt-8">
-            <h3 className="my-4 text-lg lg:text-2xl xl:text-4xl text-(--accentuation-inverse) text-center p-8 clipPath-Button-Double font-bold drop-shadow-xl bg-(--accentuation)">
+          <div className="w-full flex justify-center my-12 lg:my-16">
+            <ActionButton href="/projet" icon={<ArrowRightIcon size={18} />}>
               <Translate
                 dict={{
-                  FRA: "A bientôt j'espère !",
-                  ENG: "Hope to see you soon!",
-                  SPA: "¡Espero verte pronto!",
-                  DEU: "Hoffe, dich bald zu sehen!",
+                  FRA: "Tous mes projets",
+                  ENG: "All my projects",
+                  SPA: "Todos mis proyectos",
+                  DEU: "Alle meine Projekte",
                 }}
               />
-            </h3>
+            </ActionButton>
           </div>
+        </section>
+
+        {/* Contact =================================================================================================================================*/}
+        <section id="contact" className={`relative w-full bg-background z-10 overflow-hidden pt-8 ${anchor}`}>
+          <MainTitle
+            titre={{
+              FRA: "Contactez-moi",
+              ENG: "Contact Me",
+              SPA: "Contáctame",
+              DEU: "Kontakt",
+            }}
+            position={4}
+            sections={sections}
+          />
+          <ContactSection />
         </section>
       </main>
       <Footer />

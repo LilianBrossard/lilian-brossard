@@ -2,8 +2,7 @@
 import { useLangContext } from "@/contexts/LangContext";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-
-type LangType = "ENG" | "FRA" | "SPA" | "DEU";
+import type { LangType } from "@/utils/i18n";
 
 interface Language {
   code: LangType;
@@ -46,7 +45,7 @@ export default function LangSelector() {
   };
 
   return (
-    <div ref={dropdownRef} className="relative inline-block w-40 h-10 ">
+    <div ref={dropdownRef} className="relative inline-block w-36 h-10 z-30">
       <div className="w-full h-full p-0.5 clipPath-Button-Double bg-(--accentuation)">
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -55,12 +54,15 @@ export default function LangSelector() {
           aria-expanded={isOpen}
         >
           <div className="absolute  opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-full h-full top-0 left-0 z-10">
-            <Image
-              src={currentLang?.flag || ""}
-              alt={`${currentLang?.label} flag`}
-              layout="fill"
-              objectFit="cover"
-            />
+            {currentLang && (
+              <Image
+                src={currentLang.flag}
+                alt=""
+                fill
+                sizes="160px"
+                className="object-cover"
+              />
+            )}
           </div>
           <span className="inline">{currentLang?.label}</span>
           <svg
@@ -95,9 +97,10 @@ export default function LangSelector() {
                 <div className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-full h-full top-0 left-0">
                   <Image
                     src={lang.flag}
-                    alt={`${lang.label} flag`}
-                    layout="fill"
-                    objectFit="cover"
+                    alt=""
+                    fill
+                    sizes="160px"
+                    className="object-cover"
                   />
                 </div>
                 <span className="ml-6">{lang.label}</span>
