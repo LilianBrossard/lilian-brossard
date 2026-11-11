@@ -108,7 +108,7 @@ export default async function ProjectPage({ params }: PageProps) {
               ))}
             </ul>
           )}
-          {(project.site || project.git) && (
+          {(project.site || project.git || project.gitLinks.length > 0) && (
             <div className="mt-8 flex flex-wrap gap-4">
               {project.site && (
                 <ActionButton href={project.site} external variant="primary" icon={<ExternalIcon size={18} />}>
@@ -120,6 +120,11 @@ export default async function ProjectPage({ params }: PageProps) {
                   <Translate dict={{ FRA: "Code sur GitHub", ENG: "Code on GitHub", SPA: "Código en GitHub", DEU: "Code auf GitHub" }} />
                 </ActionButton>
               )}
+              {project.gitLinks.map((link) => (
+                <ActionButton key={link.url} href={link.url} external icon={<GithubIcon size={18} />}>
+                  <Translate dict={link.label} />
+                </ActionButton>
+              ))}
             </div>
           )}
         </header>
