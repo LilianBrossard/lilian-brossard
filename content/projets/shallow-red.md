@@ -7,6 +7,7 @@ title:
 
 date: "2025-11-20"
 tags: ["Next.js", "TypeScript"]
+context: "perso"
 
 description:
   FRA: "Shallow Red est une IA d’échecs entièrement locale, intégrée dans un site Next.js, permettant de jouer contre un moteur d’analyse inspiré du fonctionnement de Deep Blue."

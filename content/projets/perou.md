@@ -7,6 +7,7 @@ title:
 
 date: "2024-03-24"
 tags: ["Astro", "Hygraph", "Tailwind"]
+context: "perso"
 description:
   FRA: "Ici, je présente la création d’un pays dans un jeu vidéo."
   ENG: "Here, I showcase the creation of a country within a video game."

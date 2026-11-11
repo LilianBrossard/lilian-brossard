@@ -6,6 +6,7 @@ title:
   DEU: "Zephire"
 date: "2024-09-28"
 tags: ["Next.js", "React", "Tailwind", "API"]
+context: "perso"
 description:
   FRA: "J'ai créé un site de météo en direct à partir de n'importe quel lieu."
   ENG: "I created a live weather website accessible from any location."

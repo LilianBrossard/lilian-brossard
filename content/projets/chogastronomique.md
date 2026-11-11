@@ -6,6 +6,7 @@ title:
   DEU: "Cho'Gastronomique"
 date: "2024-10-10"
 tags: ["Next.js", "React", "TypeScript"]
+context: "perso"
 description:
   FRA: "J'ai créé un site très visuel pour présenter des recettes de cuisine."
   ENG: "I created a highly visual website to showcase cooking recipes."

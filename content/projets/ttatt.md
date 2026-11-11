@@ -6,6 +6,7 @@ title:
   DEU: "TTATT"
 date: "2026-04-18"
 tags: ["Next.js", "React", "TypeScript", "Tailwind", "Hygraph", "shadcn/ui"]
+context: "pro"
 description:
   FRA: "J'ai réalisé le site vitrine de TTATT, un projet musical associatif, administrable depuis un CMS."
   ENG: "I built the website of TTATT, a non-profit music project, fully manageable from a CMS."

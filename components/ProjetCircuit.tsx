@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslate } from "@/contexts/LangContext";
 import ActionButton from "@/components/ActionButton";
 import { ArrowRightIcon } from "@/components/icons";
-import { CONTEXT_LABELS } from "@/utils/projectLabels";
+import { CONTEXT_LABELS, type ProjectContext } from "@/utils/projectLabels";
 import type { Dict } from "@/utils/i18n";
 
 export interface CircuitProject {
@@ -14,7 +14,7 @@ export interface CircuitProject {
   description: Dict;
   date: string;
   tags: string[];
-  context: "perso" | "etudes" | null;
+  context: ProjectContext | null;
   image: string | null;
 }
 

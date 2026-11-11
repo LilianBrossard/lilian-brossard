@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import type { Dict } from "@/utils/i18n";
+import { CONTEXT_LABELS, type ProjectContext } from "@/utils/projectLabels";
 
 const projectsDirectory = path.join(process.cwd(), "content/projets");
 
@@ -14,9 +15,11 @@ export interface Project {
   /** Technologies citées dans la description du projet */
   tags: string[];
   /** Contexte : projet personnel ou d'études (si connu) */
-  context: "perso" | "etudes" | null;
+  context: ProjectContext | null;
   images: string[];
   git?: string | null;
+  /** Plusieurs dépôts : un bouton par lien, avec son propre libellé */
+  gitLinks: { url: string; label: Dict }[];
   site?: string | null;
   content?: string;
 }
@@ -33,9 +36,10 @@ function readProject(slug: string): Project {
     details: data.details ?? [],
     images: data.images ?? [],
     tags: Array.isArray(data.tags) ? data.tags : [],
-    context: data.context === "perso" || data.context === "etudes" ? data.context : null,
+    context: typeof data.context === "string" && Object.hasOwn(CONTEXT_LABELS, data.context) ? (data.context as ProjectContext) : null,
     content,
     git: data.git || null,
+    gitLinks: Array.isArray(data.gitLinks) ? data.gitLinks : [],
     site: data.site || null,
   };
 }

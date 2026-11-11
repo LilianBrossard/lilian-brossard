@@ -6,6 +6,7 @@ title:
   DEU: "Ihre Seite"
 date: "2024-04-01"
 tags: ["Astro", "Hygraph", "Tailwind", "JavaScript"]
+context: "perso"
 description:
   FRA: "J'ai créé un site vitrine d'entreprise qui pourrait être le vôtre."
   ENG: "I created a company showcase website that could be yours."
