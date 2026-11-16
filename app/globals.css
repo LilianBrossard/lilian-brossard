@@ -92,12 +92,86 @@ body {
   clip-path: polygon(15% 100%, 100% 100%, 100% 25%, 85% 0, 0 0, 0 75%);
 }
 
-.clipPath-Transition-1 {
-  clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 0% 75%);
+/* Bord supérieur de la section À propos : coins coupés et encoche centrale.
+   Même forme que le filet lumineux tracé par CircuitTransition. */
+@utility clip-notch {
+  clip-path: polygon(
+    0 28px,
+    28px 0,
+    calc(50% - min(150px, 25%)) 0,
+    calc(50% - min(150px, 25%) + 16px) 16px,
+    calc(50% + min(150px, 25%) - 16px) 16px,
+    calc(50% + min(150px, 25%)) 0,
+    calc(100% - 28px) 0,
+    100% 28px,
+    100% 100%,
+    0 100%
+  );
 }
 
-.clipPath-Transition-2 {
-  clip-path: polygon(100% 25%, 100% 100%, 0% 100%);
+/* Transition « circuit » (components/CircuitTransition.tsx).
+   --p va de 0 (section en bas de l'écran) à 1 (section en haut). */
+.circuit-overlay {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  overflow: visible;
+  pointer-events: none;
+}
+.circuit-edge {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px var(--glow));
+}
+.circuit-trace,
+.circuit-seg {
+  fill: none;
+  stroke-dasharray: 1;
+  filter: drop-shadow(0 0 4px var(--glow-soft));
+}
+.circuit-trace {
+  stroke: url(#circuit-fade);
+  stroke-dashoffset: calc(1 - min(1, var(--p, 0) * 1.45));
+}
+.circuit-seg {
+  stroke: var(--foreground);
+  stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - 0.68 - var(--k, 0) * 0.06) * 8.3, 1));
+}
+.circuit-pin {
+  fill: var(--primary);
+  opacity: clamp(0, (var(--p, 0) - 0.15) * 8, 1);
+}
+.circuit-end {
+  fill: var(--primary);
+  opacity: clamp(0, (var(--p, 0) - 0.66) * 8, 1);
+}
+.circuit-pulse {
+  fill: none;
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: 0.04 0.96;
+  opacity: 0;
+  transition: opacity 0.4s;
+  animation: circuit-run 2.6s linear infinite;
+  filter: drop-shadow(0 0 4px var(--primary));
+}
+[data-live] .circuit-pulse {
+  opacity: 1;
+}
+@keyframes circuit-run {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .circuit-pulse {
+    display: none;
+  }
 }
 
 .clipPath-SdCard {

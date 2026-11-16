@@ -7,6 +7,8 @@ import MainTitle, { type SectionLink } from "@/components/MainTitle";
 import Apropos from "@/components/Apropos";
 import ExperiencesSection from "@/components/ExperiencesSection";
 import ContactSection from "@/components/ContactSection";
+import HeroDepth from "@/components/HeroDepth";
+import CircuitTransition from "@/components/CircuitTransition";
 import ActionButton from "@/components/ActionButton";
 import {
   ArrowRightIcon,
@@ -50,7 +52,7 @@ export default function Home() {
       </div>
       <main className="flex flex-col w-full">
         {/* En-tête =================================================================================================================================*/}
-        <section className="sticky top-0 overflow-hidden w-full h-[100svh] min-h-[540px] bg-background flex flex-col justify-center items-center text-center">
+        <HeroDepth className="sticky top-0 overflow-hidden w-full h-[100svh] min-h-[540px] bg-background flex flex-col justify-center items-center text-center">
           <div className="absolute inset-0 -z-10 opacity-25">
             <Circuit />
           </div>
@@ -217,17 +219,15 @@ export default function Home() {
               <path d="M15 11L12 14L9 11" stroke="var(--background)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
             </svg>
           </Link>
-        </section>
-        <div className="relative w-full h-[25vh] overflow-hidden z-20">
-          <div className="absolute h-full w-full bg-(--primary) clipPath-Transition-1"></div>
-          <div className="absolute h-full w-full bg-background clipPath-Transition-2"></div>
-        </div>
+        </HeroDepth>
 
-        {/* À propos ================================================================================================================================*/}
-        <section id="apropos" className={`relative w-full bg-background z-10 overflow-hidden pt-4 ${anchor}`}>
-          <MainTitle titre={sections[0].label} position={1} sections={sections} />
-          <Apropos />
-        </section>
+        {/* À propos : passe par-dessus l'en-tête, avec la transition « circuit » ===================================================================*/}
+        <CircuitTransition>
+          <section id="apropos" className={`relative w-full bg-background overflow-hidden clip-notch pt-8 ${anchor}`}>
+            <MainTitle titre={sections[0].label} position={1} sections={sections} circuit />
+            <Apropos />
+          </section>
+        </CircuitTransition>
 
         {/* Expériences =============================================================================================================================*/}
         <section id="experiences" className={`relative w-full bg-background z-10 overflow-hidden pt-8 ${anchor}`}>

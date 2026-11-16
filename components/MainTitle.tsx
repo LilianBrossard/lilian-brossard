@@ -15,6 +15,11 @@ interface MainTitleProps {
   /** Sections de la page : les autres sont affichées en carrés cliquables. */
   sections?: SectionLink[];
   as?: "h1" | "h2";
+  /**
+   * Les trois lignes sont dessinées par CircuitTransition (en segments visibles
+   * entre les blocs) : on garde ici des lignes invisibles, qui servent de repère.
+   */
+  circuit?: boolean;
 }
 
 export default function MainTitle({
@@ -22,13 +27,17 @@ export default function MainTitle({
   position = 1,
   sections,
   as: Heading = "h2",
+  circuit = false,
 }: MainTitleProps) {
   const t = useTranslate();
   const items = sections ?? [{ href: "#", label: titre }];
 
   return (
     <div className="relative flex flex-row justify-center lg:justify-around items-center py-2 text-3xl lg:text-6xl font-bold uppercase font-(family-name:--font-aquire) whitespace-nowrap">
-      <div className="absolute w-full h-full left-0 top-0 flex flex-col justify-center gap-1 lg:gap-2">
+      <div
+        data-title-lines
+        className={`absolute w-full h-full left-0 top-0 flex flex-col justify-center gap-1 lg:gap-2 ${circuit ? "invisible" : ""}`}
+      >
         {Array.from({ length: 3 }).map((_, index) => (
           <hr
             key={index}
@@ -36,21 +45,23 @@ export default function MainTitle({
           />
         ))}
       </div>
-      <div className="absolute hidden w-full h-full left-0 top-0 lg:flex flex-col justify-center gap-2 overflow-hidden">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div
-            key={index}
-            className="w-1/12 animation-flux h-1 bg-foreground border-0 shadow-[0_0_10px_var(--primary),0_0_20px_var(--glow)]"
-          />
-        ))}
-      </div>
+      {!circuit && (
+        <div className="absolute hidden w-full h-full left-0 top-0 lg:flex flex-col justify-center gap-2 overflow-hidden">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="w-1/12 animation-flux h-1 bg-foreground border-0 shadow-[0_0_10px_var(--primary),0_0_20px_var(--glow)]"
+            />
+          ))}
+        </div>
+      )}
       {items.map((section, index) =>
         index + 1 === position ? (
-          <div key={section.href} className="z-10 bg-background px-3 lg:px-4">
+          <div key={section.href} data-title-item className="z-10 bg-background px-3 lg:px-4">
             <Heading className="py-1">{t(titre)}</Heading>
           </div>
         ) : (
-          <div key={section.href} className="z-10 hidden lg:block bg-background px-2">
+          <div key={section.href} data-title-item className="z-10 hidden lg:block bg-background px-2">
             <Link
               href={section.href}
               aria-label={t(section.label)}
