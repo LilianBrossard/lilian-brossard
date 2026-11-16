@@ -20,7 +20,8 @@ interface Geometry {
   traces: string[];
   pins: Point[];
   ends: Point[];
-  segments: { d: string; k: number }[];
+  /** x : abscisse de départ du segment (sert à caler la décharge) */
+  segments: { d: string; k: number; x: number }[];
 }
 
 /** Mesure le titre de section pour placer pistes et segments. */
@@ -54,11 +55,11 @@ function measure(root: HTMLElement): Geometry | null {
   const ends = ys.map((y) => ({ x: target, y }));
 
   // Segments : entre deux blocs, puis du dernier bloc au bord droit
-  const segments: { d: string; k: number }[] = [];
+  const segments: { d: string; k: number; x: number }[] = [];
   spans.forEach((span, k) => {
     const to = spans[k + 1]?.left ?? width;
     if (to - span.right < 4) return;
-    ys.forEach((y) => segments.push({ d: `M${span.right} ${y}H${to}`, k }));
+    ys.forEach((y) => segments.push({ d: `M${span.right} ${y}H${to}`, k, x: span.right }));
   });
 
   // Bord supérieur de la section : même forme que l'utilitaire clip-notch
@@ -196,16 +197,27 @@ export default function CircuitTransition({ children }: { children: ReactNode })
             />
           ))}
 
-          {[...geo.traces, ...geo.segments.map((s) => s.d)].map((d, i) => (
-            <path
-              key={`pulse-${d}`}
-              className="circuit-pulse"
-              d={d}
-              pathLength={1}
-              strokeWidth={geo.stroke * 1.6}
-              style={{ animationDelay: `${(i % 6) * 0.45}s` }}
-            />
-          ))}
+          {/* Décharge rapide, comme sur les autres titres : une barre traverse
+              toute la largeur en 1 s toutes les 4 s. Elle n'existe que sur les
+              segments, donc elle disparaît derrière le titre et les carrés. */}
+          <g className="circuit-decharge">
+            {geo.segments.map((s) => (
+              <path
+                key={`flux-${s.d}`}
+                className="circuit-flux"
+                d={s.d}
+                strokeWidth={geo.stroke}
+                strokeDasharray={`${geo.width / 12} ${geo.width * 4}`}
+                style={
+                  {
+                    "--x": `${s.x}px`,
+                    "--bar": `${geo.width / 12}px`,
+                    "--w": `${geo.width}px`,
+                  } as CSSProperties
+                }
+              />
+            ))}
+          </g>
         </svg>
       )}
     </div>

@@ -164,30 +164,41 @@ body {
   fill: var(--primary);
   opacity: clamp(0, (var(--p, 0) - 0.66) * 8, 1);
 }
-.circuit-pulse {
-  fill: none;
-  stroke: var(--primary);
-  stroke-linecap: round;
-  stroke-dasharray: 0.04 0.96;
+/* Décharge des lignes du titre : même rythme que .animation-flux des autres
+   titres (traversée en 1 s, puis 3 s de pause), sur grand écran seulement.
+   --x : début du segment, --bar : longueur de la barre, --w : largeur totale. */
+.circuit-decharge {
+  display: none;
   opacity: 0;
   transition: opacity 0.4s;
-  animation: circuit-run 2.6s linear infinite;
-  filter: drop-shadow(0 0 4px var(--primary));
 }
-[data-live] .circuit-pulse {
+@media (min-width: 1024px) {
+  .circuit-decharge {
+    display: inline;
+  }
+}
+[data-live] .circuit-decharge {
   opacity: 1;
 }
-@keyframes circuit-run {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+.circuit-flux {
+  fill: none;
+  stroke: var(--foreground);
+  filter: drop-shadow(0 0 6px var(--primary)) drop-shadow(0 0 12px var(--glow));
+  animation: circuit-flux 4s linear infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  .circuit-pulse {
-    display: none;
+@keyframes circuit-flux {
+  0% {
+    stroke-dashoffset: calc(var(--x) + var(--bar));
+    opacity: 1;
+  }
+  25% {
+    stroke-dashoffset: calc(var(--x) - var(--w));
+    opacity: 1;
+  }
+  26%,
+  100% {
+    stroke-dashoffset: calc(var(--x) - var(--w));
+    opacity: 0;
   }
 }
 
