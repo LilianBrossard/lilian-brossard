@@ -1,9 +1,15 @@
+import { useId } from "react";
+
+// Fond « circuit imprimé ». Chaque instance a son propre identifiant de motif :
+// avec un identifiant commun, toutes les copies utiliseraient le premier motif
+// de la page, et masquer celui du menu masquerait aussi celui de l'en-tête.
 export default function Circuit() {
+  const patternId = `circuit-pattern-${useId()}`;
   return (
     <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern
-          id="circuit-pattern"
+          id={patternId}
           x="0"
           y="0"
           width="1000"
@@ -61,7 +67,7 @@ export default function Circuit() {
           />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
+      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
     </svg>
   );
 }

@@ -64,30 +64,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.clipPath-Button {
-  cursor: pointer;
-  clip-path: polygon(
-    7% 50%,
-    7% 60%,
-    0 60%,
-    0 75%,
-    15% 100%,
-    100% 100%,
-    100% 60%,
-    93% 60%,
-    93% 50%,
-    100% 50%,
-    100% 0,
-    0 0,
-    0 50%
-  );
-}
-
-.clipPath-Button-Simple {
-  cursor: pointer;
-  clip-path: polygon(15% 100%, 100% 100%, 100% 0, 0 0, 0 75%);
-}
-
 .clipPath-Button-Double {
   clip-path: polygon(15% 100%, 100% 100%, 100% 25%, 85% 0, 0 0, 0 75%);
 }
@@ -107,6 +83,47 @@ body {
     100% 100%,
     0 100%
   );
+}
+
+/* Menu plein écran (components/Navbar.tsx) : s'ouvre en cercle depuis le
+   bouton Menu (en haut à gauche), puis les liens arrivent un par un. */
+.menu-plein-ecran {
+  clip-path: circle(0% at 4.5rem 2.75rem);
+  visibility: hidden;
+  transition:
+    clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1),
+    visibility 0s 0.7s;
+}
+.menu-plein-ecran.is-open {
+  clip-path: circle(150% at 4.5rem 2.75rem);
+  visibility: visible;
+  transition:
+    clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1),
+    visibility 0s;
+}
+.menu-lien {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    color 0.2s,
+    opacity 0.35s,
+    transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.menu-plein-ecran.is-open .menu-lien {
+  opacity: 1;
+  transform: none;
+}
+.menu-plein-ecran.is-open .menu-lien:hover,
+.menu-plein-ecran.is-open .menu-lien:focus-visible {
+  transform: translateX(18px);
+  transition-delay: 0s !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-plein-ecran,
+  .menu-plein-ecran.is-open,
+  .menu-lien {
+    transition: none !important;
+  }
 }
 
 /* Transition « circuit » (components/CircuitTransition.tsx).
@@ -283,8 +300,6 @@ body {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
-.clipPath-Button:focus-visible,
-.clipPath-Button-Simple:focus-visible,
 .clipPath-Button-Double:focus-visible {
   clip-path: none;
 }

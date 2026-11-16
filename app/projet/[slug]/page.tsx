@@ -74,13 +74,16 @@ export default async function ProjectPage({ params }: PageProps) {
         <Navbar />
       </div>
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-16 py-8 lg:py-12">
-        <Link
-          href="/projet"
-          className="inline-flex items-center gap-2 text-(--foreground-secondary) hover:text-(--accentuation) transition-colors"
-        >
-          <ArrowLeftIcon size={18} />
-          <Translate dict={{ FRA: "Tous les projets", ENG: "All projects", SPA: "Todos los proyectos", DEU: "Alle Projekte" }} />
-        </Link>
+        {/* À droite : le bouton Menu occupe le coin en haut à gauche */}
+        <div className="flex justify-end">
+          <Link
+            href="/projet"
+            className="inline-flex items-center gap-2 min-h-11 text-(--foreground-secondary) hover:text-(--accentuation) transition-colors"
+          >
+            <ArrowLeftIcon size={18} />
+            <Translate dict={{ FRA: "Tous les projets", ENG: "All projects", SPA: "Todos los proyectos", DEU: "Alle Projekte" }} />
+          </Link>
+        </div>
 
         {/* En-tête du projet */}
         <header className="mt-8 lg:mt-10 pb-10 lg:pb-14 mb-12 lg:mb-16 border-b-2 border-(--background-secondary)">

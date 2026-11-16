@@ -2,13 +2,14 @@
 
 import { useSyncExternalStore } from "react";
 import { useTranslate } from "@/contexts/LangContext";
+import { MoonIcon, SunIcon } from "@/components/icons";
 
 type Theme = "light" | "dark";
 
 export const THEME_STORAGE_KEY = "theme";
 
 // Le thème est porté par l'attribut data-theme de <html> : on l'observe
-// pour que tous les boutons (menu mobile et desktop) restent synchronisés.
+// pour que le bouton reste synchronisé quel que soit l'endroit du changement.
 function subscribe(callback: () => void) {
   const observer = new MutationObserver(callback);
   observer.observe(document.documentElement, {
@@ -28,6 +29,7 @@ function getServerSnapshot(): Theme {
   return "dark";
 }
 
+// Bouton carré : soleil en thème clair, lune en thème sombre.
 export default function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const t = useTranslate();
@@ -40,8 +42,11 @@ export default function ThemeToggle() {
     } catch {}
   };
 
+  const icone = "absolute transition-all duration-500";
+
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       aria-label={t({
         FRA: "Changer de thème",
@@ -49,55 +54,16 @@ export default function ThemeToggle() {
         SPA: "Cambiar el tema",
         DEU: "Design wechseln",
       })}
-      className="clipPath-Button-Double bg-(--accentuation) relative inline-flex p-1 h-10 w-20 items-center transition-colors duration-300"
+      className="relative inline-flex items-center justify-center h-11 w-11 shrink-0 border border-(--line) text-(--foreground-secondary) hover:border-(--accentuation) hover:text-(--accentuation) transition-colors duration-200 cursor-pointer"
     >
-      <span
-        className={`inline-block h-full w-full transform transition-transform ${
-          theme === "dark" ? "translate-x-1/2" : "translate-x-0"
-        }`}
-      >
-        <svg
-          className={`absolute inset-0 h-full w-1/2 transition-all duration-500 ${
-            theme === "dark"
-              ? "rotate-90 scale-0 opacity-0"
-              : "rotate-0 scale-100 opacity-100"
-          }`}
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="12" cy="12" r="5" fill="var(--accentuation-inverse)" />
-          <g
-            stroke="var(--accentuation-inverse)"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </g>
-        </svg>
-
-        {/* Moon SVG */}
-        <svg
-          className={`absolute inset-0 h-full w-1/2 transition-all duration-500 ${
-            theme === "dark"
-              ? "rotate-0 scale-100 opacity-100"
-              : "-rotate-90 scale-0 opacity-0"
-          }`}
-          fill="var(--accentuation-inverse)"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-            fill="var(--accentuation-inverse)"
-          />
-        </svg>
-      </span>
+      <SunIcon
+        size={20}
+        className={`${icone} ${theme === "light" ? "rotate-0 scale-100 opacity-100" : "rotate-90 scale-0 opacity-0"}`}
+      />
+      <MoonIcon
+        size={20}
+        className={`${icone} ${theme === "dark" ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"}`}
+      />
     </button>
   );
 }
