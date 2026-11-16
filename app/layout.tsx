@@ -7,7 +7,8 @@ import { LangProvider } from "@/contexts/LangContext";
 import { SITE_URL } from "@/utils/site";
 
 const lato = Lato({
-  weight: "400",
+  // 700 et 900 : vrais gras (sinon le navigateur les simule)
+  weight: ["400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-lato",
 });

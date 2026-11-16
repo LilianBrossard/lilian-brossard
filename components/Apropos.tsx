@@ -1,601 +1,631 @@
 "use client";
-import Translate from "@/utils/Translate";
-import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import type { ReactNode } from "react";
+import { useTranslate } from "@/contexts/LangContext";
+import type { Dict } from "@/utils/i18n";
+import {
+  ArrowRightIcon,
+  ClapperboardIcon,
+  CodeIcon,
+  GamepadIcon,
+  GlobeIcon,
+  GraduationCapIcon,
+  KanbanIcon,
+  LayersIcon,
+  MapPinIcon,
+  MessageIcon,
+  MusicIcon,
+  PlaneIcon,
+  ScaleIcon,
+  TargetIcon,
+  UserIcon,
+  UsersIcon,
+} from "@/components/icons";
 
-const listOriginY = [13, 38, 63, 88]; // Positions verticales de départ des faisceaux (une par bouton)
-const beamCount = 120; // Nombre de faisceaux
+// Section « À propos » de l'accueil : grille de cartes (bento), tout est visible
+// d'un coup. Cartes : profil, parcours géographique, formation, compétences.
 
-// Pseudo-aléatoire déterministe (calcul entier) : même résultat côté serveur
-// et navigateur, contrairement à Math.random() ou Math.sin().
-function pseudoRandom(n: number) {
-  let x = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b);
-  x ^= x >>> 13;
-  x = Math.imul(x, 0xc2b2ae35);
-  x ^= x >>> 16;
-  return (x >>> 0) / 4294967296;
+const texte = "text-base leading-relaxed text-(--foreground-secondary)";
+
+const loisirs: [ReactNode, Dict][] = [
+  [<MusicIcon key="musique" size={18} />, { FRA: "Musique", ENG: "Music", SPA: "Música", DEU: "Musik" }],
+  [<GamepadIcon key="jeux" size={18} />, { FRA: "Jeux vidéo", ENG: "Video games", SPA: "Videojuegos", DEU: "Videospiele" }],
+  [<ClapperboardIcon key="cinema" size={18} />, { FRA: "Cinéma", ENG: "Cinema", SPA: "Cine", DEU: "Kino" }],
+  [<PlaneIcon key="voyage" size={18} />, { FRA: "Voyage", ENG: "Travel", SPA: "Viajes", DEU: "Reisen" }],
+];
+
+const outils: { label: Dict; items: [string, string][] }[] = [
+  {
+    label: { FRA: "Front-end", ENG: "Front-end", SPA: "Front-end", DEU: "Frontend" },
+    items: [
+      ["Next.js", "/outils/nextjs.svg"],
+      ["React", "/outils/react.svg"],
+      ["TailwindCSS", "/outils/tailwind.svg"],
+      ["Typescript", "/outils/typescript.svg"],
+      ["HTML / CSS / Javascript", "/outils/html5.png"],
+      ["Astro", "/outils/astro.svg"],
+      ["Shadcn", "/outils/shadcn.png"],
+    ],
+  },
+  {
+    label: { FRA: "Langages & systèmes", ENG: "Languages & systems", SPA: "Lenguajes y sistemas", DEU: "Sprachen & Systeme" },
+    items: [
+      ["Python", "/outils/python.svg"],
+      ["Java", "/outils/java.svg"],
+      ["PHP", "/outils/php.svg"],
+      ["C", "/outils/c.png"],
+      ["Bash", "/outils/bash.svg"],
+      ["Linux", "/outils/linux.svg"],
+    ],
+  },
+  {
+    label: { FRA: "Données & CMS", ENG: "Data & CMS", SPA: "Datos y CMS", DEU: "Daten & CMS" },
+    items: [
+      ["PostgreSQL", "/outils/postgresql.svg"],
+      ["MySQL", "/outils/mysql.svg"],
+      ["Hygraph", "/outils/hygraph.jpg"],
+    ],
+  },
+  {
+    label: { FRA: "Outils", ENG: "Tools", SPA: "Herramientas", DEU: "Werkzeuge" },
+    items: [
+      ["Git", "/outils/git.png"],
+      ["Docker", "/outils/docker.svg"],
+      ["Figma", "/outils/figma.svg"],
+      ["Jira", "/outils/jira.svg"],
+    ],
+  },
+];
+
+const complementaires: [ReactNode, Dict, Dict][] = [
+  [
+    <KanbanIcon key="projet" />,
+    { FRA: "Gestion de projet", ENG: "Project management", SPA: "Gestión de proyectos", DEU: "Projektmanagement" },
+    {
+      FRA: "Je suis notamment formé en gestion de projet, et j'ai pu mener des projets concrets durant ma formation. L'utilisation de méthodologies agiles comme Scrum ou Kanban fait partie de mes compétences.",
+      ENG: "I am particularly trained in project management and have led real-world projects during my studies. Using agile methodologies such as Scrum or Kanban is part of my skill set.",
+      SPA: "Estoy especialmente formado en gestión de proyectos y he dirigido proyectos reales durante mis estudios. El uso de metodologías ágiles como Scrum o Kanban forma parte de mis competencias.",
+      DEU: "Ich bin besonders in Projektmanagement geschult und habe während meines Studiums praktische Projekte geleitet. Die Anwendung agiler Methoden wie Scrum oder Kanban gehört zu meinen Fähigkeiten.",
+    },
+  ],
+  [
+    <UsersIcon key="equipe" />,
+    { FRA: "Management d'équipe", ENG: "Team management", SPA: "Gestión de equipos", DEU: "Teamführung" },
+    {
+      FRA: "J'ai également des compétences en management d'équipe, répartition des tâches et gestion des conflits.",
+      ENG: "I also have skills in team management, task distribution, and conflict resolution.",
+      SPA: "También tengo competencias en gestión de equipos, distribución de tareas y resolución de conflictos.",
+      DEU: "Ich verfüge außerdem über Kenntnisse im Teammanagement, in der Aufgabenverteilung und im Konfliktmanagement.",
+    },
+  ],
+  [
+    <MessageIcon key="communication" />,
+    { FRA: "Communication", ENG: "Communication", SPA: "Comunicación", DEU: "Kommunikation" },
+    {
+      FRA: "J'ai des notions en communication, notamment en communication interne à l'entreprise et en gestion des plans de communication lors de changements liés au numérique.",
+      ENG: "I have knowledge in communication, particularly in internal corporate communication and in managing communication plans during digital transformations.",
+      SPA: "Tengo conocimientos en comunicación, especialmente en comunicación interna empresarial y en la gestión de planes de comunicación durante transformaciones digitales.",
+      DEU: "Ich habe Kenntnisse in Kommunikation, insbesondere in der internen Unternehmenskommunikation und im Management von Kommunikationsplänen bei digitalen Veränderungen.",
+    },
+  ],
+  [
+    <GlobeIcon key="anglais" />,
+    { FRA: "Anglais", ENG: "English", SPA: "Inglés", DEU: "Englisch" },
+    {
+      FRA: "J'ai pu réaliser, durant ma formation, des présentations en anglais technique et non technique, ce qui m'a permis d'améliorer mes compétences orales dans cette langue.",
+      ENG: "During my studies, I was able to give both technical and non-technical presentations in English, which helped me improve my speaking skills in the language.",
+      SPA: "Durante mi formación, pude realizar presentaciones en inglés técnico y no técnico, lo que me permitió mejorar mis competencias orales en este idioma.",
+      DEU: "Während meines Studiums konnte ich technische und nicht-technische Präsentationen auf Englisch halten, was mir half, meine mündlichen Sprachkenntnisse in dieser Sprache zu verbessern.",
+    },
+  ],
+  [
+    <ScaleIcon key="droit" />,
+    { FRA: "Droit informatique", ENG: "IT law", SPA: "Derecho informático", DEU: "IT-Recht" },
+    {
+      FRA: "Enfin, j'ai les bases du droit informatique liées à la protection des données (RGPD, CNIL), à la propriété intellectuelle et aux contrats.",
+      ENG: "Finally, I have basic knowledge of IT law related to data protection (GDPR, CNIL), intellectual property, and contracts.",
+      SPA: "Por último, tengo conocimientos básicos de derecho informático relacionados con la protección de datos (RGPD, CNIL), la propiedad intelectual y los contratos.",
+      DEU: "Schließlich habe ich Grundkenntnisse im IT-Recht in Bezug auf Datenschutz (DSGVO, CNIL), geistiges Eigentum und Verträge.",
+    },
+  ],
+];
+
+// Carte aux coins coupés, avec son numéro et son icône en en-tête.
+function Carte({
+  numero,
+  icone,
+  titre,
+  enAvant = false,
+  className = "",
+  children,
+}: {
+  numero: string;
+  icone: ReactNode;
+  titre?: ReactNode;
+  /** Bordure couleur d'accent (carte principale) */
+  enAvant?: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <article
+      className={`clip-corners flex min-w-0 ${enAvant ? "bg-(--accentuation) p-0.5" : "bg-(--line) p-px"} ${className}`}
+    >
+      <div className="clip-corners flex-1 min-w-0 bg-(--surface) p-6 lg:p-10 flex flex-col gap-5 lg:gap-6">
+        <header className="flex items-center justify-between gap-4 text-(--accentuation)">
+          <p
+            aria-hidden="true"
+            className="flex items-center gap-3 text-sm tracking-[0.08em] font-(family-name:--font-aquire)"
+          >
+            {numero}
+            <span className="block w-10 h-px bg-(--accentuation)"></span>
+          </p>
+          {icone}
+        </header>
+        {titre}
+        {children}
+      </div>
+    </article>
+  );
 }
 
-// Classes des panneaux d'info : sur grand écran ils sont superposés et on
-// joue sur l'opacité, sur petit écran seul le panneau actif est affiché.
-function panelClass(active: boolean) {
-  return `relative col-start-1 row-start-1 p-6 lg:p-8 text-foreground transition-opacity duration-300 ${
-    active
-      ? "block opacity-100"
-      : "hidden xl:block xl:opacity-0 xl:invisible xl:pointer-events-none"
-  }`;
+function TitreCarte({ children }: { children: ReactNode }) {
+  return <h3 className="text-2xl lg:text-3xl font-black leading-tight">{children}</h3>;
+}
+
+// Petits crochets d'angle (motif du site) autour d'un bloc en position relative.
+function Crochets() {
+  return (
+    <>
+      <span aria-hidden="true" className="absolute top-0 left-0 size-4.5 border-t-2 border-l-2 border-(--accentuation)"></span>
+      <span aria-hidden="true" className="absolute bottom-0 right-0 size-4.5 border-b-2 border-r-2 border-(--accentuation)"></span>
+    </>
+  );
+}
+
+// Tracé façon plan de métro : Lorient → Lannion → Lorient & Bassin → ailleurs ?
+// Purement décoratif : le paragraphe qui suit donne les mêmes informations.
+function Trajet() {
+  const t = useTranslate();
+  const nom = "fill-foreground text-[13px] tracking-[1px] font-(family-name:--font-aquire)";
+  const sousTitre = "fill-(--muted) text-xs font-bold";
+  return (
+    <svg viewBox="0 0 420 320" aria-hidden="true" className="block w-full max-w-md mx-auto h-auto">
+      <defs>
+        <pattern id="apropos-points" width="16" height="16" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1" className="fill-(--line)" />
+        </pattern>
+        <filter id="apropos-halo" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="3" />
+        </filter>
+      </defs>
+      <rect width="420" height="320" fill="url(#apropos-points)" />
+      {/* Passé : trait plein */}
+      <path d="M50 230 L170 110 L290 230" fill="none" strokeWidth="3" className="stroke-(--muted)" />
+      {/* Futur : pointillés lumineux + flèche */}
+      <path d="M290 230 L386 134" fill="none" strokeWidth="6" opacity="0.45" filter="url(#apropos-halo)" className="stroke-(--accentuation)" />
+      <path d="M290 230 L386 134" fill="none" strokeWidth="2.5" strokeDasharray="7 7" className="stroke-(--accentuation)" />
+      <polygon points="396,124 380.4,128.2 391.8,139.6" className="fill-(--accentuation)" />
+      {/* Étapes passées */}
+      <rect x="43" y="223" width="14" height="14" strokeWidth="2" transform="rotate(45 50 230)" className="fill-(--surface) stroke-(--muted)" />
+      <rect x="163" y="103" width="14" height="14" strokeWidth="2" transform="rotate(45 170 110)" className="fill-(--surface) stroke-(--muted)" />
+      {/* Étape actuelle */}
+      <rect x="280" y="220" width="20" height="20" opacity="0.55" filter="url(#apropos-halo)" transform="rotate(45 290 230)" className="fill-(--accentuation)" />
+      <rect x="278" y="218" width="24" height="24" fill="none" opacity="0.45" transform="rotate(45 290 230)" className="stroke-(--accentuation)" />
+      <rect x="283" y="223" width="14" height="14" transform="rotate(45 290 230)" className="fill-(--accentuation)" />
+
+      <text x="50" y="268" textAnchor="middle" className={nom}>LORIENT</text>
+      <text x="50" y="287" textAnchor="middle" className={sousTitre}>
+        {t({ FRA: "Point de départ", ENG: "Starting point", SPA: "Punto de partida", DEU: "Ausgangspunkt" })}
+      </text>
+
+      <text x="170" y="70" textAnchor="middle" className={nom}>LANNION</text>
+      <text x="170" y="88" textAnchor="middle" className={sousTitre}>
+        {t({ FRA: "Études · 2023 – 2026", ENG: "Studies · 2023 – 2026", SPA: "Estudios · 2023 – 2026", DEU: "Studium · 2023 – 2026" })}
+      </text>
+
+      <text x="290" y="268" textAnchor="middle" className={nom}>LORIENT</text>
+      <text x="290" y="285" textAnchor="middle" className="fill-foreground text-[11px] tracking-[1px] font-(family-name:--font-aquire)">
+        {t({ FRA: "& BASSIN D'ARCACHON", ENG: "& ARCACHON BAY", SPA: "& BAHÍA DE ARCACHON", DEU: "& BUCHT VON ARCACHON" })}
+      </text>
+      <text x="290" y="305" textAnchor="middle" className="fill-(--accentuation) text-xs font-bold">
+        {t({ FRA: "Aujourd'hui", ENG: "Today", SPA: "Hoy", DEU: "Heute" })}
+      </text>
+
+      <text x="404" y="88" textAnchor="end" className="fill-(--accentuation) text-[13px] tracking-[1px] font-(family-name:--font-aquire)">
+        {t({ FRA: "AILLEURS ?", ENG: "ELSEWHERE?", SPA: "¿OTRO LUGAR?", DEU: "ANDERSWO?" })}
+      </text>
+      <text x="404" y="106" textAnchor="end" className={sousTitre}>
+        {t({ FRA: "Ouvert à la mobilité", ENG: "Open to relocation", SPA: "Abierto a la movilidad", DEU: "Offen für Mobilität" })}
+      </text>
+    </svg>
+  );
+}
+
+// Étape de la frise de formation : verticale sur mobile, horizontale (de gauche
+// à droite) sur grand écran.
+type EtatEtape = "passe" | "actuel" | "futur";
+
+const styleEtape: Record<EtatEtape, { ligne: string; repere: string; annee: string }> = {
+  passe: {
+    ligne: "border-(--line)",
+    repere: "bg-(--surface) border-2 border-(--muted)",
+    annee: "text-foreground",
+  },
+  actuel: {
+    ligne: "border-(--accentuation) shadow-[-10px_0_16px_-12px_var(--glow)] xl:shadow-[0_-10px_16px_-12px_var(--glow)]",
+    repere: "bg-(--accentuation) shadow-[0_0_12px_var(--glow)]",
+    annee: "text-(--accentuation)",
+  },
+  futur: {
+    ligne: "border-dashed border-(--accentuation)",
+    repere: "bg-(--surface) border-2 border-(--accentuation)",
+    annee: "text-(--muted)",
+  },
+};
+
+function Etape({
+  etat,
+  annee,
+  titre,
+  dernier = false,
+  children,
+}: {
+  etat: EtatEtape;
+  annee: string;
+  titre: string;
+  dernier?: boolean;
+  children: ReactNode;
+}) {
+  const s = styleEtape[etat];
+  return (
+    <li
+      className={`relative min-w-0 flex flex-col gap-3 border-l-2 pl-8 xl:border-l-0 xl:border-t-2 xl:pl-0 xl:pt-8 ${
+        dernier ? "pb-0" : "pb-10 xl:pb-0 xl:pr-8"
+      } ${s.ligne}`}
+    >
+      <span
+        aria-hidden="true"
+        className={`absolute -left-[7px] top-1.5 xl:left-0 xl:-top-[7px] size-3 rotate-45 ${s.repere}`}
+      ></span>
+      {dernier && (
+        <ArrowRightIcon
+          size={20}
+          className="hidden xl:block absolute -top-[11px] -right-1 text-(--accentuation)"
+        />
+      )}
+      <p className={`text-3xl uppercase font-(family-name:--font-aquire) ${s.annee}`}>{annee}</p>
+      <h4 className="text-lg lg:text-xl font-bold leading-snug">{titre}</h4>
+      {children}
+    </li>
+  );
 }
 
 export default function Apropos() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const originY = listOriginY[activeIndex];
-
-  const outilsTechniques = [
-    ["Next.js", "/outils/nextjs.svg"],
-    ["React", "/outils/react.svg"],
-    ["TailwindCSS", "/outils/tailwind.svg"],
-    ["Typescript", "/outils/typescript.svg"],
-    ["HTML / CSS / Javascript", "/outils/html5.png"],
-    ["Python", "/outils/python.svg"],
-    ["Bash", "/outils/bash.svg"],
-    ["C", "/outils/c.png"],
-    ["Java", "/outils/java.svg"],
-    ["PHP", "/outils/php.svg"],
-    ["PostgreSQL", "/outils/postgresql.svg"],
-    ["Git", "/outils/git.png"],
-    ["Docker", "/outils/docker.svg"],
-    ["Linux", "/outils/linux.svg"],
-    ["Shadcn", "/outils/shadcn.png"],
-    ["Hygraph", "/outils/hygraph.jpg"],
-    ["Astro", "/outils/astro.svg"],
-    ["MySQL", "/outils/mysql.svg"],
-    ["Figma", "/outils/figma.svg"],
-    ["Jira", "/outils/jira.svg"],
-  ];
-
-  function selectSection(index: number) {
-    setActiveIndex(index);
-  }
+  const t = useTranslate();
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto relative flex flex-col xl:flex-row gap-6 xl:gap-0 px-4 md:px-8 xl:px-0 xl:pr-16 py-8 xl:py-12">
-      <div className="w-full xl:w-1/3 relative grid grid-cols-2 gap-3 xl:flex xl:flex-col xl:justify-around xl:gap-6 xl:pl-16">
-        <div className="hidden xl:flex w-3/4 h-5/6 left-1/6 justify-center items-center absolute bg-foreground -z-10 p-4">
-          <div className="bg-background w-full h-full"></div>
-        </div>
-        {(
-          [
-            [
-              // https://www.svgrepo.com/svg/69867/graduation-diploma
-              <svg
-                key="formation"
-                fill="var(--foreground)"
-                height="100%"
-                width="100%"
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 401.168 401.168"
-                xmlSpace="preserve"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <g>
-                    {" "}
-                    <g>
-                      {" "}
-                      <path d="M401.004,250.538c-0.834-5.295-4.759-9.572-9.961-10.859c-0.872-0.215-71.379-17.925-123.181-49.804l-56.563-56.576 c-31.844-51.777-49.596-122.305-49.811-123.174c-1.286-5.203-5.565-9.128-10.859-9.962c-5.293-0.834-10.572,1.585-13.396,6.14 l-17.078,27.542c-9.682-8.729-24.245-12.872-36.144-9.729l-0.973,0.259C40.87,37.292,14.092,64.07,1.175,106.237l-0.258,0.974 c-2.961,13.143,1.392,27.9,11.09,37.599c0.729,0.729,1.494,1.433,2.272,2.092l0.294,0.241 c32.075,25.631,63.309,52.74,93.259,80.913c-26.838,14.876-50.168,22.272-67.996,21.479c-2.969-0.133-5.679,1.683-6.688,4.479 s-0.084,5.923,2.286,7.719l20.133,15.26l-22.844,21.916c-1.961,1.882-2.611,4.751-1.653,7.293 c0.348,0.924,0.882,1.737,1.552,2.407c1.177,1.178,2.772,1.906,4.501,1.982c20.176,0.897,42.373-3.433,66.34-12.889 c-9.457,23.967-13.786,46.163-12.889,66.339c0.077,1.729,0.806,3.325,1.983,4.502c0.67,0.67,1.485,1.204,2.408,1.552 c2.542,0.958,5.412,0.31,7.293-1.651l21.917-22.846l15.258,20.136c1.796,2.367,4.922,3.295,7.718,2.283 c2.795-1.009,4.61-3.72,4.478-6.688c-0.792-17.828,6.604-41.159,21.481-67.999c28.188,29.964,55.298,61.198,80.914,93.263 l0.243,0.3c0.657,0.774,1.359,1.536,2.086,2.266c9.698,9.698,24.457,14.053,37.601,11.094l0.978-0.259 c42.17-12.923,68.947-39.7,81.861-81.865c0,0,7.035-21.217-9.47-37.115l27.542-17.076 C399.419,261.109,401.838,255.832,401.004,250.538z M144.092,45.804c2.646,8.297,5.908,17.908,9.772,28.236 c-5.276-6.201-10.505-12.439-15.675-18.717L144.092,45.804z M131.16,213.438c-31.956-30.331-65.39-59.483-99.773-86.967 c-0.182-0.159-0.363-0.328-0.539-0.504c-3.135-3.135-5.27-8.371-4.02-12.497c10.398-33.443,30-53.046,63.446-63.445 c3.783-1.262,9.22-0.221,13,4.559c2.096,2.622,4.204,5.238,6.319,7.85l4.047,4.964c24.407,29.881,50.045,58.988,76.598,86.963 L131.16,213.438z M351.141,310.894c-10.395,33.441-29.996,53.046-63.441,63.446c-4.096,0.889-9.366-0.887-12.501-4.021 c-0.175-0.177-0.345-0.354-0.501-0.535c-27.465-34.371-56.617-67.807-86.965-99.775l59.076-59.075 c27.979,26.561,57.088,52.198,86.968,76.603l4.958,4.041c2.61,2.115,5.229,4.225,7.854,6.32c0.181,0.157,0.36,0.325,0.535,0.501 C350.255,301.531,352.291,306.884,351.141,310.894z M345.843,262.979c-6.276-5.17-12.517-10.397-18.72-15.677 c10.33,3.864,19.943,7.126,28.241,9.773L345.843,262.979z"></path>{" "}
-                    </g>{" "}
-                  </g>{" "}
-                </g>
-              </svg>,
-              {
-                FRA: "Formation",
-                ENG: "Education and Training",
-                SPA: "Educación y formación",
-                DEU: "Ausbildung und Schulung",
-              },
-            ],
-            [
-              // https://www.svgrepo.com/svg/440005/person
-              <svg
-                key="profil"
-                viewBox="0 0 24 24"
-                height="100%"
-                width="100%"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4ZM14 8C14 6.9 13.1 6 12 6C10.9 6 10 6.9 10 8C10 9.1 10.9 10 12 10C13.1 10 14 9.1 14 8ZM18 18C17.8 17.29 14.7 16 12 16C9.31 16 6.23 17.28 6 18H18ZM4 18C4 15.34 9.33 14 12 14C14.67 14 20 15.34 20 18V20H4V18Z"
-                    fill="var(--foreground)"
-                  ></path>{" "}
-                </g>
-              </svg>,
-              {
-                FRA: "Qui suis-je ?",
-                ENG: "Profile",
-                SPA: "Perfil",
-                DEU: "Profil",
-              },
-            ],
-            [
-              // https://www.svgrepo.com/svg/456202/computer-memory
-              <svg
-                key="competences"
-                viewBox="0 0 24 24"
-                height="100%"
-                width="100%"
-                id="Layer_1"
-                data-name="Layer 1"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="#000000"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  <defs>
-                    <style>{`.cls-1{fill:none;stroke:var(--foreground);stroke-miterlimit:10;stroke-width:1.91px;}`}</style>
-                  </defs>
-                  <polyline
-                    className="cls-1"
-                    points="0.5 2.46 2.41 2.46 2.41 22.54"
-                  ></polyline>
-                  <polygon
-                    className="cls-1"
-                    points="22.5 4.37 22.5 18.72 15.8 18.72 15.8 17.76 10.06 17.76 9.11 18.72 2.41 18.72 2.41 4.37 22.5 4.37"
-                  ></polygon>
-                  <rect
-                    className="cls-1"
-                    x="2.41"
-                    y="8.2"
-                    width="4.78"
-                    height="6.7"
-                  ></rect>
-                  <rect
-                    className="cls-1"
-                    x="11.02"
-                    y="9.15"
-                    width="7.65"
-                    height="3.83"
-                  ></rect>
-                  <line
-                    className="cls-1"
-                    x1="11.98"
-                    y1="7.24"
-                    x2="11.98"
-                    y2="9.15"
-                  ></line>
-                  <line
-                    className="cls-1"
-                    x1="14.85"
-                    y1="7.24"
-                    x2="14.85"
-                    y2="9.15"
-                  ></line>
-                  <line
-                    className="cls-1"
-                    x1="17.72"
-                    y1="7.24"
-                    x2="17.72"
-                    y2="9.15"
-                  ></line>
-                  <line
-                    className="cls-1"
-                    x1="11.98"
-                    y1="12.98"
-                    x2="11.98"
-                    y2="14.89"
-                  ></line>
-                  <line
-                    className="cls-1"
-                    x1="14.85"
-                    y1="12.98"
-                    x2="14.85"
-                    y2="14.89"
-                  ></line>
-                  <line
-                    className="cls-1"
-                    x1="17.72"
-                    y1="12.98"
-                    x2="17.72"
-                    y2="14.89"
-                  ></line>
-                </g>
-              </svg>,
-              {
-                FRA: "Compétences informatiques",
-                ENG: "Technical Skills",
-                SPA: "Competencias técnicas",
-                DEU: "Technische Kenntnisse",
-              },
-            ],
-            [
-              // https://www.svgrepo.com/svg/90790/science
-              <svg
-                key="complementaires"
-                fill="var(--foreground)"
-                height="100%"
-                width="100%"
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 490 490"
-                xmlSpace="preserve"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <g>
-                    {" "}
-                    <path d="M195.234,357.719L260.313,245l-65.078-112.719H65.078L0,245l65.078,112.719H195.234z M82.76,162.906h94.794L224.95,245 l-47.396,82.094H82.76L35.362,245L82.76,162.906z"></path>{" "}
-                    <path d="M294.766,0l-65.078,112.718l65.078,112.718h130.156L490,112.718L424.922,0H294.766z M407.241,194.812h-94.794 l-47.397-82.093l47.397-82.093h94.794l47.396,82.093L407.241,194.812z"></path>{" "}
-                    <path d="M294.766,264.563l-65.078,112.718L294.766,490h130.156L490,377.281l-65.078-112.718H294.766z M407.241,459.375h-94.794 l-47.397-82.094l47.397-82.093h94.794l47.396,82.093L407.241,459.375z"></path>{" "}
-                  </g>{" "}
-                </g>
-              </svg>,
-              {
-                FRA: "Compétences complémentaires",
-                ENG: "Additional Skills",
-                SPA: "Competencias complementarias",
-                DEU: "Ergänzende Kenntnisse",
-              },
-            ],
-          ] as const
-        ).map(([icon, dict], index) => (
-          <button
-            key={index}
-            className={`w-full relative p-1 xl:p-2 cursor-pointer hover:bg-foreground transition-colors duration-300 group ${index === activeIndex ? "bg-(--primary) xl:bg-(--foreground-secondary)" : "bg-(--foreground-secondary)"}`}
-            onClick={() => selectSection(index)}
-            aria-pressed={index === activeIndex}
-          >
-            {/* Les deux petits carrés clignotent sur le bouton actif */}
-            {["left-3", "left-8"].map((left) => (
-              <div
-                key={left}
-                className={`absolute hidden xl:block top-3 ${left} w-3 h-3 z-10 ${
-                  index === activeIndex
-                    ? "bg-(--primary) animate-pulse"
-                    : "bg-(--foreground-secondary)"
-                }`}
-              ></div>
-            ))}
-            <div className="clipPath-Button-Double h-full flex flex-col xl:flex-row items-center gap-2 xl:gap-4 px-3 py-4 xl:py-5 xl:pl-14 xl:pr-6 w-full text-center xl:text-left bg-background group-hover:bg-(--background-secondary) transition-colors duration-300">
-              <div className="w-8 h-8 xl:w-10 xl:h-10 shrink-0">{icon}</div>
-              <p className="text-sm sm:text-base xl:text-xl font-semibold leading-tight">
-                <Translate dict={dict} />
-              </p>
-            </div>
-          </button>
-        ))}
-      </div>
-      <div className="w-full xl:w-2/3 relative flex flex-row overflow-hidden">
-        <div className="relative hidden xl:block w-40 2xl:w-64 shrink-0">
-          {/* faisceaux */}
-          {Array.from({ length: beamCount }).map((_, i) => {
-            const minY = -1.35 * originY; // Angle plus grand vers le haut
-            const maxY = -1.35 * originY + 235; // Angle plus grand vers le bas
-            const targetY = minY + (i / (beamCount - 1)) * (maxY - minY);
-            const deltaY = targetY - originY;
-            const angle = Math.atan2(deltaY, 100) * (180 / Math.PI);
-            const length = Math.sqrt(100 * 100 + deltaY * deltaY);
-
-            // Longueur variable, différente pour chaque section
-            const randomWidth =
-              length * (1 + pseudoRandom(i + activeIndex * beamCount) * 4);
-            return (
-              <div
-                key={i}
-                className="absolute left-0 h-px bg-(--primary) opacity-40"
-                style={{
-                  top: `${originY}%`,
-                  // Arrondis pour que serveur et navigateur produisent le même texte
-                  width: `${randomWidth.toFixed(2)}%`,
-                  transformOrigin: "left center",
-                  transform: `rotate(${angle.toFixed(3)}deg)`,
-                  transition: "all 0ms ease-in-out",
-                  boxShadow: "0 0 8px var(--glow)",
-                }}
-              />
-            );
+    <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 xl:px-16 py-10 lg:py-14 grid gap-5 lg:grid-cols-12">
+      {/* 01 · Qui suis-je ? ================================================== */}
+      <Carte
+        numero="01"
+        icone={<UserIcon size={24} />}
+        enAvant
+        className="lg:col-span-7"
+        titre={
+          <TitreCarte>
+            {t({ FRA: "Qui suis-je ?", ENG: "Profile", SPA: "Perfil", DEU: "Profil" })}
+          </TitreCarte>
+        }
+      >
+        <p className="text-lg lg:text-[22px] leading-relaxed text-foreground">
+          {t({
+            FRA: "Je suis passionné depuis longtemps par l'informatique, la programmation et plus récemment par le design. Je continue d'apprendre chaque jour pour toujours progresser sur ces sujets.",
+            ENG: "I have been passionate about computer science, programming, and more recently, design for a long time. I keep learning every day to keep improving in these fields.",
+            SPA: "Desde hace mucho tiempo me apasiona la informática, la programación y, más recientemente, el diseño. Sigo aprendiendo cada día para seguir progresando en estos temas.",
+            DEU: "Ich begeistere mich seit langem für Informatik, Programmierung und in jüngerer Zeit auch für Design. Ich lerne jeden Tag dazu, um mich in diesen Bereichen stetig weiterzuentwickeln.",
           })}
+        </p>
+        <p className={texte}>
+          <span className="block mb-1.5 text-2xl lg:text-[28px] font-black leading-tight text-(--accentuation)">
+            {t({
+              FRA: "J'adore créer, de tout !",
+              ENG: "I love creating — anything!",
+              SPA: "¡Me encanta crear, de todo!",
+              DEU: "Ich liebe es, Dinge zu erschaffen – alles Mögliche!",
+            })}
+          </span>
+          {t({
+            FRA: "J'ai pour objectif de toujours m'améliorer.",
+            ENG: "My goal is to keep improving myself.",
+            SPA: "Mi objetivo es mejorar constantemente.",
+            DEU: "Mein Ziel ist es, mich ständig zu verbessern.",
+          })}
+        </p>
+        <p className={texte}>
+          {t({
+            FRA: "De plus, j'aime travailler en équipe : cela permet d'échanger, d'obtenir des retours et de s'adapter en conséquence pour produire le meilleur résultat possible.",
+            ENG: "Moreover, I enjoy working in a team — it allows for exchange, feedback, and adaptation to achieve the best possible result.",
+            SPA: "Además, me gusta trabajar en equipo, ya que permite intercambiar ideas, recibir comentarios y adaptarse para lograr el mejor resultado posible.",
+            DEU: "Außerdem arbeite ich gerne im Team – das ermöglicht Austausch, Feedback und Anpassung, um das bestmögliche Ergebnis zu erzielen.",
+          })}
+        </p>
+        <div className="relative mt-auto bg-(--surface-2) p-6 flex flex-col gap-3">
+          <Crochets />
+          <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-(--accentuation)">
+            <TargetIcon size={18} />
+            {t({ FRA: "Objectif", ENG: "Goal", SPA: "Objetivo", DEU: "Ziel" })}
+          </p>
+          <p className={texte}>
+            {t({
+              FRA: "À l'issue de mon BUT Informatique, mon ambition est d'intégrer le monde professionnel en tant que développeur dès qu'une opportunité stimulante se présentera. J'ai à cœur de mettre mes compétences au service de projets concrets et innovants au sein d'une équipe dynamique. À plus long terme, j'envisage d'évoluer vers le statut de développeur freelance, afin de relever des défis variés et de mettre mon expertise au profit d'une clientèle diversifiée en toute autonomie.",
+              ENG: "Upon completing my BUT in Computer Science, my ambition is to enter the professional world as a developer as soon as a stimulating opportunity arises. I am eager to apply my skills to concrete and innovative projects within a dynamic team. In the longer term, I plan to transition into freelance development to take on diverse challenges and provide my expertise to a broad range of clients independently.",
+              SPA: "Al finalizar mi BUT en Informática, mi ambición es incorporarme al mundo profesional como desarrollador en cuanto se presente una oportunidad estimulante. Deseo poner mis habilidades al servicio de proyectos concretos e innovadores dentro de un equipo dinámico. A largo plazo, planeo evolucionar hacia el estatus de desarrollador freelance para afrontar desafíos variados y ofrecer mi experiencia a una clientela diversa de forma autónoma.",
+              DEU: "Nach Abschluss meines BUT in Informatik ist es mein Ziel, als Entwickler in die Berufswelt einzusteigen, sobald sich eine spannende Gelegenheit bietet. Ich freue mich darauf, meine Fähigkeiten in konkrete und innovative Projekte innerhalb eines dynamischen Teams einzubringen. Langfristig plane ich den Schritt in die Selbstständigkeit als Freelance-Entwickler, um vielfältige Herausforderungen anzunehmen und mein Fachwissen einem breiten Kundenkreis eigenverantwortlich anzubieten.",
+            })}
+          </p>
         </div>
-        <div className="flex-1 min-w-0 z-10 relative">
-          <div className="absolute top-0 left-0 w-full h-full bg-background opacity-98 xl:opacity-70"></div>
-          <div className="absolute top-4 left-4 w-1/4 h-1/4 border-t-(--primary) border-t-4 border-l-(--primary) border-l-4 z-10"></div>
-          <div className="absolute bottom-4 right-4 w-1/6 h-1/6 border-b-(--primary) border-b-4 border-r-(--primary) border-r-4 z-10"></div>
-          <div className="w-full relative border-(--primary) border-4 grid">
-            <div className={panelClass(activeIndex === 0)}>
-              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                <Translate
-                  dict={{
-                    FRA: "Formation",
-                    ENG: "Education and Training",
-                    SPA: "Educación y formación",
-                    DEU: "Ausbildung und Schulung",
-                  }}
-                />
-              </h3>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Je suis diplômé d'un Bachelor Universitaire de Technologie (BUT) Informatique, parcours Data et IA, obtenu en 2026 à l'",
-                    ENG: "I hold a Bachelor of Technology (BUT) in Computer Science, Data and AI track, obtained in 2026 from the ",
-                    SPA: "Soy titulado en un Bachelor Universitario de Tecnología (BUT) en Informática, especialización en Datos e IA, obtenido en 2026 en el ",
-                    DEU: "Ich habe 2026 meinen Bachelor of Technology (BUT) in Informatik mit dem Schwerpunkt Daten und KI am ",
-                  }}
-                />
-                <Link
-                  href="https://iut-lannion.univ-rennes.fr/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-(--accentuation) underline hover:text-foreground transition-colors duration-200"
-                >
-                  <Translate
-                    dict={{
-                      FRA: "Institut Universitaire de Technologie (IUT) de Lannion",
-                      ENG: "University Institute of Technology (IUT) of Lannion",
-                      SPA: "Instituto Universitario de Tecnología (IUT) de Lannion",
-                      DEU: "Universitätsinstitut für Technologie (IUT) in Lannion",
-                    }}
-                  />
-                </Link>
-                <Translate
-                  dict={{
-                    FRA: ".",
-                    ENG: ".",
-                    SPA: ".",
-                    DEU: " abgeschlossen.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Ces trois années de formation (2023 - 2026) m'ont permis d'acquérir des compétences en programmation, systèmes et réseaux, ainsi qu'en anglais, droit, management et communication.",
-                    ENG: "These three years of training (2023 - 2026) allowed me to develop skills in programming, systems and networks, as well as in English, law, management and communication.",
-                    SPA: "Estos tres años de formación (2023 - 2026) me permitieron adquirir competencias en programación, sistemas y redes, así como en inglés, derecho, gestión y comunicación.",
-                    DEU: "Diese dreijährige Ausbildung (2023 - 2026) hat mir Kompetenzen in Programmierung, Systemen und Netzwerken sowie in Englisch, Recht, Management und Kommunikation vermittelt.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Je suis diplômé d'un baccalauréat général avec les spécialisations physique-chimie et NSI (numérique et sciences informatiques), ainsi que des options de droit et de robotique, obtenu en 2023.",
-                    ENG: "I hold a general French baccalaureate with specializations in Physics-Chemistry and Computer Science (NSI), along with electives in Law and Robotics, obtained in 2023.",
-                    SPA: "Poseo el bachillerato general francés con especializaciones en Física-Química e Informática (NSI), además de optativas en Derecho y Robótica, obtenido en 2023.",
-                    DEU: "Ich habe das französische Abitur mit den Schwerpunkten Physik-Chemie und Informatik (NSI) sowie den Wahlfächern Recht und Robotik im Jahr 2023 erworben.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "J'ai également obtenu le PSC1 (diplôme de premiers secours) en 2019.",
-                    ENG: "I also obtained the PSC1 (First Aid Certificate) in 2019.",
-                    SPA: "También obtuve el PSC1 (certificado de primeros auxilios) en 2019.",
-                    DEU: "Ich habe außerdem 2019 das PSC1-Zertifikat (Erste-Hilfe-Diplom) erworben.",
-                  }}
-                />
-              </p>
-            </div>
-            <div className={panelClass(activeIndex === 1)}>
-              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                <Translate
-                  dict={{
-                    FRA: "Qui suis-je ?",
-                    ENG: "Profile",
-                    SPA: "Perfil",
-                    DEU: "Profil",
-                  }}
-                />
-              </h3>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Je suis passionné depuis longtemps par l'informatique, la programmation et plus récemment par le design. Je continue d'apprendre chaque jour pour toujours progresser sur ces sujets.",
-                    ENG: "I have been passionate about computer science, programming, and more recently, design for a long time. I keep learning every day to keep improving in these fields.",
-                    SPA: "Desde hace mucho tiempo me apasiona la informática, la programación y, más recientemente, el diseño. Sigo aprendiendo cada día para seguir progresando en estos temas.",
-                    DEU: "Ich begeistere mich seit langem für Informatik, Programmierung und in jüngerer Zeit auch für Design. Ich lerne jeden Tag dazu, um mich in diesen Bereichen stetig weiterzuentwickeln.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Je vis entre Lorient et Lannion en Bretagne. Et j'aime écouter de la musique, jouer à des jeux vidéo, regarder des films et des séries.",
-                    ENG: "I live between Lorient and Lannion in Brittany. I enjoy listening to music, playing video games, and watching movies and TV shows.",
-                    SPA: "Vivo entre Lorient y Lannion, en Bretaña. Me gusta escuchar música, jugar a videojuegos y ver películas y series.",
-                    DEU: "Ich lebe zwischen Lorient und Lannion in der Bretagne. Ich höre gerne Musik, spiele Videospiele und schaue Filme und Serien.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "J'adore créer, de tout ! J'ai pour objectif de toujours m'améliorer.",
-                    ENG: "I love creating — anything! My goal is to keep improving myself.",
-                    SPA: "¡Me encanta crear, de todo! Mi objetivo es mejorar constantemente.",
-                    DEU: "Ich liebe es, Dinge zu erschaffen – alles Mögliche! Mein Ziel ist es, mich ständig zu verbessern.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "De plus, j'aime travailler en équipe : cela permet d'échanger, d'obtenir des retours et de s'adapter en conséquence pour produire le meilleur résultat possible.",
-                    ENG: "Moreover, I enjoy working in a team — it allows for exchange, feedback, and adaptation to achieve the best possible result.",
-                    SPA: "Además, me gusta trabajar en equipo, ya que permite intercambiar ideas, recibir comentarios y adaptarse para lograr el mejor resultado posible.",
-                    DEU: "Außerdem arbeite ich gerne im Team – das ermöglicht Austausch, Feedback und Anpassung, um das bestmögliche Ergebnis zu erzielen.",
-                  }}
-                />
-              </p>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "À l'issue de mon BUT Informatique, mon ambition est d'intégrer le monde professionnel en tant que développeur dès qu'une opportunité stimulante se présentera. J'ai à cœur de mettre mes compétences au service de projets concrets et innovants au sein d'une équipe dynamique. À plus long terme, j'envisage d'évoluer vers le statut de développeur freelance, afin de relever des défis variés et de mettre mon expertise au profit d'une clientèle diversifiée en toute autonomie.",
-                    ENG: "Upon completing my BUT in Computer Science, my ambition is to enter the professional world as a developer as soon as a stimulating opportunity arises. I am eager to apply my skills to concrete and innovative projects within a dynamic team. In the longer term, I plan to transition into freelance development to take on diverse challenges and provide my expertise to a broad range of clients independently.",
-                    SPA: "Al finalizar mi BUT en Informática, mi ambición es incorporarme al mundo profesional como desarrollador en cuanto se presente una oportunidad estimulante. Deseo poner mis habilidades al servicio de proyectos concretos e innovadores dentro de un equipo dinámico. A largo plazo, planeo evolucionar hacia el estatus de desarrollador freelance para afrontar desafíos variados y ofrecer mi experiencia a una clientela diversa de forma autónoma.",
-                    DEU: "Nach Abschluss meines BUT in Informatik ist es mein Ziel, als Entwickler in die Berufswelt einzusteigen, sobald sich eine spannende Gelegenheit bietet. Ich freue mich darauf, meine Fähigkeiten in konkrete und innovative Projekte innerhalb eines dynamischen Teams einzubringen. Langfristig plane ich den Schritt in die Selbstständigkeit als Freelance-Entwickler, um vielfältige Herausforderungen anzunehmen und mein Fachwissen einem breiten Kundenkreis eigenverantwortlich anzubieten.",
-                  }}
-                />
-              </p>
-            </div>
-            <div className={panelClass(activeIndex === 2)}>
-              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                <Translate
-                  dict={{
-                    FRA: "Compétences informatiques",
-                    ENG: "Computer Skills",
-                    SPA: "Habilidades Informáticas",
-                    DEU: "Computerkenntnisse",
-                  }}
-                />
-              </h3>
-              <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                <Translate
-                  dict={{
-                    FRA: "Au cours de mes études et de mes projets personnels, j'ai acquis des compétences en programmation dans plusieurs langages et outils.",
-                    ENG: "Throughout my studies and personal projects, I have gained programming skills in various languages and tools.",
-                    SPA: "A lo largo de mis estudios y proyectos personales, he adquirido competencias en programación en varios lenguajes y herramientas.",
-                    DEU: "Im Laufe meines Studiums und meiner persönlichen Projekte habe ich Programmierkenntnisse in verschiedenen Sprachen und Tools erworben.",
-                  }}
-                />
-              </p>
-              <div className="flex flex-row flex-wrap w-full gap-1 sm:gap-4 justify-around">
-                {outilsTechniques.map(([nom, src], index) => (
-                  <div
-                    key={index}
-                    className="flex flex-row items-center w-[40%] sm:w-[30%] gap-1 sm:gap-4 clipPath-Button-Double p-0.5 sm:py-1 sm:px-2 bg-(--foreground-secondary) transition-colors duration-300 cursor-default"
-                  >
-                    <div className="relative inline-block">
-                      <Image
-                        src={src}
-                        alt={nom}
-                        width={48}
-                        height={48}
-                        className="grayscale w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                      />
-                      <div
-                        className="absolute inset-0 bg-(--primary) mix-blend-multiply"
-                        style={{
-                          maskImage: `url(${src})`,
-                          maskSize: "contain",
-                          maskRepeat: "no-repeat",
-                          maskPosition: "center",
-                        }}
-                      ></div>
-                    </div>
-                    <p className="text-sm md:text-base text-background">{nom}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className={panelClass(activeIndex === 3)}>
-              <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                <Translate
-                  dict={{
-                    FRA: "Compétences complémentaires",
-                    ENG: "Additional Skills",
-                    SPA: "Competencias complementarias",
-                    DEU: "Ergänzende Kenntnisse",
-                  }}
-                />
-              </h3>
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "Mon BUT Informatique m'a également formé à de nombreuses compétences transversales.",
-                      ENG: "My Bachelor of Technology in Computer Science also trained me in many cross-disciplinary skills.",
-                      SPA: "Mi Bachelor en Informática también me formó en muchas competencias transversales.",
-                      DEU: "Mein Informatikstudium hat mich auch in vielen übergreifenden Kompetenzen ausgebildet.",
-                    }}
-                  />
-                </p>
+      </Carte>
 
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "Je suis notamment formé en gestion de projet, et j'ai pu mener des projets concrets durant ma formation. L'utilisation de méthodologies agiles comme Scrum ou Kanban fait partie de mes compétences.",
-                      ENG: "I am particularly trained in project management and have led real-world projects during my studies. Using agile methodologies such as Scrum or Kanban is part of my skill set.",
-                      SPA: "Estoy especialmente formado en gestión de proyectos y he dirigido proyectos reales durante mis estudios. El uso de metodologías ágiles como Scrum o Kanban forma parte de mis competencias.",
-                      DEU: "Ich bin besonders in Projektmanagement geschult und habe während meines Studiums praktische Projekte geleitet. Die Anwendung agiler Methoden wie Scrum oder Kanban gehört zu meinen Fähigkeiten.",
-                    }}
-                  />
-                </p>
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "J'ai également des compétences en management d'équipe, répartition des tâches et gestion des conflits.",
-                      ENG: "I also have skills in team management, task distribution, and conflict resolution.",
-                      SPA: "También tengo competencias en gestión de equipos, distribución de tareas y resolución de conflictos.",
-                      DEU: "Ich verfüge außerdem über Kenntnisse im Teammanagement, in der Aufgabenverteilung und im Konfliktmanagement.",
-                    }}
-                  />
-                </p>
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "J'ai des notions en communication, notamment en communication interne à l'entreprise et en gestion des plans de communication lors de changements liés au numérique.",
-                      ENG: "I have knowledge in communication, particularly in internal corporate communication and in managing communication plans during digital transformations.",
-                      SPA: "Tengo conocimientos en comunicación, especialmente en comunicación interna empresarial y en la gestión de planes de comunicación durante transformaciones digitales.",
-                      DEU: "Ich habe Kenntnisse in Kommunikation, insbesondere in der internen Unternehmenskommunikation und im Management von Kommunikationsplänen bei digitalen Veränderungen.",
-                    }}
-                  />
-                </p>
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "J'ai pu réaliser, durant ma formation, des présentations en anglais technique et non technique, ce qui m'a permis d'améliorer mes compétences orales dans cette langue.",
-                      ENG: "During my studies, I was able to give both technical and non-technical presentations in English, which helped me improve my speaking skills in the language.",
-                      SPA: "Durante mi formación, pude realizar presentaciones en inglés técnico y no técnico, lo que me permitió mejorar mis competencias orales en este idioma.",
-                      DEU: "Während meines Studiums konnte ich technische und nicht-technische Präsentationen auf Englisch halten, was mir half, meine mündlichen Sprachkenntnisse in dieser Sprache zu verbessern.",
-                    }}
-                  />
-                </p>
-                <p className="py-2 lg:py-3 text-base lg:text-lg leading-relaxed">
-                  <Translate
-                    dict={{
-                      FRA: "Enfin, j'ai les bases du droit informatique liées à la protection des données (RGPD, CNIL), à la propriété intellectuelle et aux contrats.",
-                      ENG: "Finally, I have basic knowledge of IT law related to data protection (GDPR, CNIL), intellectual property, and contracts.",
-                      SPA: "Por último, tengo conocimientos básicos de derecho informático relacionados con la protección de datos (RGPD, CNIL), la propiedad intelectual y los contratos.",
-                      DEU: "Schließlich habe ich Grundkenntnisse im IT-Recht in Bezug auf Datenschutz (DSGVO, CNIL), geistiges Eigentum und Verträge.",
-                    }}
-                  />
-                </p>
-            </div>
-          </div>
+      {/* 02 · Parcours géographique et loisirs ============================== */}
+      <Carte
+        numero="02"
+        icone={<MapPinIcon size={24} />}
+        className="lg:col-span-5"
+        titre={
+          <h3 className="sr-only">
+            {t({
+              FRA: "Parcours et mobilité",
+              ENG: "Background and mobility",
+              SPA: "Trayectoria y movilidad",
+              DEU: "Werdegang und Mobilität",
+            })}
+          </h3>
+        }
+      >
+        <Trajet />
+        <p className={texte}>
+          {t({
+            FRA: "Après mes études à Lannion, je suis revenu à Lorient. Je suis ",
+            ENG: "After my studies in Lannion, I moved back to Lorient. I am ",
+            SPA: "Tras mis estudios en Lannion, volví a Lorient. Estoy ",
+            DEU: "Nach meinem Studium in Lannion bin ich nach Lorient zurückgekehrt. Ich bin ",
+          })}
+          <strong className="font-bold text-foreground">
+            {t({
+              FRA: "prêt à bouger",
+              ENG: "ready to relocate",
+              SPA: "dispuesto a mudarme",
+              DEU: "bereit umzuziehen",
+            })}
+          </strong>
+          {t({
+            FRA: " : en Bretagne, sur le bassin d'Arcachon (Lège-Cap-Ferret) ou ailleurs, selon les opportunités.",
+            ENG: ": to Brittany, the Arcachon Bay (Lège-Cap-Ferret) or elsewhere, depending on opportunities.",
+            SPA: ": en Bretaña, en la bahía de Arcachon (Lège-Cap-Ferret) o en otro lugar, según las oportunidades.",
+            DEU: ": in die Bretagne, an die Bucht von Arcachon (Lège-Cap-Ferret) oder woandershin – je nach Gelegenheit.",
+          })}
+        </p>
+        <div className="mt-auto pt-5 border-t border-(--line) flex flex-col gap-3.5">
+          <p className={texte}>
+            {t({
+              FRA: "J'aime écouter de la musique, jouer à des jeux vidéo, aller au cinéma et voyager.",
+              ENG: "I enjoy listening to music, playing video games, going to the movies and traveling.",
+              SPA: "Me gusta escuchar música, jugar a videojuegos, ir al cine y viajar.",
+              DEU: "Ich höre gerne Musik, spiele Videospiele, gehe ins Kino und reise gerne.",
+            })}
+          </p>
+          <ul className="grid grid-cols-2 gap-2">
+            {loisirs.map(([icone, nom]) => (
+              <li
+                key={nom.FRA}
+                className="flex items-center gap-2.5 px-3.5 py-2.5 border border-(--line) text-sm font-bold text-(--foreground-secondary)"
+              >
+                <span className="shrink-0 text-(--accentuation)">{icone}</span>
+                {t(nom)}
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+      </Carte>
+
+      {/* 03 · Formation : frise de gauche à droite ========================== */}
+      <Carte
+        numero="03"
+        icone={<GraduationCapIcon size={24} />}
+        className="lg:col-span-12"
+        titre={
+          <TitreCarte>
+            {t({
+              FRA: "Formation",
+              ENG: "Education and Training",
+              SPA: "Educación y formación",
+              DEU: "Ausbildung und Schulung",
+            })}
+          </TitreCarte>
+        }
+      >
+        <ol className="mt-2 xl:mt-4 ml-1.5 xl:ml-0 flex flex-col xl:grid xl:grid-cols-[1fr_1.3fr_2fr_0.9fr]">
+          <Etape etat="passe" annee="2019" titre="PSC1">
+            <p className={texte}>
+              {t({
+                FRA: "J'ai également obtenu le PSC1 (diplôme de premiers secours) en 2019.",
+                ENG: "I also obtained the PSC1 (First Aid Certificate) in 2019.",
+                SPA: "También obtuve el PSC1 (certificado de primeros auxilios) en 2019.",
+                DEU: "Ich habe außerdem 2019 das PSC1-Zertifikat (Erste-Hilfe-Diplom) erworben.",
+              })}
+            </p>
+          </Etape>
+          <Etape
+            etat="passe"
+            annee="2023"
+            titre={t({
+              FRA: "Baccalauréat général",
+              ENG: "French baccalaureate",
+              SPA: "Bachillerato francés",
+              DEU: "Französisches Abitur",
+            })}
+          >
+            <p className={texte}>
+              {t({
+                FRA: "Je suis diplômé d'un baccalauréat général avec les spécialisations physique-chimie et NSI (numérique et sciences informatiques), ainsi que des options de droit et de robotique, obtenu en 2023.",
+                ENG: "I hold a general French baccalaureate with specializations in Physics-Chemistry and Computer Science (NSI), along with electives in Law and Robotics, obtained in 2023.",
+                SPA: "Poseo el bachillerato general francés con especializaciones en Física-Química e Informática (NSI), además de optativas en Derecho y Robótica, obtenido en 2023.",
+                DEU: "Ich habe das französische Abitur mit den Schwerpunkten Physik-Chemie und Informatik (NSI) sowie den Wahlfächern Recht und Robotik im Jahr 2023 erworben.",
+              })}
+            </p>
+          </Etape>
+          <Etape
+            etat="actuel"
+            annee="2026"
+            titre={t({
+              FRA: "BUT Informatique · parcours Data et IA",
+              ENG: "BUT in Computer Science · Data and AI track",
+              SPA: "BUT en Informática · especialización en Datos e IA",
+              DEU: "BUT Informatik · Schwerpunkt Daten und KI",
+            })}
+          >
+            <p className={texte}>
+              {t({
+                FRA: "Je suis diplômé d'un Bachelor Universitaire de Technologie (BUT) Informatique, parcours Data et IA, obtenu en 2026 à l'",
+                ENG: "I hold a Bachelor of Technology (BUT) in Computer Science, Data and AI track, obtained in 2026 from the ",
+                SPA: "Soy titulado en un Bachelor Universitario de Tecnología (BUT) en Informática, especialización en Datos e IA, obtenido en 2026 en el ",
+                DEU: "Ich habe 2026 meinen Bachelor of Technology (BUT) in Informatik mit dem Schwerpunkt Daten und KI am ",
+              })}
+              <a
+                href="https://iut-lannion.univ-rennes.fr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-(--accentuation) underline decoration-2 underline-offset-4 hover:text-foreground transition-colors duration-200"
+              >
+                {t({
+                  FRA: "Institut Universitaire de Technologie (IUT) de Lannion",
+                  ENG: "University Institute of Technology (IUT) of Lannion",
+                  SPA: "Instituto Universitario de Tecnología (IUT) de Lannion",
+                  DEU: "Universitätsinstitut für Technologie (IUT) in Lannion",
+                })}
+              </a>
+              {t({ FRA: ".", ENG: ".", SPA: ".", DEU: " abgeschlossen." })}
+            </p>
+            <p className={texte}>
+              {t({
+                FRA: "Ces trois années de formation (2023 - 2026) m'ont permis d'acquérir des compétences en programmation, systèmes et réseaux, ainsi qu'en anglais, droit, management et communication.",
+                ENG: "These three years of training (2023 - 2026) allowed me to develop skills in programming, systems and networks, as well as in English, law, management and communication.",
+                SPA: "Estos tres años de formación (2023 - 2026) me permitieron adquirir competencias en programación, sistemas y redes, así como en inglés, derecho, gestión y comunicación.",
+                DEU: "Diese dreijährige Ausbildung (2023 - 2026) hat mir Kompetenzen in Programmierung, Systemen und Netzwerken sowie in Englisch, Recht, Management und Kommunikation vermittelt.",
+              })}
+            </p>
+          </Etape>
+          <Etape
+            etat="futur"
+            dernier
+            annee={t({ FRA: "Demain", ENG: "Next", SPA: "Mañana", DEU: "Bald" })}
+            titre={t({ FRA: "Développeur", ENG: "Developer", SPA: "Desarrollador", DEU: "Entwickler" })}
+          >
+            <p className={texte}>
+              {t({
+                FRA: "Ouvert aux propositions d'emploi.",
+                ENG: "Open to job offers.",
+                SPA: "Abierto a ofertas de empleo.",
+                DEU: "Offen für Stellenangebote.",
+              })}
+            </p>
+            <a
+              href="#contact"
+              className="self-start inline-flex items-center gap-2 min-h-11 font-bold text-(--accentuation) hover:text-foreground transition-colors duration-200"
+            >
+              {t({ FRA: "Me contacter", ENG: "Contact me", SPA: "Contactarme", DEU: "Kontakt aufnehmen" })}
+              <ArrowRightIcon size={16} />
+            </a>
+          </Etape>
+        </ol>
+      </Carte>
+
+      {/* 04 · Compétences informatiques ===================================== */}
+      <Carte
+        numero="04"
+        icone={<CodeIcon size={24} />}
+        className="lg:col-span-6"
+        titre={
+          <TitreCarte>
+            {t({
+              FRA: "Compétences informatiques",
+              ENG: "Technical Skills",
+              SPA: "Competencias técnicas",
+              DEU: "Technische Kenntnisse",
+            })}
+          </TitreCarte>
+        }
+      >
+        <p className={texte}>
+          {t({
+            FRA: "Au cours de mes études et de mes projets personnels, j'ai acquis des compétences en programmation dans plusieurs langages et outils.",
+            ENG: "Throughout my studies and personal projects, I have gained programming skills in various languages and tools.",
+            SPA: "A lo largo de mis estudios y proyectos personales, he adquirido competencias en programación en varios lenguajes y herramientas.",
+            DEU: "Im Laufe meines Studiums und meiner persönlichen Projekte habe ich Programmierkenntnisse in verschiedenen Sprachen und Tools erworben.",
+          })}
+        </p>
+        <div className="mt-1 flex flex-col gap-6">
+          {outils.map((groupe) => (
+            <div key={groupe.label.FRA} className="flex flex-col gap-2.5">
+              <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-(--muted)">{t(groupe.label)}</h4>
+              <ul className="flex flex-wrap gap-2">
+                {groupe.items.map(([nom, src]) => (
+                  <li
+                    key={nom}
+                    className="flex items-center gap-2.5 py-1.5 pl-2 pr-3.5 bg-(--surface-2) border border-(--line) text-sm font-bold text-(--foreground-secondary)"
+                  >
+                    <Image src={src} alt="" width={24} height={24} className="tool-logo size-6 object-contain" />
+                    {nom}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Carte>
+
+      {/* 05 · Compétences complémentaires =================================== */}
+      <Carte
+        numero="05"
+        icone={<LayersIcon size={24} />}
+        className="lg:col-span-6"
+        titre={
+          <TitreCarte>
+            {t({
+              FRA: "Compétences complémentaires",
+              ENG: "Additional Skills",
+              SPA: "Competencias complementarias",
+              DEU: "Ergänzende Kenntnisse",
+            })}
+          </TitreCarte>
+        }
+      >
+        <p className={texte}>
+          {t({
+            FRA: "Mon BUT Informatique m'a également formé à de nombreuses compétences transversales.",
+            ENG: "My Bachelor of Technology in Computer Science also trained me in many cross-disciplinary skills.",
+            SPA: "Mi Bachelor en Informática también me formó en muchas competencias transversales.",
+            DEU: "Mein Informatikstudium hat mich auch in vielen übergreifenden Kompetenzen ausgebildet.",
+          })}
+        </p>
+        <ul className="mt-1 flex flex-col">
+          {complementaires.map(([icone, titre, description], index) => (
+            <li
+              key={titre.FRA}
+              className={`flex gap-4 border-t border-(--line) ${index === complementaires.length - 1 ? "pt-4.5" : "py-4.5"}`}
+            >
+              <span className="shrink-0 size-10 flex items-center justify-center border border-(--line) text-(--accentuation)">
+                {icone}
+              </span>
+              <div className="min-w-0">
+                <h4 className="mb-1 font-bold">{t(titre)}</h4>
+                <p className="text-[15px] leading-relaxed text-(--foreground-secondary)">{t(description)}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Carte>
     </div>
   );
 }
